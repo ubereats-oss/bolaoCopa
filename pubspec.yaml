@@ -1,0 +1,35 @@
+name: bolao_copa
+description: Bolão da Copa do Mundo
+publish_to: 'none'
+version: 1.0.4+11
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+dependencies:
+  flutter:
+    sdk: flutter
+  firebase_core: ^4.4.0
+  cloud_firestore: ^6.1.2
+  firebase_auth: ^6.2.0
+  firebase_storage: ^13.0.6
+  google_sign_in: ^6.2.1
+  shared_preferences: ^2.2.3
+  connectivity_plus: ^6.0.3
+  intl: ^0.19.0
+  package_info_plus: ^8.0.0
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+  flutter_launcher_icons: ^0.14.1
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/flags/
+    - assets/icon_app.png
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "assets/icon_app.png"
+  min_sdk_android: 21
+  web:
+    generate: false

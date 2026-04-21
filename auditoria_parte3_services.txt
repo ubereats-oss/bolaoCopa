@@ -1,0 +1,265 @@
+==================================================
+AUDITORIA DE CÓDIGO — auditoria_parte3_services.txt
+Gerado em: 03/04/2026 07:44:36
+Pasta raiz: C:\Users\Alex Salles\Apps - desenvolvimento\bolao_copa
+==================================================
+
+==================================================
+ARQUIVO: C:\Users\Alex Salles\Apps - desenvolvimento\bolao_copa\lib\main.dart
+==================================================
+   1: import 'package:flutter/material.dart';
+   2: import 'package:firebase_core/firebase_core.dart';
+   3: import 'package:firebase_auth/firebase_auth.dart';
+   4: import 'firebase_options.dart';
+   5: import 'core/routes/app_routes.dart';
+   6: import 'features/auth/login_screen.dart';
+   7: import 'features/home/home_screen.dart';
+   8: void main() async {
+   9:   WidgetsFlutterBinding.ensureInitialized();
+  10:   await Firebase.initializeApp(
+  11:     options: DefaultFirebaseOptions.currentPlatform,
+  12:   );
+  13:   runApp(const BolaoApp());
+  14: }
+  15: class BolaoApp extends StatelessWidget {
+  16:   const BolaoApp({super.key});
+  17:   @override
+  18:   Widget build(BuildContext context) {
+  19:     return MaterialApp(
+  20:       title: 'Bolão Copa do Mundo',
+  21:       debugShowCheckedModeBanner: false,
+  22:       theme: ThemeData(
+  23:         colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF1A6B3C)),
+  24:         useMaterial3: true,
+  25:       ),
+  26:       home: StreamBuilder<User?>(
+  27:         stream: FirebaseAuth.instance.authStateChanges(),
+  28:         builder: (context, snapshot) {
+  29:           if (snapshot.connectionState == ConnectionState.waiting) {
+  30:             return const Scaffold(
+  31:               body: Center(child: CircularProgressIndicator()),
+  32:             );
+  33:           }
+  34:           if (snapshot.hasData) return const HomeScreen();
+  35:           return const LoginScreen();
+  36:         },
+  37:       ),
+  38:       routes: AppRoutes.routes,
+  39:     );
+  40:   }
+  41: }
+
+
+==================================================
+ARQUIVO: C:\Users\Alex Salles\Apps - desenvolvimento\bolao_copa\lib\core\constants\app_colors.dart
+==================================================
+   1: import 'package:flutter/material.dart';
+   2: class AppColors {
+   3:   static const primary = Color(0xFF1A6B3C);
+   4:   static const primaryLight = Color(0xFF4CAF7D);
+   5:   static const primaryDark = Color(0xFF0D4A28);
+   6:   static const warning = Colors.orange;
+   7:   static const error = Colors.red;
+   8:   static const success = Color(0xFF1A6B3C);
+   9:   static const textMuted = Colors.grey;
+  10: }
+
+
+==================================================
+ARQUIVO: C:\Users\Alex Salles\Apps - desenvolvimento\bolao_copa\lib\core\constants\app_text_styles.dart
+==================================================
+   1: import 'package:flutter/material.dart';
+   2: import 'app_colors.dart';
+   3: class AppTextStyles {
+   4:   static const title = TextStyle(fontSize: 22, fontWeight: FontWeight.bold);
+   5:   static const subtitle = TextStyle(fontSize: 16, color: AppColors.textMuted);
+   6:   static const label = TextStyle(fontSize: 13, fontWeight: FontWeight.bold);
+   7:   static const muted = TextStyle(fontSize: 12, color: AppColors.textMuted);
+   8:   static const success = TextStyle(
+   9:       fontSize: 14, fontWeight: FontWeight.bold, color: AppColors.success);
+  10:   static const error = TextStyle(fontSize: 14, color: AppColors.error);
+  11: }
+
+
+==================================================
+ARQUIVO: C:\Users\Alex Salles\Apps - desenvolvimento\bolao_copa\lib\core\routes\app_routes.dart
+==================================================
+   1: import 'package:flutter/material.dart';
+   2: //import '../../features/auth/login_screen.dart';
+   3: import '../../features/auth/register_screen.dart';
+   4: import '../../features/home/home_screen.dart';
+   5: import '../../features/matches/matches_screen.dart';
+   6: import '../../features/matches/match_prediction_screen.dart';
+   7: import '../../features/ranking/ranking_screen.dart';
+   8: import '../../features/extras/extra_predictions_screen.dart';
+   9: import '../../features/admin/admin_dashboard.dart';
+  10: import '../../features/admin/manage_matches_screen.dart';
+  11: import '../../features/admin/manage_results_screen.dart';
+  12: import '../../features/admin/manage_extra_questions_screen.dart';
+  13: import '../../features/admin/manage_players_screen.dart';
+  14: class AppRoutes {
+  15:   static const String login = '/';
+  16:   static const String register = '/register';
+  17:   static const String home = '/home';
+  18:   static const String matches = '/matches';
+  19:   static const String matchPrediction = '/match-prediction';
+  20:   static const String ranking = '/ranking';
+  21:   static const String extras = '/extras';
+  22:   static const String adminDashboard = '/admin';
+  23:   static const String adminMatches = '/admin/matches';
+  24:   static const String adminResults = '/admin/results';
+  25:   static const String adminExtraQuestions = '/admin/extra-questions';
+  26:   static const String adminPlayers = '/admin/players';
+  27:   static Map<String, WidgetBuilder> get routes => {
+  28:     //login: (_) => const LoginScreen(),
+  29:     register: (_) => const RegisterScreen(),
+  30:     home: (_) => const HomeScreen(),
+  31:     matches: (_) => const MatchesScreen(),
+  32:     matchPrediction: (_) => const MatchPredictionScreen(),
+  33:     ranking: (_) => const RankingScreen(),
+  34:     extras: (_) => const ExtraPredictionsScreen(),
+  35:     adminDashboard: (_) => const AdminDashboard(),
+  36:     adminMatches: (_) => const ManageMatchesScreen(),
+  37:     adminResults: (_) => const ManageResultsScreen(),
+  38:     adminExtraQuestions: (_) => const ManageExtraQuestionsScreen(),
+  39:     adminPlayers: (_) => const ManagePlayersScreen(),
+  40:   };
+  41: }
+
+
+==================================================
+ARQUIVO: C:\Users\Alex Salles\Apps - desenvolvimento\bolao_copa\lib\core\utils\date_formatter.dart
+==================================================
+   1: import 'package:intl/intl.dart';
+   2: class DateFormatter {
+   3:   static final _dateTime = DateFormat('dd/MM/yyyy · HH:mm');
+   4:   static final _date = DateFormat('dd/MM/yyyy');
+   5:   static final _time = DateFormat('HH:mm');
+   6:   static String dateTime(DateTime dt) => _dateTime.format(dt);
+   7:   static String date(DateTime dt) => _date.format(dt);
+   8:   static String time(DateTime dt) => _time.format(dt);
+   9: }
+
+
+==================================================
+ARQUIVO: C:\Users\Alex Salles\Apps - desenvolvimento\bolao_copa\lib\services\auth_service.dart
+==================================================
+   1: import 'package:firebase_auth/firebase_auth.dart';
+   2: import 'package:google_sign_in/google_sign_in.dart';
+   3: import 'package:cloud_firestore/cloud_firestore.dart';
+   4: import '../data/models/app_user.dart';
+   5: class AuthService {
+   6:   final FirebaseAuth _auth = FirebaseAuth.instance;
+   7:   final GoogleSignIn _googleSignIn = GoogleSignIn();
+   8:   final FirebaseFirestore _db = FirebaseFirestore.instance;
+   9:   // Usuário autenticado atual
+  10:   User? get currentUser => _auth.currentUser;
+  11:   // Stream de mudanças de autenticação
+  12:   Stream<User?> get authStateChanges => _auth.authStateChanges();
+  13:   // Login com e-mail e senha
+  14:   Future<UserCredential> signInWithEmail(String email, String password) async {
+  15:     return await _auth.signInWithEmailAndPassword(
+  16:       email: email.trim(),
+  17:       password: password,
+  18:     );
+  19:   }
+  20:   // Registro com e-mail e senha
+  21:   Future<UserCredential> registerWithEmail({
+  22:     required String name,
+  23:     required String email,
+  24:     required String password,
+  25:   }) async {
+  26:     final credential = await _auth.createUserWithEmailAndPassword(
+  27:       email: email.trim(),
+  28:       password: password,
+  29:     );
+  30:     await credential.user?.updateDisplayName(name);
+  31:     await _saveUserToFirestore(
+  32:       uid: credential.user!.uid,
+  33:       name: name,
+  34:       email: email.trim(),
+  35:     );
+  36:     return credential;
+  37:   }
+  38:   // Login com Google
+  39:   Future<UserCredential?> signInWithGoogle() async {
+  40:     final googleUser = await _googleSignIn.signIn();
+  41:     if (googleUser == null) return null;
+  42:     final googleAuth = await googleUser.authentication;
+  43:     final credential = GoogleAuthProvider.credential(
+  44:       accessToken: googleAuth.accessToken,
+  45:       idToken: googleAuth.idToken,
+  46:     );
+  47:     final userCredential = await _auth.signInWithCredential(credential);
+  48:     // Cria o perfil no Firestore apenas se for o primeiro login
+  49:     final doc = await _db
+  50:         .collection('users')
+  51:         .doc(userCredential.user!.uid)
+  52:         .get();
+  53:     if (!doc.exists) {
+  54:       await _saveUserToFirestore(
+  55:         uid: userCredential.user!.uid,
+  56:         name: googleUser.displayName ?? 'Usuário',
+  57:         email: googleUser.email,
+  58:       );
+  59:     }
+  60:     return userCredential;
+  61:   }
+  62:   // Logout
+  63:   Future<void> signOut() async {
+  64:     await _googleSignIn.signOut();
+  65:     await _auth.signOut();
+  66:   }
+  67:   // Busca o perfil do usuário no Firestore
+  68:   Future<AppUser?> fetchAppUser(String uid) async {
+  69:     final doc = await _db.collection('users').doc(uid).get();
+  70:     if (!doc.exists) return null;
+  71:     return AppUser.fromFirestore(uid, doc.data()!);
+  72:   }
+  73:   // Salva usuário novo no Firestore
+  74:   Future<void> _saveUserToFirestore({
+  75:     required String uid,
+  76:     required String name,
+  77:     required String email,
+  78:   }) async {
+  79:     await _db.collection('users').doc(uid).set({
+  80:       'name': name,
+  81:       'email': email,
+  82:       'is_admin': false,
+  83:       'total_points': 0,
+  84:       'created_at': FieldValue.serverTimestamp(),
+  85:     });
+  86:   }
+  87: }
+
+
+==================================================
+ARQUIVO: C:\Users\Alex Salles\Apps - desenvolvimento\bolao_copa\lib\services\firestore_service.dart
+==================================================
+   1: import 'package:cloud_firestore/cloud_firestore.dart';
+   2: import '../data/models/cup.dart';
+   3: class FirestoreService {
+   4:   final FirebaseFirestore _db = FirebaseFirestore.instance;
+   5:   // Cache em memória — evita leituras repetidas ao Firestore
+   6:   static Cup? _cachedCup;
+   7:   Future<Cup?> fetchActiveCup({bool forceRefresh = false}) async {
+   8:     if (!forceRefresh && _cachedCup != null) return _cachedCup;
+   9:     final query = await _db
+  10:         .collection('cups')
+  11:         .where('active', isEqualTo: true)
+  12:         .limit(1)
+  13:         .get();
+  14:     if (query.docs.isEmpty) return null;
+  15:     final doc = query.docs.first;
+  16:     _cachedCup = Cup.fromFirestore(doc.id, doc.data());
+  17:     return _cachedCup;
+  18:   }
+  19:   static void clearCache() {
+  20:     _cachedCup = null;
+  21:   }
+  22: }
+
+
+==================================================
+Total de arquivos nesta parte: 7
+==================================================

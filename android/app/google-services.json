@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "212214398916",
+    "project_id": "bolao-copa-do-mundo-salles",
+    "storage_bucket": "bolao-copa-do-mundo-salles.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:212214398916:android:56b9db4e84c71cdab26e91",
+        "android_client_info": {
+          "package_name": "com.seunome.bolao_copa"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDpz0YeMhxXwCO39fognthNL0hyztcPNgU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

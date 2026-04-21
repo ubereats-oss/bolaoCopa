@@ -1,0 +1,583 @@
+==================================================
+AUDITORIA DE CÓDIGO — auditoria_parte1_config.txt
+Gerado em: 03/04/2026 07:44:36
+Pasta raiz: C:\Users\Alex Salles\Apps - desenvolvimento\bolao_copa
+==================================================
+
+==================================================
+ARQUIVO: C:\Users\Alex Salles\Apps - desenvolvimento\bolao_copa\analysis_options.yaml
+==================================================
+   1: # This file configures the analyzer, which statically analyzes Dart code to
+   2: # check for errors, warnings, and lints.
+   3: #
+   4: # The issues identified by the analyzer are surfaced in the UI of Dart-enabled
+   5: # IDEs (https://dart.dev/tools#ides-and-editors). The analyzer can also be
+   6: # invoked from the command line by running `flutter analyze`.
+   7: # The following line activates a set of recommended lints for Flutter apps,
+   8: # packages, and plugins designed to encourage good coding practices.
+   9: include: package:flutter_lints/flutter.yaml
+  10: linter:
+  11:   # The lint rules applied to this project can be customized in the
+  12:   # section below to disable rules from the `package:flutter_lints/flutter.yaml`
+  13:   # included above or to enable additional rules. A list of all available lints
+  14:   # and their documentation is published at https://dart.dev/lints.
+  15:   #
+  16:   # Instead of disabling a lint rule for the entire project in the
+  17:   # section below, it can also be suppressed for a single line of code
+  18:   # or a specific dart file by using the `// ignore: name_of_lint` and
+  19:   # `// ignore_for_file: name_of_lint` syntax on the line or in the file
+  20:   # producing the lint.
+  21:   rules:
+  22:     # avoid_print: false  # Uncomment to disable the `avoid_print` rule
+  23:     # prefer_single_quotes: true  # Uncomment to enable the `prefer_single_quotes` rule
+  24: # Additional information about this file can be found at
+  25: # https://dart.dev/guides/language/analysis-options
+
+
+==================================================
+ARQUIVO: C:\Users\Alex Salles\Apps - desenvolvimento\bolao_copa\firebase.json
+==================================================
+   1: {"flutter":{"platforms":{"android":{"default":{"projectId":"bolao-copa-do-mundo-salles","appId":"1:212214398916:android:56b9db4e84c71cdab26e91","fileOutput":"android/app/google-services.json"}},"dart":{"lib/firebase_options.dart":{"projectId":"bolao-copa-do-mundo-salles","configurations":{"android":"1:212214398916:android:56b9db4e84c71cdab26e91","ios":"1:212214398916:ios:653b33fb963832ffb26e91"}}}}}}
+
+
+==================================================
+ARQUIVO: C:\Users\Alex Salles\Apps - desenvolvimento\bolao_copa\pubspec.yaml
+==================================================
+   1: name: bolao_copa
+   2: description: Bolão da Copa do Mundo
+   3: publish_to: 'none'
+   4: version: 1.0.0+2
+   5: environment:
+   6:   sdk: '>=3.0.0 <4.0.0'
+   7: dependencies:
+   8:   flutter:
+   9:     sdk: flutter
+  10:   firebase_core: ^4.4.0
+  11:   cloud_firestore: ^6.1.2
+  12:   firebase_auth: ^6.2.0
+  13:   firebase_storage: ^13.0.6
+  14:   google_sign_in: ^6.2.1
+  15:   shared_preferences: ^2.2.3
+  16:   connectivity_plus: ^6.0.3
+  17:   intl: ^0.19.0
+  18: dev_dependencies:
+  19:   flutter_test:
+  20:     sdk: flutter
+  21:   flutter_lints: ^4.0.0
+  22:   flutter_launcher_icons: ^0.14.1
+  23: flutter:
+  24:   uses-material-design: true
+  25:   assets:
+  26:     - assets/flags/
+  27:     - assets/icon_app.png
+  28: flutter_launcher_icons:
+  29:   android: true
+  30:   ios: true
+  31:   image_path: "assets/icon_app.png"
+  32:   min_sdk_android: 21
+  33:   web:
+  34:     generate: false
+
+
+==================================================
+ARQUIVO: C:\Users\Alex Salles\Apps - desenvolvimento\bolao_copa\android\build.gradle.kts
+==================================================
+   1: allprojects {
+   2:     repositories {
+   3:         google()
+   4:         mavenCentral()
+   5:     }
+   6: }
+   7: 
+   8: val newBuildDir = rootProject.layout.buildDirectory.dir("../../build").get()
+   9: rootProject.layout.buildDirectory.set(newBuildDir)
+  10: 
+  11: subprojects {
+  12:     val newSubprojectBuildDir = newBuildDir.dir(project.name)
+  13:     project.layout.buildDirectory.set(newSubprojectBuildDir)
+  14: }
+  15: 
+  16: subprojects {
+  17:     project.evaluationDependsOn(":app")
+  18: }
+  19: 
+  20: tasks.register<Delete>("clean") {
+  21:     delete(rootProject.layout.buildDirectory)
+  22: }
+
+==================================================
+ARQUIVO: C:\Users\Alex Salles\Apps - desenvolvimento\bolao_copa\android\settings.gradle.kts
+==================================================
+   1: pluginManagement {
+   2:     val flutterSdkPath =
+   3:         run {
+   4:             val properties = java.util.Properties()
+   5:             file("local.properties").inputStream().use { properties.load(it) }
+   6:             val flutterSdkPath = properties.getProperty("flutter.sdk")
+   7:             require(flutterSdkPath != null) { "flutter.sdk not set in local.properties" }
+   8:             flutterSdkPath
+   9:         }
+  10: 
+  11:     includeBuild("$flutterSdkPath/packages/flutter_tools/gradle")
+  12: 
+  13:     repositories {
+  14:         google()
+  15:         mavenCentral()
+  16:         gradlePluginPortal()
+  17:     }
+  18: }
+  19: 
+  20: plugins {
+  21:     id("dev.flutter.flutter-plugin-loader") version "1.0.0"
+  22:     id("com.android.application") version "8.11.1" apply false
+  23:     // START: FlutterFire Configuration
+  24:     id("com.google.gms.google-services") version("4.3.15") apply false
+  25:     // END: FlutterFire Configuration
+  26:     id("org.jetbrains.kotlin.android") version "2.2.20" apply false
+  27: }
+  28: 
+  29: include(":app")
+
+
+==================================================
+ARQUIVO: C:\Users\Alex Salles\Apps - desenvolvimento\bolao_copa\android\app\build.gradle.kts
+==================================================
+   1: import java.util.Properties
+   2: import java.io.FileInputStream  
+   3: val keystoreProperties = Properties()
+   4: val keystorePropertiesFile = rootProject.file("key.properties")
+   5: if (keystorePropertiesFile.exists()) {
+   6:     keystoreProperties.load(FileInputStream(keystorePropertiesFile))
+   7: }
+   8: 
+   9: plugins {
+  10:     id("com.android.application")
+  11:     id("com.google.gms.google-services")
+  12:     id("kotlin-android")
+  13:     id("dev.flutter.flutter-gradle-plugin")
+  14: }
+  15: 
+  16: android {
+  17:     namespace = "com.seunome.bolao_copa"
+  18:     compileSdk = flutter.compileSdkVersion
+  19:     ndkVersion = flutter.ndkVersion
+  20: 
+  21:     compileOptions {
+  22:         sourceCompatibility = JavaVersion.VERSION_17
+  23:         targetCompatibility = JavaVersion.VERSION_17
+  24:     }
+  25: 
+  26:     kotlinOptions {
+  27:         jvmTarget = JavaVersion.VERSION_17.toString()
+  28:     }
+  29: 
+  30:     defaultConfig {
+  31:         applicationId = "com.seunome.bolao_copa"
+  32:         minSdk = flutter.minSdkVersion
+  33:         targetSdk = flutter.targetSdkVersion
+  34:         versionCode = flutter.versionCode
+  35:         versionName = flutter.versionName
+  36:     }
+  37: 
+  38:     signingConfigs {
+  39:         create("release") {
+  40:             keyAlias = keystoreProperties["keyAlias"] as String
+  41:             keyPassword = keystoreProperties["keyPassword"] as String
+  42:             storeFile = file(keystoreProperties["storeFile"] as String)
+  43:             storePassword = keystoreProperties["storePassword"] as String
+  44:         }
+  45:     }
+  46: 
+  47:     buildTypes {
+  48:         release {
+  49:             signingConfig = signingConfigs.getByName("release")
+  50:             isMinifyEnabled = false
+  51:             isShrinkResources = false
+  52:         }
+  53:     }
+  54: }
+  55: 
+  56: flutter {
+  57:     source = "../.."
+  58: }
+
+==================================================
+ARQUIVO: C:\Users\Alex Salles\Apps - desenvolvimento\bolao_copa\android\app\src\debug\AndroidManifest.xml
+==================================================
+   1: <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+   2:     <!-- The INTERNET permission is required for development. Specifically,
+   3:          the Flutter tool needs it to communicate with the running application
+   4:          to allow setting breakpoints, to provide hot reload, etc.
+   5:     -->
+   6:     <uses-permission android:name="android.permission.INTERNET"/>
+   7: </manifest>
+
+
+==================================================
+ARQUIVO: C:\Users\Alex Salles\Apps - desenvolvimento\bolao_copa\android\app\src\main\AndroidManifest.xml
+==================================================
+   1: <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+   2:     <application
+   3:         android:label="bolao_copa"
+   4:         android:name="${applicationName}"
+   5:         android:icon="@mipmap/ic_launcher">
+   6:         <activity
+   7:             android:name=".MainActivity"
+   8:             android:exported="true"
+   9:             android:launchMode="singleTop"
+  10:             android:taskAffinity=""
+  11:             android:theme="@style/LaunchTheme"
+  12:             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
+  13:             android:hardwareAccelerated="true"
+  14:             android:windowSoftInputMode="adjustResize">
+  15:             <!-- Specifies an Android theme to apply to this Activity as soon as
+  16:                  the Android process has started. This theme is visible to the user
+  17:                  while the Flutter UI initializes. After that, this theme continues
+  18:                  to determine the Window background behind the Flutter UI. -->
+  19:             <meta-data
+  20:               android:name="io.flutter.embedding.android.NormalTheme"
+  21:               android:resource="@style/NormalTheme"
+  22:               />
+  23:             <intent-filter>
+  24:                 <action android:name="android.intent.action.MAIN"/>
+  25:                 <category android:name="android.intent.category.LAUNCHER"/>
+  26:             </intent-filter>
+  27:         </activity>
+  28:         <!-- Don't delete the meta-data below.
+  29:              This is used by the Flutter tool to generate GeneratedPluginRegistrant.java -->
+  30:         <meta-data
+  31:             android:name="flutterEmbedding"
+  32:             android:value="2" />
+  33:     </application>
+  34:     <!-- Required to query activities that can process text, see:
+  35:          https://developer.android.com/training/package-visibility and
+  36:          https://developer.android.com/reference/android/content/Intent#ACTION_PROCESS_TEXT.
+  37: 
+  38:          In particular, this is used by the Flutter engine in io.flutter.plugin.text.ProcessTextPlugin. -->
+  39:     <queries>
+  40:         <intent>
+  41:             <action android:name="android.intent.action.PROCESS_TEXT"/>
+  42:             <data android:mimeType="text/plain"/>
+  43:         </intent>
+  44:     </queries>
+  45: </manifest>
+
+
+==================================================
+ARQUIVO: C:\Users\Alex Salles\Apps - desenvolvimento\bolao_copa\android\app\src\main\kotlin\com\seunome\bolao_copa\MainActivity.kt
+==================================================
+   1: package com.seunome.bolao_copa
+   2: 
+   3: import io.flutter.embedding.android.FlutterActivity
+   4: 
+   5: class MainActivity : FlutterActivity()
+
+
+==================================================
+ARQUIVO: C:\Users\Alex Salles\Apps - desenvolvimento\bolao_copa\android\app\src\main\res\drawable\launch_background.xml
+==================================================
+   1: <?xml version="1.0" encoding="utf-8"?>
+   2: <!-- Modify this file to customize your launch splash screen -->
+   3: <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+   4:     <item android:drawable="@android:color/white" />
+   5: 
+   6:     <!-- You can insert your own image assets here -->
+   7:     <!-- <item>
+   8:         <bitmap
+   9:             android:gravity="center"
+  10:             android:src="@mipmap/launch_image" />
+  11:     </item> -->
+  12: </layer-list>
+
+
+==================================================
+ARQUIVO: C:\Users\Alex Salles\Apps - desenvolvimento\bolao_copa\android\app\src\main\res\drawable-v21\launch_background.xml
+==================================================
+   1: <?xml version="1.0" encoding="utf-8"?>
+   2: <!-- Modify this file to customize your launch splash screen -->
+   3: <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+   4:     <item android:drawable="?android:colorBackground" />
+   5: 
+   6:     <!-- You can insert your own image assets here -->
+   7:     <!-- <item>
+   8:         <bitmap
+   9:             android:gravity="center"
+  10:             android:src="@mipmap/launch_image" />
+  11:     </item> -->
+  12: </layer-list>
+
+
+==================================================
+ARQUIVO: C:\Users\Alex Salles\Apps - desenvolvimento\bolao_copa\android\app\src\main\res\values\styles.xml
+==================================================
+   1: <?xml version="1.0" encoding="utf-8"?>
+   2: <resources>
+   3:     <!-- Theme applied to the Android Window while the process is starting when the OS's Dark Mode setting is off -->
+   4:     <style name="LaunchTheme" parent="@android:style/Theme.Light.NoTitleBar">
+   5:         <!-- Show a splash screen on the activity. Automatically removed when
+   6:              the Flutter engine draws its first frame -->
+   7:         <item name="android:windowBackground">@drawable/launch_background</item>
+   8:     </style>
+   9:     <!-- Theme applied to the Android Window as soon as the process has started.
+  10:          This theme determines the color of the Android Window while your
+  11:          Flutter UI initializes, as well as behind your Flutter UI while its
+  12:          running.
+  13: 
+  14:          This Theme is only used starting with V2 of Flutter's Android embedding. -->
+  15:     <style name="NormalTheme" parent="@android:style/Theme.Light.NoTitleBar">
+  16:         <item name="android:windowBackground">?android:colorBackground</item>
+  17:     </style>
+  18: </resources>
+
+
+==================================================
+ARQUIVO: C:\Users\Alex Salles\Apps - desenvolvimento\bolao_copa\android\app\src\main\res\values-night\styles.xml
+==================================================
+   1: <?xml version="1.0" encoding="utf-8"?>
+   2: <resources>
+   3:     <!-- Theme applied to the Android Window while the process is starting when the OS's Dark Mode setting is on -->
+   4:     <style name="LaunchTheme" parent="@android:style/Theme.Black.NoTitleBar">
+   5:         <!-- Show a splash screen on the activity. Automatically removed when
+   6:              the Flutter engine draws its first frame -->
+   7:         <item name="android:windowBackground">@drawable/launch_background</item>
+   8:     </style>
+   9:     <!-- Theme applied to the Android Window as soon as the process has started.
+  10:          This theme determines the color of the Android Window while your
+  11:          Flutter UI initializes, as well as behind your Flutter UI while its
+  12:          running.
+  13: 
+  14:          This Theme is only used starting with V2 of Flutter's Android embedding. -->
+  15:     <style name="NormalTheme" parent="@android:style/Theme.Black.NoTitleBar">
+  16:         <item name="android:windowBackground">?android:colorBackground</item>
+  17:     </style>
+  18: </resources>
+
+
+==================================================
+ARQUIVO: C:\Users\Alex Salles\Apps - desenvolvimento\bolao_copa\android\app\src\profile\AndroidManifest.xml
+==================================================
+   1: <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+   2:     <!-- The INTERNET permission is required for development. Specifically,
+   3:          the Flutter tool needs it to communicate with the running application
+   4:          to allow setting breakpoints, to provide hot reload, etc.
+   5:     -->
+   6:     <uses-permission android:name="android.permission.INTERNET"/>
+   7: </manifest>
+
+
+==================================================
+ARQUIVO: C:\Users\Alex Salles\Apps - desenvolvimento\bolao_copa\ios\Flutter\AppFrameworkInfo.plist
+==================================================
+   1: <?xml version="1.0" encoding="UTF-8"?>
+   2: <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+   3: <plist version="1.0">
+   4: <dict>
+   5:   <key>CFBundleDevelopmentRegion</key>
+   6:   <string>en</string>
+   7:   <key>CFBundleExecutable</key>
+   8:   <string>App</string>
+   9:   <key>CFBundleIdentifier</key>
+  10:   <string>io.flutter.flutter.app</string>
+  11:   <key>CFBundleInfoDictionaryVersion</key>
+  12:   <string>6.0</string>
+  13:   <key>CFBundleName</key>
+  14:   <string>App</string>
+  15:   <key>CFBundlePackageType</key>
+  16:   <string>FMWK</string>
+  17:   <key>CFBundleShortVersionString</key>
+  18:   <string>1.0</string>
+  19:   <key>CFBundleSignature</key>
+  20:   <string>????</string>
+  21:   <key>CFBundleVersion</key>
+  22:   <string>1.0</string>
+  23: </dict>
+  24: </plist>
+
+
+==================================================
+ARQUIVO: C:\Users\Alex Salles\Apps - desenvolvimento\bolao_copa\ios\Runner\AppDelegate.swift
+==================================================
+   1: import Flutter
+   2: import UIKit
+   3: 
+   4: @main
+   5: @objc class AppDelegate: FlutterAppDelegate, FlutterImplicitEngineDelegate {
+   6:   override func application(
+   7:     _ application: UIApplication,
+   8:     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
+   9:   ) -> Bool {
+  10:     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
+  11:   }
+  12: 
+  13:   func didInitializeImplicitFlutterEngine(_ engineBridge: FlutterImplicitEngineBridge) {
+  14:     GeneratedPluginRegistrant.register(with: engineBridge.pluginRegistry)
+  15:   }
+  16: }
+
+
+==================================================
+ARQUIVO: C:\Users\Alex Salles\Apps - desenvolvimento\bolao_copa\ios\Runner\Info.plist
+==================================================
+   1: <?xml version="1.0" encoding="UTF-8"?>
+   2: <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+   3: <plist version="1.0">
+   4: <dict>
+   5: 	<key>CADisableMinimumFrameDurationOnPhone</key>
+   6: 	<true/>
+   7: 	<key>CFBundleDevelopmentRegion</key>
+   8: 	<string>$(DEVELOPMENT_LANGUAGE)</string>
+   9: 	<key>CFBundleDisplayName</key>
+  10: 	<string>Bolao Copa</string>
+  11: 	<key>CFBundleExecutable</key>
+  12: 	<string>$(EXECUTABLE_NAME)</string>
+  13: 	<key>CFBundleIdentifier</key>
+  14: 	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+  15: 	<key>CFBundleInfoDictionaryVersion</key>
+  16: 	<string>6.0</string>
+  17: 	<key>CFBundleName</key>
+  18: 	<string>bolao_copa</string>
+  19: 	<key>CFBundlePackageType</key>
+  20: 	<string>APPL</string>
+  21: 	<key>CFBundleShortVersionString</key>
+  22: 	<string>$(FLUTTER_BUILD_NAME)</string>
+  23: 	<key>CFBundleSignature</key>
+  24: 	<string>????</string>
+  25: 	<key>CFBundleVersion</key>
+  26: 	<string>$(FLUTTER_BUILD_NUMBER)</string>
+  27: 	<key>LSRequiresIPhoneOS</key>
+  28: 	<true/>
+  29: 	<key>UIApplicationSceneManifest</key>
+  30: 	<dict>
+  31: 		<key>UIApplicationSupportsMultipleScenes</key>
+  32: 		<false/>
+  33: 		<key>UISceneConfigurations</key>
+  34: 		<dict>
+  35: 			<key>UIWindowSceneSessionRoleApplication</key>
+  36: 			<array>
+  37: 				<dict>
+  38: 					<key>UISceneClassName</key>
+  39: 					<string>UIWindowScene</string>
+  40: 					<key>UISceneConfigurationName</key>
+  41: 					<string>flutter</string>
+  42: 					<key>UISceneDelegateClassName</key>
+  43: 					<string>$(PRODUCT_MODULE_NAME).SceneDelegate</string>
+  44: 					<key>UISceneStoryboardFile</key>
+  45: 					<string>Main</string>
+  46: 				</dict>
+  47: 			</array>
+  48: 		</dict>
+  49: 	</dict>
+  50: 	<key>UIApplicationSupportsIndirectInputEvents</key>
+  51: 	<true/>
+  52: 	<key>UILaunchStoryboardName</key>
+  53: 	<string>LaunchScreen</string>
+  54: 	<key>UIMainStoryboardFile</key>
+  55: 	<string>Main</string>
+  56: 	<key>UISupportedInterfaceOrientations</key>
+  57: 	<array>
+  58: 		<string>UIInterfaceOrientationPortrait</string>
+  59: 		<string>UIInterfaceOrientationLandscapeLeft</string>
+  60: 		<string>UIInterfaceOrientationLandscapeRight</string>
+  61: 	</array>
+  62: 	<key>UISupportedInterfaceOrientations~ipad</key>
+  63: 	<array>
+  64: 		<string>UIInterfaceOrientationPortrait</string>
+  65: 		<string>UIInterfaceOrientationPortraitUpsideDown</string>
+  66: 		<string>UIInterfaceOrientationLandscapeLeft</string>
+  67: 		<string>UIInterfaceOrientationLandscapeRight</string>
+  68: 	</array>
+  69: </dict>
+  70: </plist>
+
+
+==================================================
+ARQUIVO: C:\Users\Alex Salles\Apps - desenvolvimento\bolao_copa\ios\Runner\SceneDelegate.swift
+==================================================
+   1: import Flutter
+   2: import UIKit
+   3: 
+   4: class SceneDelegate: FlutterSceneDelegate {
+   5: 
+   6: }
+
+
+==================================================
+ARQUIVO: C:\Users\Alex Salles\Apps - desenvolvimento\bolao_copa\ios\Runner\Assets.xcassets\AppIcon.appiconset\Contents.json
+==================================================
+   1: {"images":[{"size":"20x20","idiom":"iphone","filename":"Icon-App-20x20@2x.png","scale":"2x"},{"size":"20x20","idiom":"iphone","filename":"Icon-App-20x20@3x.png","scale":"3x"},{"size":"29x29","idiom":"iphone","filename":"Icon-App-29x29@1x.png","scale":"1x"},{"size":"29x29","idiom":"iphone","filename":"Icon-App-29x29@2x.png","scale":"2x"},{"size":"29x29","idiom":"iphone","filename":"Icon-App-29x29@3x.png","scale":"3x"},{"size":"40x40","idiom":"iphone","filename":"Icon-App-40x40@2x.png","scale":"2x"},{"size":"40x40","idiom":"iphone","filename":"Icon-App-40x40@3x.png","scale":"3x"},{"size":"57x57","idiom":"iphone","filename":"Icon-App-57x57@1x.png","scale":"1x"},{"size":"57x57","idiom":"iphone","filename":"Icon-App-57x57@2x.png","scale":"2x"},{"size":"60x60","idiom":"iphone","filename":"Icon-App-60x60@2x.png","scale":"2x"},{"size":"60x60","idiom":"iphone","filename":"Icon-App-60x60@3x.png","scale":"3x"},{"size":"20x20","idiom":"ipad","filename":"Icon-App-20x20@1x.png","scale":"1x"},{"size":"20x20","idiom":"ipad","filename":"Icon-App-20x20@2x.png","scale":"2x"},{"size":"29x29","idiom":"ipad","filename":"Icon-App-29x29@1x.png","scale":"1x"},{"size":"29x29","idiom":"ipad","filename":"Icon-App-29x29@2x.png","scale":"2x"},{"size":"40x40","idiom":"ipad","filename":"Icon-App-40x40@1x.png","scale":"1x"},{"size":"40x40","idiom":"ipad","filename":"Icon-App-40x40@2x.png","scale":"2x"},{"size":"50x50","idiom":"ipad","filename":"Icon-App-50x50@1x.png","scale":"1x"},{"size":"50x50","idiom":"ipad","filename":"Icon-App-50x50@2x.png","scale":"2x"},{"size":"72x72","idiom":"ipad","filename":"Icon-App-72x72@1x.png","scale":"1x"},{"size":"72x72","idiom":"ipad","filename":"Icon-App-72x72@2x.png","scale":"2x"},{"size":"76x76","idiom":"ipad","filename":"Icon-App-76x76@1x.png","scale":"1x"},{"size":"76x76","idiom":"ipad","filename":"Icon-App-76x76@2x.png","scale":"2x"},{"size":"83.5x83.5","idiom":"ipad","filename":"Icon-App-83.5x83.5@2x.png","scale":"2x"},{"size":"1024x1024","idiom":"ios-marketing","filename":"Icon-App-1024x1024@1x.png","scale":"1x"}],"info":{"version":1,"author":"xcode"}}
+
+
+==================================================
+ARQUIVO: C:\Users\Alex Salles\Apps - desenvolvimento\bolao_copa\ios\Runner\Assets.xcassets\LaunchImage.imageset\Contents.json
+==================================================
+   1: {
+   2:   "images" : [
+   3:     {
+   4:       "idiom" : "universal",
+   5:       "filename" : "LaunchImage.png",
+   6:       "scale" : "1x"
+   7:     },
+   8:     {
+   9:       "idiom" : "universal",
+  10:       "filename" : "LaunchImage@2x.png",
+  11:       "scale" : "2x"
+  12:     },
+  13:     {
+  14:       "idiom" : "universal",
+  15:       "filename" : "LaunchImage@3x.png",
+  16:       "scale" : "3x"
+  17:     }
+  18:   ],
+  19:   "info" : {
+  20:     "version" : 1,
+  21:     "author" : "xcode"
+  22:   }
+  23: }
+
+
+==================================================
+ARQUIVO: C:\Users\Alex Salles\Apps - desenvolvimento\bolao_copa\ios\Runner.xcodeproj\project.xcworkspace\xcshareddata\IDEWorkspaceChecks.plist
+==================================================
+   1: <?xml version="1.0" encoding="UTF-8"?>
+   2: <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+   3: <plist version="1.0">
+   4: <dict>
+   5: 	<key>IDEDidComputeMac32BitWarning</key>
+   6: 	<true/>
+   7: </dict>
+   8: </plist>
+
+
+==================================================
+ARQUIVO: C:\Users\Alex Salles\Apps - desenvolvimento\bolao_copa\ios\Runner.xcworkspace\xcshareddata\IDEWorkspaceChecks.plist
+==================================================
+   1: <?xml version="1.0" encoding="UTF-8"?>
+   2: <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+   3: <plist version="1.0">
+   4: <dict>
+   5: 	<key>IDEDidComputeMac32BitWarning</key>
+   6: 	<true/>
+   7: </dict>
+   8: </plist>
+
+
+==================================================
+ARQUIVO: C:\Users\Alex Salles\Apps - desenvolvimento\bolao_copa\ios\RunnerTests\RunnerTests.swift
+==================================================
+   1: import Flutter
+   2: import UIKit
+   3: import XCTest
+   4: 
+   5: class RunnerTests: XCTestCase {
+   6: 
+   7:   func testExample() {
+   8:     // If you add code to the Runner application, consider adding tests here.
+   9:     // See https://developer.apple.com/documentation/xctest for more information about using XCTest.
+  10:   }
+  11: 
+  12: }
+
+
+==================================================
+Total de arquivos nesta parte: 23
+==================================================

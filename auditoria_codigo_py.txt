@@ -1,0 +1,4449 @@
+==================================================
+AUDITORIA DE CÓDIGO
+Gerado em: 02/04/2026 09:17:09
+Pasta raiz: C:\Users\Alex Salles\Apps - desenvolvimento\bolao_copa
+==================================================
+
+==================================================
+ARQUIVO: C:\Users\Alex Salles\Apps - desenvolvimento\bolao_copa\analysis_options.yaml
+==================================================
+   1: # This file configures the analyzer, which statically analyzes Dart code to
+   2: # check for errors, warnings, and lints.
+   3: #
+   4: # The issues identified by the analyzer are surfaced in the UI of Dart-enabled
+   5: # IDEs (https://dart.dev/tools#ides-and-editors). The analyzer can also be
+   6: # invoked from the command line by running `flutter analyze`.
+   7: # The following line activates a set of recommended lints for Flutter apps,
+   8: # packages, and plugins designed to encourage good coding practices.
+   9: include: package:flutter_lints/flutter.yaml
+  10: linter:
+  11:   # The lint rules applied to this project can be customized in the
+  12:   # section below to disable rules from the `package:flutter_lints/flutter.yaml`
+  13:   # included above or to enable additional rules. A list of all available lints
+  14:   # and their documentation is published at https://dart.dev/lints.
+  15:   #
+  16:   # Instead of disabling a lint rule for the entire project in the
+  17:   # section below, it can also be suppressed for a single line of code
+  18:   # or a specific dart file by using the `// ignore: name_of_lint` and
+  19:   # `// ignore_for_file: name_of_lint` syntax on the line or in the file
+  20:   # producing the lint.
+  21:   rules:
+  22:     # avoid_print: false  # Uncomment to disable the `avoid_print` rule
+  23:     # prefer_single_quotes: true  # Uncomment to enable the `prefer_single_quotes` rule
+  24: # Additional information about this file can be found at
+  25: # https://dart.dev/guides/language/analysis-options
+
+
+==================================================
+ARQUIVO: C:\Users\Alex Salles\Apps - desenvolvimento\bolao_copa\firebase.json
+==================================================
+   1: {"flutter":{"platforms":{"android":{"default":{"projectId":"bolao-copa-do-mundo-salles","appId":"1:212214398916:android:56b9db4e84c71cdab26e91","fileOutput":"android/app/google-services.json"}},"dart":{"lib/firebase_options.dart":{"projectId":"bolao-copa-do-mundo-salles","configurations":{"android":"1:212214398916:android:56b9db4e84c71cdab26e91","ios":"1:212214398916:ios:653b33fb963832ffb26e91"}}}}}}
+
+
+==================================================
+ARQUIVO: C:\Users\Alex Salles\Apps - desenvolvimento\bolao_copa\pubspec.yaml
+==================================================
+   1: name: bolao_copa
+   2: description: Bolão da Copa do Mundo
+   3: publish_to: 'none'
+   4: version: 1.0.0+1
+   5: environment:
+   6:   sdk: '>=3.0.0 <4.0.0'
+   7: dependencies:
+   8:   flutter:
+   9:     sdk: flutter
+  10:   firebase_core: ^4.4.0
+  11:   cloud_firestore: ^6.1.2
+  12:   firebase_auth: ^6.2.0
+  13:   firebase_storage: ^13.0.6
+  14:   google_sign_in: ^6.2.1
+  15:   shared_preferences: ^2.2.3
+  16:   connectivity_plus: ^6.0.3
+  17:   intl: ^0.19.0
+  18: dev_dependencies:
+  19:   flutter_test:
+  20:     sdk: flutter
+  21:   flutter_lints: ^4.0.0
+  22:   flutter_launcher_icons: ^0.14.1
+  23: flutter:
+  24:   uses-material-design: true
+  25:   assets:
+  26:     - assets/flags/
+  27:     - assets/icon_app.png
+  28: flutter_launcher_icons:
+  29:   android: true
+  30:   ios: true
+  31:   image_path: "assets/icon_app.png"
+  32:   min_sdk_android: 21
+  33:   web:
+  34:     generate: false
+
+
+==================================================
+ARQUIVO: C:\Users\Alex Salles\Apps - desenvolvimento\bolao_copa\android\build.gradle.kts
+==================================================
+   1: allprojects {
+   2:     repositories {
+   3:         google()
+   4:         mavenCentral()
+   5:     }
+   6: }
+   7: 
+   8: val newBuildDir = rootProject.layout.buildDirectory.dir("../../build").get()
+   9: rootProject.layout.buildDirectory.set(newBuildDir)
+  10: 
+  11: subprojects {
+  12:     val newSubprojectBuildDir = newBuildDir.dir(project.name)
+  13:     project.layout.buildDirectory.set(newSubprojectBuildDir)
+  14: }
+  15: 
+  16: subprojects {
+  17:     project.evaluationDependsOn(":app")
+  18: }
+  19: 
+  20: tasks.register<Delete>("clean") {
+  21:     delete(rootProject.layout.buildDirectory)
+  22: }
+
+==================================================
+ARQUIVO: C:\Users\Alex Salles\Apps - desenvolvimento\bolao_copa\android\settings.gradle.kts
+==================================================
+   1: pluginManagement {
+   2:     val flutterSdkPath =
+   3:         run {
+   4:             val properties = java.util.Properties()
+   5:             file("local.properties").inputStream().use { properties.load(it) }
+   6:             val flutterSdkPath = properties.getProperty("flutter.sdk")
+   7:             require(flutterSdkPath != null) { "flutter.sdk not set in local.properties" }
+   8:             flutterSdkPath
+   9:         }
+  10: 
+  11:     includeBuild("$flutterSdkPath/packages/flutter_tools/gradle")
+  12: 
+  13:     repositories {
+  14:         google()
+  15:         mavenCentral()
+  16:         gradlePluginPortal()
+  17:     }
+  18: }
+  19: 
+  20: plugins {
+  21:     id("dev.flutter.flutter-plugin-loader") version "1.0.0"
+  22:     id("com.android.application") version "8.11.1" apply false
+  23:     // START: FlutterFire Configuration
+  24:     id("com.google.gms.google-services") version("4.3.15") apply false
+  25:     // END: FlutterFire Configuration
+  26:     id("org.jetbrains.kotlin.android") version "2.2.20" apply false
+  27: }
+  28: 
+  29: include(":app")
+
+
+==================================================
+ARQUIVO: C:\Users\Alex Salles\Apps - desenvolvimento\bolao_copa\android\app\build.gradle.kts
+==================================================
+   1: import java.util.Properties
+   2: import java.io.FileInputStream  
+   3: val keystoreProperties = Properties()
+   4: val keystorePropertiesFile = rootProject.file("key.properties")
+   5: if (keystorePropertiesFile.exists()) {
+   6:     keystoreProperties.load(FileInputStream(keystorePropertiesFile))
+   7: }
+   8: 
+   9: plugins {
+  10:     id("com.android.application")
+  11:     id("com.google.gms.google-services")
+  12:     id("kotlin-android")
+  13:     id("dev.flutter.flutter-gradle-plugin")
+  14: }
+  15: 
+  16: android {
+  17:     namespace = "com.seunome.bolao_copa"
+  18:     compileSdk = flutter.compileSdkVersion
+  19:     ndkVersion = flutter.ndkVersion
+  20: 
+  21:     compileOptions {
+  22:         sourceCompatibility = JavaVersion.VERSION_17
+  23:         targetCompatibility = JavaVersion.VERSION_17
+  24:     }
+  25: 
+  26:     kotlinOptions {
+  27:         jvmTarget = JavaVersion.VERSION_17.toString()
+  28:     }
+  29: 
+  30:     defaultConfig {
+  31:         applicationId = "com.seunome.bolao_copa"
+  32:         minSdk = flutter.minSdkVersion
+  33:         targetSdk = flutter.targetSdkVersion
+  34:         versionCode = flutter.versionCode
+  35:         versionName = flutter.versionName
+  36:     }
+  37: 
+  38:     signingConfigs {
+  39:         create("release") {
+  40:             keyAlias = keystoreProperties["keyAlias"] as String
+  41:             keyPassword = keystoreProperties["keyPassword"] as String
+  42:             storeFile = file(keystoreProperties["storeFile"] as String)
+  43:             storePassword = keystoreProperties["storePassword"] as String
+  44:         }
+  45:     }
+  46: 
+  47:     buildTypes {
+  48:         release {
+  49:             signingConfig = signingConfigs.getByName("release")
+  50:             isMinifyEnabled = false
+  51:             isShrinkResources = false
+  52:         }
+  53:     }
+  54: }
+  55: 
+  56: flutter {
+  57:     source = "../.."
+  58: }
+
+==================================================
+ARQUIVO: C:\Users\Alex Salles\Apps - desenvolvimento\bolao_copa\android\app\src\debug\AndroidManifest.xml
+==================================================
+   1: <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+   2:     <!-- The INTERNET permission is required for development. Specifically,
+   3:          the Flutter tool needs it to communicate with the running application
+   4:          to allow setting breakpoints, to provide hot reload, etc.
+   5:     -->
+   6:     <uses-permission android:name="android.permission.INTERNET"/>
+   7: </manifest>
+
+
+==================================================
+ARQUIVO: C:\Users\Alex Salles\Apps - desenvolvimento\bolao_copa\android\app\src\main\AndroidManifest.xml
+==================================================
+   1: <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+   2:     <application
+   3:         android:label="bolao_copa"
+   4:         android:name="${applicationName}"
+   5:         android:icon="@mipmap/ic_launcher">
+   6:         <activity
+   7:             android:name=".MainActivity"
+   8:             android:exported="true"
+   9:             android:launchMode="singleTop"
+  10:             android:taskAffinity=""
+  11:             android:theme="@style/LaunchTheme"
+  12:             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
+  13:             android:hardwareAccelerated="true"
+  14:             android:windowSoftInputMode="adjustResize">
+  15:             <!-- Specifies an Android theme to apply to this Activity as soon as
+  16:                  the Android process has started. This theme is visible to the user
+  17:                  while the Flutter UI initializes. After that, this theme continues
+  18:                  to determine the Window background behind the Flutter UI. -->
+  19:             <meta-data
+  20:               android:name="io.flutter.embedding.android.NormalTheme"
+  21:               android:resource="@style/NormalTheme"
+  22:               />
+  23:             <intent-filter>
+  24:                 <action android:name="android.intent.action.MAIN"/>
+  25:                 <category android:name="android.intent.category.LAUNCHER"/>
+  26:             </intent-filter>
+  27:         </activity>
+  28:         <!-- Don't delete the meta-data below.
+  29:              This is used by the Flutter tool to generate GeneratedPluginRegistrant.java -->
+  30:         <meta-data
+  31:             android:name="flutterEmbedding"
+  32:             android:value="2" />
+  33:     </application>
+  34:     <!-- Required to query activities that can process text, see:
+  35:          https://developer.android.com/training/package-visibility and
+  36:          https://developer.android.com/reference/android/content/Intent#ACTION_PROCESS_TEXT.
+  37: 
+  38:          In particular, this is used by the Flutter engine in io.flutter.plugin.text.ProcessTextPlugin. -->
+  39:     <queries>
+  40:         <intent>
+  41:             <action android:name="android.intent.action.PROCESS_TEXT"/>
+  42:             <data android:mimeType="text/plain"/>
+  43:         </intent>
+  44:     </queries>
+  45: </manifest>
+
+
+==================================================
+ARQUIVO: C:\Users\Alex Salles\Apps - desenvolvimento\bolao_copa\android\app\src\main\kotlin\com\seunome\bolao_copa\MainActivity.kt
+==================================================
+   1: package com.seunome.bolao_copa
+   2: 
+   3: import io.flutter.embedding.android.FlutterActivity
+   4: 
+   5: class MainActivity : FlutterActivity()
+
+
+==================================================
+ARQUIVO: C:\Users\Alex Salles\Apps - desenvolvimento\bolao_copa\android\app\src\main\res\drawable\launch_background.xml
+==================================================
+   1: <?xml version="1.0" encoding="utf-8"?>
+   2: <!-- Modify this file to customize your launch splash screen -->
+   3: <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+   4:     <item android:drawable="@android:color/white" />
+   5: 
+   6:     <!-- You can insert your own image assets here -->
+   7:     <!-- <item>
+   8:         <bitmap
+   9:             android:gravity="center"
+  10:             android:src="@mipmap/launch_image" />
+  11:     </item> -->
+  12: </layer-list>
+
+
+==================================================
+ARQUIVO: C:\Users\Alex Salles\Apps - desenvolvimento\bolao_copa\android\app\src\main\res\drawable-v21\launch_background.xml
+==================================================
+   1: <?xml version="1.0" encoding="utf-8"?>
+   2: <!-- Modify this file to customize your launch splash screen -->
+   3: <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+   4:     <item android:drawable="?android:colorBackground" />
+   5: 
+   6:     <!-- You can insert your own image assets here -->
+   7:     <!-- <item>
+   8:         <bitmap
+   9:             android:gravity="center"
+  10:             android:src="@mipmap/launch_image" />
+  11:     </item> -->
+  12: </layer-list>
+
+
+==================================================
+ARQUIVO: C:\Users\Alex Salles\Apps - desenvolvimento\bolao_copa\android\app\src\main\res\values\styles.xml
+==================================================
+   1: <?xml version="1.0" encoding="utf-8"?>
+   2: <resources>
+   3:     <!-- Theme applied to the Android Window while the process is starting when the OS's Dark Mode setting is off -->
+   4:     <style name="LaunchTheme" parent="@android:style/Theme.Light.NoTitleBar">
+   5:         <!-- Show a splash screen on the activity. Automatically removed when
+   6:              the Flutter engine draws its first frame -->
+   7:         <item name="android:windowBackground">@drawable/launch_background</item>
+   8:     </style>
+   9:     <!-- Theme applied to the Android Window as soon as the process has started.
+  10:          This theme determines the color of the Android Window while your
+  11:          Flutter UI initializes, as well as behind your Flutter UI while its
+  12:          running.
+  13: 
+  14:          This Theme is only used starting with V2 of Flutter's Android embedding. -->
+  15:     <style name="NormalTheme" parent="@android:style/Theme.Light.NoTitleBar">
+  16:         <item name="android:windowBackground">?android:colorBackground</item>
+  17:     </style>
+  18: </resources>
+
+
+==================================================
+ARQUIVO: C:\Users\Alex Salles\Apps - desenvolvimento\bolao_copa\android\app\src\main\res\values-night\styles.xml
+==================================================
+   1: <?xml version="1.0" encoding="utf-8"?>
+   2: <resources>
+   3:     <!-- Theme applied to the Android Window while the process is starting when the OS's Dark Mode setting is on -->
+   4:     <style name="LaunchTheme" parent="@android:style/Theme.Black.NoTitleBar">
+   5:         <!-- Show a splash screen on the activity. Automatically removed when
+   6:              the Flutter engine draws its first frame -->
+   7:         <item name="android:windowBackground">@drawable/launch_background</item>
+   8:     </style>
+   9:     <!-- Theme applied to the Android Window as soon as the process has started.
+  10:          This theme determines the color of the Android Window while your
+  11:          Flutter UI initializes, as well as behind your Flutter UI while its
+  12:          running.
+  13: 
+  14:          This Theme is only used starting with V2 of Flutter's Android embedding. -->
+  15:     <style name="NormalTheme" parent="@android:style/Theme.Black.NoTitleBar">
+  16:         <item name="android:windowBackground">?android:colorBackground</item>
+  17:     </style>
+  18: </resources>
+
+
+==================================================
+ARQUIVO: C:\Users\Alex Salles\Apps - desenvolvimento\bolao_copa\android\app\src\profile\AndroidManifest.xml
+==================================================
+   1: <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+   2:     <!-- The INTERNET permission is required for development. Specifically,
+   3:          the Flutter tool needs it to communicate with the running application
+   4:          to allow setting breakpoints, to provide hot reload, etc.
+   5:     -->
+   6:     <uses-permission android:name="android.permission.INTERNET"/>
+   7: </manifest>
+
+
+==================================================
+ARQUIVO: C:\Users\Alex Salles\Apps - desenvolvimento\bolao_copa\ios\Flutter\AppFrameworkInfo.plist
+==================================================
+   1: <?xml version="1.0" encoding="UTF-8"?>
+   2: <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+   3: <plist version="1.0">
+   4: <dict>
+   5:   <key>CFBundleDevelopmentRegion</key>
+   6:   <string>en</string>
+   7:   <key>CFBundleExecutable</key>
+   8:   <string>App</string>
+   9:   <key>CFBundleIdentifier</key>
+  10:   <string>io.flutter.flutter.app</string>
+  11:   <key>CFBundleInfoDictionaryVersion</key>
+  12:   <string>6.0</string>
+  13:   <key>CFBundleName</key>
+  14:   <string>App</string>
+  15:   <key>CFBundlePackageType</key>
+  16:   <string>FMWK</string>
+  17:   <key>CFBundleShortVersionString</key>
+  18:   <string>1.0</string>
+  19:   <key>CFBundleSignature</key>
+  20:   <string>????</string>
+  21:   <key>CFBundleVersion</key>
+  22:   <string>1.0</string>
+  23: </dict>
+  24: </plist>
+
+
+==================================================
+ARQUIVO: C:\Users\Alex Salles\Apps - desenvolvimento\bolao_copa\ios\Runner\AppDelegate.swift
+==================================================
+   1: import Flutter
+   2: import UIKit
+   3: 
+   4: @main
+   5: @objc class AppDelegate: FlutterAppDelegate, FlutterImplicitEngineDelegate {
+   6:   override func application(
+   7:     _ application: UIApplication,
+   8:     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
+   9:   ) -> Bool {
+  10:     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
+  11:   }
+  12: 
+  13:   func didInitializeImplicitFlutterEngine(_ engineBridge: FlutterImplicitEngineBridge) {
+  14:     GeneratedPluginRegistrant.register(with: engineBridge.pluginRegistry)
+  15:   }
+  16: }
+
+
+==================================================
+ARQUIVO: C:\Users\Alex Salles\Apps - desenvolvimento\bolao_copa\ios\Runner\Info.plist
+==================================================
+   1: <?xml version="1.0" encoding="UTF-8"?>
+   2: <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+   3: <plist version="1.0">
+   4: <dict>
+   5: 	<key>CADisableMinimumFrameDurationOnPhone</key>
+   6: 	<true/>
+   7: 	<key>CFBundleDevelopmentRegion</key>
+   8: 	<string>$(DEVELOPMENT_LANGUAGE)</string>
+   9: 	<key>CFBundleDisplayName</key>
+  10: 	<string>Bolao Copa</string>
+  11: 	<key>CFBundleExecutable</key>
+  12: 	<string>$(EXECUTABLE_NAME)</string>
+  13: 	<key>CFBundleIdentifier</key>
+  14: 	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+  15: 	<key>CFBundleInfoDictionaryVersion</key>
+  16: 	<string>6.0</string>
+  17: 	<key>CFBundleName</key>
+  18: 	<string>bolao_copa</string>
+  19: 	<key>CFBundlePackageType</key>
+  20: 	<string>APPL</string>
+  21: 	<key>CFBundleShortVersionString</key>
+  22: 	<string>$(FLUTTER_BUILD_NAME)</string>
+  23: 	<key>CFBundleSignature</key>
+  24: 	<string>????</string>
+  25: 	<key>CFBundleVersion</key>
+  26: 	<string>$(FLUTTER_BUILD_NUMBER)</string>
+  27: 	<key>LSRequiresIPhoneOS</key>
+  28: 	<true/>
+  29: 	<key>UIApplicationSceneManifest</key>
+  30: 	<dict>
+  31: 		<key>UIApplicationSupportsMultipleScenes</key>
+  32: 		<false/>
+  33: 		<key>UISceneConfigurations</key>
+  34: 		<dict>
+  35: 			<key>UIWindowSceneSessionRoleApplication</key>
+  36: 			<array>
+  37: 				<dict>
+  38: 					<key>UISceneClassName</key>
+  39: 					<string>UIWindowScene</string>
+  40: 					<key>UISceneConfigurationName</key>
+  41: 					<string>flutter</string>
+  42: 					<key>UISceneDelegateClassName</key>
+  43: 					<string>$(PRODUCT_MODULE_NAME).SceneDelegate</string>
+  44: 					<key>UISceneStoryboardFile</key>
+  45: 					<string>Main</string>
+  46: 				</dict>
+  47: 			</array>
+  48: 		</dict>
+  49: 	</dict>
+  50: 	<key>UIApplicationSupportsIndirectInputEvents</key>
+  51: 	<true/>
+  52: 	<key>UILaunchStoryboardName</key>
+  53: 	<string>LaunchScreen</string>
+  54: 	<key>UIMainStoryboardFile</key>
+  55: 	<string>Main</string>
+  56: 	<key>UISupportedInterfaceOrientations</key>
+  57: 	<array>
+  58: 		<string>UIInterfaceOrientationPortrait</string>
+  59: 		<string>UIInterfaceOrientationLandscapeLeft</string>
+  60: 		<string>UIInterfaceOrientationLandscapeRight</string>
+  61: 	</array>
+  62: 	<key>UISupportedInterfaceOrientations~ipad</key>
+  63: 	<array>
+  64: 		<string>UIInterfaceOrientationPortrait</string>
+  65: 		<string>UIInterfaceOrientationPortraitUpsideDown</string>
+  66: 		<string>UIInterfaceOrientationLandscapeLeft</string>
+  67: 		<string>UIInterfaceOrientationLandscapeRight</string>
+  68: 	</array>
+  69: </dict>
+  70: </plist>
+
+
+==================================================
+ARQUIVO: C:\Users\Alex Salles\Apps - desenvolvimento\bolao_copa\ios\Runner\SceneDelegate.swift
+==================================================
+   1: import Flutter
+   2: import UIKit
+   3: 
+   4: class SceneDelegate: FlutterSceneDelegate {
+   5: 
+   6: }
+
+
+==================================================
+ARQUIVO: C:\Users\Alex Salles\Apps - desenvolvimento\bolao_copa\ios\Runner\Assets.xcassets\AppIcon.appiconset\Contents.json
+==================================================
+   1: {"images":[{"size":"20x20","idiom":"iphone","filename":"Icon-App-20x20@2x.png","scale":"2x"},{"size":"20x20","idiom":"iphone","filename":"Icon-App-20x20@3x.png","scale":"3x"},{"size":"29x29","idiom":"iphone","filename":"Icon-App-29x29@1x.png","scale":"1x"},{"size":"29x29","idiom":"iphone","filename":"Icon-App-29x29@2x.png","scale":"2x"},{"size":"29x29","idiom":"iphone","filename":"Icon-App-29x29@3x.png","scale":"3x"},{"size":"40x40","idiom":"iphone","filename":"Icon-App-40x40@2x.png","scale":"2x"},{"size":"40x40","idiom":"iphone","filename":"Icon-App-40x40@3x.png","scale":"3x"},{"size":"57x57","idiom":"iphone","filename":"Icon-App-57x57@1x.png","scale":"1x"},{"size":"57x57","idiom":"iphone","filename":"Icon-App-57x57@2x.png","scale":"2x"},{"size":"60x60","idiom":"iphone","filename":"Icon-App-60x60@2x.png","scale":"2x"},{"size":"60x60","idiom":"iphone","filename":"Icon-App-60x60@3x.png","scale":"3x"},{"size":"20x20","idiom":"ipad","filename":"Icon-App-20x20@1x.png","scale":"1x"},{"size":"20x20","idiom":"ipad","filename":"Icon-App-20x20@2x.png","scale":"2x"},{"size":"29x29","idiom":"ipad","filename":"Icon-App-29x29@1x.png","scale":"1x"},{"size":"29x29","idiom":"ipad","filename":"Icon-App-29x29@2x.png","scale":"2x"},{"size":"40x40","idiom":"ipad","filename":"Icon-App-40x40@1x.png","scale":"1x"},{"size":"40x40","idiom":"ipad","filename":"Icon-App-40x40@2x.png","scale":"2x"},{"size":"50x50","idiom":"ipad","filename":"Icon-App-50x50@1x.png","scale":"1x"},{"size":"50x50","idiom":"ipad","filename":"Icon-App-50x50@2x.png","scale":"2x"},{"size":"72x72","idiom":"ipad","filename":"Icon-App-72x72@1x.png","scale":"1x"},{"size":"72x72","idiom":"ipad","filename":"Icon-App-72x72@2x.png","scale":"2x"},{"size":"76x76","idiom":"ipad","filename":"Icon-App-76x76@1x.png","scale":"1x"},{"size":"76x76","idiom":"ipad","filename":"Icon-App-76x76@2x.png","scale":"2x"},{"size":"83.5x83.5","idiom":"ipad","filename":"Icon-App-83.5x83.5@2x.png","scale":"2x"},{"size":"1024x1024","idiom":"ios-marketing","filename":"Icon-App-1024x1024@1x.png","scale":"1x"}],"info":{"version":1,"author":"xcode"}}
+
+
+==================================================
+ARQUIVO: C:\Users\Alex Salles\Apps - desenvolvimento\bolao_copa\ios\Runner\Assets.xcassets\LaunchImage.imageset\Contents.json
+==================================================
+   1: {
+   2:   "images" : [
+   3:     {
+   4:       "idiom" : "universal",
+   5:       "filename" : "LaunchImage.png",
+   6:       "scale" : "1x"
+   7:     },
+   8:     {
+   9:       "idiom" : "universal",
+  10:       "filename" : "LaunchImage@2x.png",
+  11:       "scale" : "2x"
+  12:     },
+  13:     {
+  14:       "idiom" : "universal",
+  15:       "filename" : "LaunchImage@3x.png",
+  16:       "scale" : "3x"
+  17:     }
+  18:   ],
+  19:   "info" : {
+  20:     "version" : 1,
+  21:     "author" : "xcode"
+  22:   }
+  23: }
+
+
+==================================================
+ARQUIVO: C:\Users\Alex Salles\Apps - desenvolvimento\bolao_copa\ios\Runner.xcodeproj\project.xcworkspace\xcshareddata\IDEWorkspaceChecks.plist
+==================================================
+   1: <?xml version="1.0" encoding="UTF-8"?>
+   2: <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+   3: <plist version="1.0">
+   4: <dict>
+   5: 	<key>IDEDidComputeMac32BitWarning</key>
+   6: 	<true/>
+   7: </dict>
+   8: </plist>
+
+
+==================================================
+ARQUIVO: C:\Users\Alex Salles\Apps - desenvolvimento\bolao_copa\ios\Runner.xcworkspace\xcshareddata\IDEWorkspaceChecks.plist
+==================================================
+   1: <?xml version="1.0" encoding="UTF-8"?>
+   2: <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+   3: <plist version="1.0">
+   4: <dict>
+   5: 	<key>IDEDidComputeMac32BitWarning</key>
+   6: 	<true/>
+   7: </dict>
+   8: </plist>
+
+
+==================================================
+ARQUIVO: C:\Users\Alex Salles\Apps - desenvolvimento\bolao_copa\ios\RunnerTests\RunnerTests.swift
+==================================================
+   1: import Flutter
+   2: import UIKit
+   3: import XCTest
+   4: 
+   5: class RunnerTests: XCTestCase {
+   6: 
+   7:   func testExample() {
+   8:     // If you add code to the Runner application, consider adding tests here.
+   9:     // See https://developer.apple.com/documentation/xctest for more information about using XCTest.
+  10:   }
+  11: 
+  12: }
+
+
+==================================================
+ARQUIVO: C:\Users\Alex Salles\Apps - desenvolvimento\bolao_copa\lib\main.dart
+==================================================
+   1: import 'package:flutter/material.dart';
+   2: import 'package:firebase_core/firebase_core.dart';
+   3: import 'package:firebase_auth/firebase_auth.dart';
+   4: import 'firebase_options.dart';
+   5: import 'core/routes/app_routes.dart';
+   6: import 'features/auth/login_screen.dart';
+   7: import 'features/home/home_screen.dart';
+   8: void main() async {
+   9:   WidgetsFlutterBinding.ensureInitialized();
+  10:   await Firebase.initializeApp(
+  11:     options: DefaultFirebaseOptions.currentPlatform,
+  12:   );
+  13:   runApp(const BolaoApp());
+  14: }
+  15: class BolaoApp extends StatelessWidget {
+  16:   const BolaoApp({super.key});
+  17:   @override
+  18:   Widget build(BuildContext context) {
+  19:     return MaterialApp(
+  20:       title: 'Bolão Copa do Mundo',
+  21:       debugShowCheckedModeBanner: false,
+  22:       theme: ThemeData(
+  23:         colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF1A6B3C)),
+  24:         useMaterial3: true,
+  25:       ),
+  26:       home: StreamBuilder<User?>(
+  27:         stream: FirebaseAuth.instance.authStateChanges(),
+  28:         builder: (context, snapshot) {
+  29:           if (snapshot.connectionState == ConnectionState.waiting) {
+  30:             return const Scaffold(
+  31:               body: Center(child: CircularProgressIndicator()),
+  32:             );
+  33:           }
+  34:           if (snapshot.hasData) return const HomeScreen();
+  35:           return const LoginScreen();
+  36:         },
+  37:       ),
+  38:       routes: AppRoutes.routes,
+  39:     );
+  40:   }
+  41: }
+
+
+==================================================
+ARQUIVO: C:\Users\Alex Salles\Apps - desenvolvimento\bolao_copa\lib\core\constants\app_colors.dart
+==================================================
+   1: import 'package:flutter/material.dart';
+   2: class AppColors {
+   3:   static const primary = Color(0xFF1A6B3C);
+   4:   static const primaryLight = Color(0xFF4CAF7D);
+   5:   static const primaryDark = Color(0xFF0D4A28);
+   6:   static const warning = Colors.orange;
+   7:   static const error = Colors.red;
+   8:   static const success = Color(0xFF1A6B3C);
+   9:   static const textMuted = Colors.grey;
+  10: }
+
+
+==================================================
+ARQUIVO: C:\Users\Alex Salles\Apps - desenvolvimento\bolao_copa\lib\core\constants\app_text_styles.dart
+==================================================
+   1: import 'package:flutter/material.dart';
+   2: import 'app_colors.dart';
+   3: class AppTextStyles {
+   4:   static const title = TextStyle(fontSize: 22, fontWeight: FontWeight.bold);
+   5:   static const subtitle = TextStyle(fontSize: 16, color: AppColors.textMuted);
+   6:   static const label = TextStyle(fontSize: 13, fontWeight: FontWeight.bold);
+   7:   static const muted = TextStyle(fontSize: 12, color: AppColors.textMuted);
+   8:   static const success = TextStyle(
+   9:       fontSize: 14, fontWeight: FontWeight.bold, color: AppColors.success);
+  10:   static const error = TextStyle(fontSize: 14, color: AppColors.error);
+  11: }
+
+
+==================================================
+ARQUIVO: C:\Users\Alex Salles\Apps - desenvolvimento\bolao_copa\lib\core\routes\app_routes.dart
+==================================================
+   1: import 'package:flutter/material.dart';
+   2: //import '../../features/auth/login_screen.dart';
+   3: import '../../features/auth/register_screen.dart';
+   4: import '../../features/home/home_screen.dart';
+   5: import '../../features/matches/matches_screen.dart';
+   6: import '../../features/matches/match_prediction_screen.dart';
+   7: import '../../features/ranking/ranking_screen.dart';
+   8: import '../../features/extras/extra_predictions_screen.dart';
+   9: import '../../features/admin/admin_dashboard.dart';
+  10: import '../../features/admin/manage_matches_screen.dart';
+  11: import '../../features/admin/manage_results_screen.dart';
+  12: import '../../features/admin/manage_extra_questions_screen.dart';
+  13: import '../../features/admin/manage_players_screen.dart';
+  14: class AppRoutes {
+  15:   static const String login = '/';
+  16:   static const String register = '/register';
+  17:   static const String home = '/home';
+  18:   static const String matches = '/matches';
+  19:   static const String matchPrediction = '/match-prediction';
+  20:   static const String ranking = '/ranking';
+  21:   static const String extras = '/extras';
+  22:   static const String adminDashboard = '/admin';
+  23:   static const String adminMatches = '/admin/matches';
+  24:   static const String adminResults = '/admin/results';
+  25:   static const String adminExtraQuestions = '/admin/extra-questions';
+  26:   static const String adminPlayers = '/admin/players';
+  27:   static Map<String, WidgetBuilder> get routes => {
+  28:     //login: (_) => const LoginScreen(),
+  29:     register: (_) => const RegisterScreen(),
+  30:     home: (_) => const HomeScreen(),
+  31:     matches: (_) => const MatchesScreen(),
+  32:     matchPrediction: (_) => const MatchPredictionScreen(),
+  33:     ranking: (_) => const RankingScreen(),
+  34:     extras: (_) => const ExtraPredictionsScreen(),
+  35:     adminDashboard: (_) => const AdminDashboard(),
+  36:     adminMatches: (_) => const ManageMatchesScreen(),
+  37:     adminResults: (_) => const ManageResultsScreen(),
+  38:     adminExtraQuestions: (_) => const ManageExtraQuestionsScreen(),
+  39:     adminPlayers: (_) => const ManagePlayersScreen(),
+  40:   };
+  41: }
+
+
+==================================================
+ARQUIVO: C:\Users\Alex Salles\Apps - desenvolvimento\bolao_copa\lib\core\utils\date_formatter.dart
+==================================================
+   1: import 'package:intl/intl.dart';
+   2: class DateFormatter {
+   3:   static final _dateTime = DateFormat('dd/MM/yyyy · HH:mm');
+   4:   static final _date = DateFormat('dd/MM/yyyy');
+   5:   static final _time = DateFormat('HH:mm');
+   6:   static String dateTime(DateTime dt) => _dateTime.format(dt);
+   7:   static String date(DateTime dt) => _date.format(dt);
+   8:   static String time(DateTime dt) => _time.format(dt);
+   9: }
+
+
+==================================================
+ARQUIVO: C:\Users\Alex Salles\Apps - desenvolvimento\bolao_copa\lib\data\models\app_user.dart
+==================================================
+   1: class AppUser {
+   2:   final String id;
+   3:   final String name;
+   4:   final String email;
+   5:   final bool isAdmin;
+   6:   final int totalPoints;
+   7:   const AppUser({
+   8:     required this.id,
+   9:     required this.name,
+  10:     required this.email,
+  11:     required this.isAdmin,
+  12:     required this.totalPoints,
+  13:   });
+  14:   factory AppUser.fromFirestore(String id, Map<String, dynamic> data) {
+  15:     return AppUser(
+  16:       id: id,
+  17:       name: data['name'] ?? '',
+  18:       email: data['email'] ?? '',
+  19:       isAdmin: data['is_admin'] ?? false,
+  20:       totalPoints: data['total_points'] ?? 0,
+  21:     );
+  22:   }
+  23:   Map<String, dynamic> toFirestore() {
+  24:     return {
+  25:       'name': name,
+  26:       'email': email,
+  27:       'is_admin': isAdmin,
+  28:       'total_points': totalPoints,
+  29:     };
+  30:   }
+  31: }
+
+
+==================================================
+ARQUIVO: C:\Users\Alex Salles\Apps - desenvolvimento\bolao_copa\lib\data\models\cup.dart
+==================================================
+   1: class Cup {
+   2:   final String id;
+   3:   final String name;
+   4:   final int year;
+   5:   final bool active;
+   6:   final DateTime startsAt;
+   7:   const Cup({
+   8:     required this.id,
+   9:     required this.name,
+  10:     required this.year,
+  11:     required this.active,
+  12:     required this.startsAt,
+  13:   });
+  14:   bool get isLocked => DateTime.now().isAfter(startsAt);
+  15:   factory Cup.fromFirestore(String id, Map<String, dynamic> data) {
+  16:     return Cup(
+  17:       id: id,
+  18:       name: data['name'] ?? '',
+  19:       year: data['year'] ?? 0,
+  20:       active: data['active'] ?? false,
+  21:       startsAt: (data['starts_at'] as dynamic).toDate(),
+  22:     );
+  23:   }
+  24:   Map<String, dynamic> toFirestore() {
+  25:     return {
+  26:       'name': name,
+  27:       'year': year,
+  28:       'active': active,
+  29:       'starts_at': startsAt,
+  30:     };
+  31:   }
+  32: }
+
+
+==================================================
+ARQUIVO: C:\Users\Alex Salles\Apps - desenvolvimento\bolao_copa\lib\data\models\extra_prediction.dart
+==================================================
+   1: class ExtraPrediction {
+   2:   final String questionId;
+   3:   final String userId;
+   4:   final String answer;
+   5:   final DateTime savedAt;
+   6:   const ExtraPrediction({
+   7:     required this.questionId,
+   8:     required this.userId,
+   9:     required this.answer,
+  10:     required this.savedAt,
+  11:   });
+  12:   factory ExtraPrediction.fromFirestore(
+  13:       String questionId, Map<String, dynamic> data) {
+  14:     return ExtraPrediction(
+  15:       questionId: questionId,
+  16:       userId: data['user_id'] ?? '',
+  17:       answer: data['answer'] ?? '',
+  18:       savedAt: (data['saved_at'] as dynamic).toDate(),
+  19:     );
+  20:   }
+  21:   Map<String, dynamic> toFirestore() {
+  22:     return {
+  23:       'user_id': userId,
+  24:       'answer': answer,
+  25:       'saved_at': savedAt,
+  26:     };
+  27:   }
+  28: }
+
+
+==================================================
+ARQUIVO: C:\Users\Alex Salles\Apps - desenvolvimento\bolao_copa\lib\data\models\extra_question.dart
+==================================================
+   1: enum ExtraQuestionType { team, player }
+   2: class ExtraQuestion {
+   3:   final String id;
+   4:   final String question;
+   5:   final ExtraQuestionType type;
+   6:   final int order;
+   7:   const ExtraQuestion({
+   8:     required this.id,
+   9:     required this.question,
+  10:     required this.type,
+  11:     required this.order,
+  12:   });
+  13:   factory ExtraQuestion.fromFirestore(String id, Map<String, dynamic> data) {
+  14:     return ExtraQuestion(
+  15:       id: id,
+  16:       question: data['question'] ?? '',
+  17:       type: data['type'] == 'team'
+  18:           ? ExtraQuestionType.team
+  19:           : ExtraQuestionType.player,
+  20:       order: data['order'] ?? 0,
+  21:     );
+  22:   }
+  23:   Map<String, dynamic> toFirestore() {
+  24:     return {
+  25:       'question': question,
+  26:       'type': type == ExtraQuestionType.team ? 'team' : 'player',
+  27:       'order': order,
+  28:     };
+  29:   }
+  30: }
+
+
+==================================================
+ARQUIVO: C:\Users\Alex Salles\Apps - desenvolvimento\bolao_copa\lib\data\models\group.dart
+==================================================
+   1: class Group {
+   2:   final String id;
+   3:   final String name;
+   4:   const Group({
+   5:     required this.id,
+   6:     required this.name,
+   7:   });
+   8:   factory Group.fromFirestore(String id, Map<String, dynamic> data) {
+   9:     return Group(
+  10:       id: id,
+  11:       name: data['name'] ?? '',
+  12:     );
+  13:   }
+  14:   Map<String, dynamic> toFirestore() {
+  15:     return {'name': name};
+  16:   }
+  17: }
+
+
+==================================================
+ARQUIVO: C:\Users\Alex Salles\Apps - desenvolvimento\bolao_copa\lib\data\models\match.dart
+==================================================
+   1: class Match {
+   2:   final String id;
+   3:   final String homeTeamId;
+   4:   final String awayTeamId;
+   5:   final DateTime matchTime;
+   6:   final String phase;
+   7:   final String? groupId;
+   8:   final int? officialHomeGoals;
+   9:   final int? officialAwayGoals;
+  10:   final bool finished;
+  11:   const Match({
+  12:     required this.id,
+  13:     required this.homeTeamId,
+  14:     required this.awayTeamId,
+  15:     required this.matchTime,
+  16:     required this.phase,
+  17:     this.groupId,
+  18:     this.officialHomeGoals,
+  19:     this.officialAwayGoals,
+  20:     required this.finished,
+  21:   });
+  22:   factory Match.fromFirestore(String id, Map<String, dynamic> data) {
+  23:     return Match(
+  24:       id: id,
+  25:       homeTeamId: data['home_team_id'] ?? '',
+  26:       awayTeamId: data['away_team_id'] ?? '',
+  27:       matchTime: (data['match_time'] as dynamic).toDate(),
+  28:       phase: data['phase'] ?? 'group',
+  29:       groupId: data['group_id'],
+  30:       officialHomeGoals: data['official_home_goals'],
+  31:       officialAwayGoals: data['official_away_goals'],
+  32:       finished: data['finished'] ?? false,
+  33:     );
+  34:   }
+  35:   Map<String, dynamic> toFirestore() {
+  36:     return {
+  37:       'home_team_id': homeTeamId,
+  38:       'away_team_id': awayTeamId,
+  39:       'match_time': matchTime,
+  40:       'phase': phase,
+  41:       'group_id': groupId,
+  42:       'official_home_goals': officialHomeGoals,
+  43:       'official_away_goals': officialAwayGoals,
+  44:       'finished': finished,
+  45:     };
+  46:   }
+  47: }
+
+
+==================================================
+ARQUIVO: C:\Users\Alex Salles\Apps - desenvolvimento\bolao_copa\lib\data\models\player.dart
+==================================================
+   1: class Player {
+   2:   final String id;
+   3:   final String name;
+   4:   final String teamId;
+   5:   const Player({
+   6:     required this.id,
+   7:     required this.name,
+   8:     required this.teamId,
+   9:   });
+  10:   factory Player.fromFirestore(String id, Map<String, dynamic> data) {
+  11:     return Player(
+  12:       id: id,
+  13:       name: data['name'] ?? '',
+  14:       teamId: data['team_id'] ?? '',
+  15:     );
+  16:   }
+  17:   Map<String, dynamic> toFirestore() {
+  18:     return {
+  19:       'name': name,
+  20:       'team_id': teamId,
+  21:     };
+  22:   }
+  23: }
+
+
+==================================================
+ARQUIVO: C:\Users\Alex Salles\Apps - desenvolvimento\bolao_copa\lib\data\models\prediction.dart
+==================================================
+   1: class Prediction {
+   2:   final String matchId;
+   3:   final String userId;
+   4:   final int homeGoals;
+   5:   final int awayGoals;
+   6:   final DateTime savedAt;
+   7:   const Prediction({
+   8:     required this.matchId,
+   9:     required this.userId,
+  10:     required this.homeGoals,
+  11:     required this.awayGoals,
+  12:     required this.savedAt,
+  13:   });
+  14:   factory Prediction.fromFirestore(String matchId, Map<String, dynamic> data) {
+  15:     return Prediction(
+  16:       matchId: matchId,
+  17:       userId: data['user_id'] ?? '',
+  18:       homeGoals: data['home_goals'] ?? 0,
+  19:       awayGoals: data['away_goals'] ?? 0,
+  20:       savedAt: (data['saved_at'] as dynamic).toDate(),
+  21:     );
+  22:   }
+  23:   Map<String, dynamic> toFirestore() {
+  24:     return {
+  25:       'user_id': userId,
+  26:       'home_goals': homeGoals,
+  27:       'away_goals': awayGoals,
+  28:       'saved_at': savedAt,
+  29:     };
+  30:   }
+  31: }
+
+
+==================================================
+ARQUIVO: C:\Users\Alex Salles\Apps - desenvolvimento\bolao_copa\lib\data\models\team.dart
+==================================================
+   1: class Team {
+   2:   final String id;       // ex: "BRA"
+   3:   final String name;     // ex: "Brasil"
+   4:   final String flagAsset; // ex: "assets/flags/bra.png"
+   5:   const Team({
+   6:     required this.id,
+   7:     required this.name,
+   8:     required this.flagAsset,
+   9:   });
+  10:   factory Team.fromFirestore(String id, Map<String, dynamic> data) {
+  11:     return Team(
+  12:       id: id,
+  13:       name: data['name'] ?? '',
+  14:       flagAsset: 'assets/flags/${id.toLowerCase()}.png',
+  15:     );
+  16:   }
+  17:   Map<String, dynamic> toFirestore() {
+  18:     return {
+  19:       'name': name,
+  20:     };
+  21:   }
+  22: }
+
+
+==================================================
+ARQUIVO: C:\Users\Alex Salles\Apps - desenvolvimento\bolao_copa\lib\data\repositories\extra_prediction_repository.dart
+==================================================
+   1: import 'package:cloud_firestore/cloud_firestore.dart';
+   2: import '../models/extra_question.dart';
+   3: import '../models/extra_prediction.dart';
+   4: import '../models/team.dart';
+   5: import '../models/player.dart';
+   6: class ExtraPredictionRepository {
+   7:   final FirebaseFirestore _db = FirebaseFirestore.instance;
+   8:   // Busca todas as perguntas extras de uma copa, ordenadas
+   9:   Future<List<ExtraQuestion>> fetchQuestions(String cupId) async {
+  10:     final snapshot = await _db
+  11:         .collection('cups')
+  12:         .doc(cupId)
+  13:         .collection('extra_questions')
+  14:         .orderBy('order')
+  15:         .get();
+  16:     return snapshot.docs
+  17:         .map((doc) => ExtraQuestion.fromFirestore(doc.id, doc.data()))
+  18:         .toList();
+  19:   }
+  20:   // Busca todos os palpites extras de um usuário
+  21:   Future<Map<String, ExtraPrediction>> fetchUserPredictions(
+  22:       String userId) async {
+  23:     final snapshot = await _db
+  24:         .collection('users')
+  25:         .doc(userId)
+  26:         .collection('extra_predictions')
+  27:         .get();
+  28:     return {
+  29:       for (final doc in snapshot.docs)
+  30:         doc.id: ExtraPrediction.fromFirestore(doc.id, doc.data())
+  31:     };
+  32:   }
+  33:   // Salva ou atualiza um palpite extra
+  34:   Future<void> savePrediction(ExtraPrediction prediction) async {
+  35:     await _db
+  36:         .collection('users')
+  37:         .doc(prediction.userId)
+  38:         .collection('extra_predictions')
+  39:         .doc(prediction.questionId)
+  40:         .set(prediction.toFirestore());
+  41:   }
+  42:   // Busca todos os times de uma copa
+  43:   Future<List<Team>> fetchTeams(String cupId) async {
+  44:     final snapshot = await _db
+  45:         .collection('cups')
+  46:         .doc(cupId)
+  47:         .collection('teams')
+  48:         .orderBy('name')
+  49:         .get();
+  50:     return snapshot.docs
+  51:         .map((doc) => Team.fromFirestore(doc.id, doc.data()))
+  52:         .toList();
+  53:   }
+  54:   // Busca todos os jogadores de uma copa
+  55:   Future<List<Player>> fetchPlayers(String cupId) async {
+  56:     final snapshot = await _db
+  57:         .collection('cups')
+  58:         .doc(cupId)
+  59:         .collection('players')
+  60:         .orderBy('name')
+  61:         .get();
+  62:     return snapshot.docs
+  63:         .map((doc) => Player.fromFirestore(doc.id, doc.data()))
+  64:         .toList();
+  65:   }
+  66: }
+
+
+==================================================
+ARQUIVO: C:\Users\Alex Salles\Apps - desenvolvimento\bolao_copa\lib\data\repositories\match_repository.dart
+==================================================
+   1: import 'package:cloud_firestore/cloud_firestore.dart';
+   2: import '../models/match.dart';
+   3: import '../models/team.dart';
+   4: class MatchRepository {
+   5:   final FirebaseFirestore _db = FirebaseFirestore.instance;
+   6:   // Cache em memória por copa
+   7:   static final Map<String, List<Match>> _groupMatchesCache = {};
+   8:   static final Map<String, List<Match>> _knockoutMatchesCache = {};
+   9:   static final Map<String, Map<String, Team>> _teamsCache = {};
+  10:   static void clearCache() {
+  11:     _groupMatchesCache.clear();
+  12:     _knockoutMatchesCache.clear();
+  13:     _teamsCache.clear();
+  14:   }
+  15:   Future<List<Match>> fetchGroupMatches(String cupId,
+  16:       {bool forceRefresh = false}) async {
+  17:     if (!forceRefresh && _groupMatchesCache.containsKey(cupId)) {
+  18:       return _groupMatchesCache[cupId]!;
+  19:     }
+  20:     final groupsSnapshot = await _db
+  21:         .collection('cups')
+  22:         .doc(cupId)
+  23:         .collection('groups')
+  24:         .get();
+  25:     final List<Match> matches = [];
+  26:     for (final groupDoc in groupsSnapshot.docs) {
+  27:       final matchesSnapshot = await _db
+  28:           .collection('cups')
+  29:           .doc(cupId)
+  30:           .collection('groups')
+  31:           .doc(groupDoc.id)
+  32:           .collection('matches')
+  33:           .get();
+  34:       for (final doc in matchesSnapshot.docs) {
+  35:         matches.add(Match.fromFirestore(doc.id, doc.data()));
+  36:       }
+  37:     }
+  38:     matches.sort((a, b) => a.matchTime.compareTo(b.matchTime));
+  39:     _groupMatchesCache[cupId] = matches;
+  40:     return matches;
+  41:   }
+  42:   Future<List<Match>> fetchKnockoutMatches(String cupId,
+  43:       {bool forceRefresh = false}) async {
+  44:     if (!forceRefresh && _knockoutMatchesCache.containsKey(cupId)) {
+  45:       return _knockoutMatchesCache[cupId]!;
+  46:     }
+  47:     final snapshot = await _db
+  48:         .collection('cups')
+  49:         .doc(cupId)
+  50:         .collection('knockout_matches')
+  51:         .get();
+  52:     final matches = snapshot.docs
+  53:         .map((doc) => Match.fromFirestore(doc.id, doc.data()))
+  54:         .toList();
+  55:     matches.sort((a, b) => a.matchTime.compareTo(b.matchTime));
+  56:     _knockoutMatchesCache[cupId] = matches;
+  57:     return matches;
+  58:   }
+  59:   Future<Match?> fetchMatch(
+  60:       String cupId, String matchId, String? groupId) async {
+  61:     DocumentSnapshot doc;
+  62:     if (groupId != null) {
+  63:       doc = await _db
+  64:           .collection('cups')
+  65:           .doc(cupId)
+  66:           .collection('groups')
+  67:           .doc(groupId)
+  68:           .collection('matches')
+  69:           .doc(matchId)
+  70:           .get();
+  71:     } else {
+  72:       doc = await _db
+  73:           .collection('cups')
+  74:           .doc(cupId)
+  75:           .collection('knockout_matches')
+  76:           .doc(matchId)
+  77:           .get();
+  78:     }
+  79:     if (!doc.exists) return null;
+  80:     return Match.fromFirestore(doc.id, doc.data() as Map<String, dynamic>);
+  81:   }
+  82:   Future<Map<String, Team>> fetchTeams(String cupId,
+  83:       {bool forceRefresh = false}) async {
+  84:     if (!forceRefresh && _teamsCache.containsKey(cupId)) {
+  85:       return _teamsCache[cupId]!;
+  86:     }
+  87:     final snapshot = await _db
+  88:         .collection('cups')
+  89:         .doc(cupId)
+  90:         .collection('teams')
+  91:         .get();
+  92:     final teams = {
+  93:       for (final doc in snapshot.docs)
+  94:         doc.id: Team.fromFirestore(doc.id, doc.data())
+  95:     };
+  96:     _teamsCache[cupId] = teams;
+  97:     return teams;
+  98:   }
+  99: }
+
+
+==================================================
+ARQUIVO: C:\Users\Alex Salles\Apps - desenvolvimento\bolao_copa\lib\data\repositories\prediction_repository.dart
+==================================================
+   1: import 'package:cloud_firestore/cloud_firestore.dart';
+   2: import '../models/prediction.dart';
+   3: class PredictionRepository {
+   4:   final FirebaseFirestore _db = FirebaseFirestore.instance;
+   5:   // Busca palpite de um usuário para um jogo
+   6:   Future<Prediction?> fetchPrediction(String userId, String matchId) async {
+   7:     final doc = await _db
+   8:         .collection('users')
+   9:         .doc(userId)
+  10:         .collection('predictions')
+  11:         .doc(matchId)
+  12:         .get();
+  13:     if (!doc.exists) return null;
+  14:     return Prediction.fromFirestore(matchId, doc.data()!);
+  15:   }
+  16:   // Busca todos os palpites de um usuário
+  17:   Future<List<Prediction>> fetchAllPredictions(String userId) async {
+  18:     final snapshot = await _db
+  19:         .collection('users')
+  20:         .doc(userId)
+  21:         .collection('predictions')
+  22:         .get();
+  23:     return snapshot.docs
+  24:         .map((doc) => Prediction.fromFirestore(doc.id, doc.data()))
+  25:         .toList();
+  26:   }
+  27:   // Salva ou atualiza palpite
+  28:   Future<void> savePrediction(Prediction prediction) async {
+  29:     await _db
+  30:         .collection('users')
+  31:         .doc(prediction.userId)
+  32:         .collection('predictions')
+  33:         .doc(prediction.matchId)
+  34:         .set(prediction.toFirestore());
+  35:   }
+  36: }
+
+
+==================================================
+ARQUIVO: C:\Users\Alex Salles\Apps - desenvolvimento\bolao_copa\lib\data\repositories\user_repository.dart
+==================================================
+   1: import 'package:cloud_firestore/cloud_firestore.dart';
+   2: import '../models/app_user.dart';
+   3: class UserRepository {
+   4:   final FirebaseFirestore _db = FirebaseFirestore.instance;
+   5:   Future<List<AppUser>> fetchAllUsers() async {
+   6:     final snapshot = await _db
+   7:         .collection('users')
+   8:         .orderBy('total_points', descending: true)
+   9:         .get();
+  10:     return snapshot.docs.map((doc) {
+  11:       final data = doc.data();
+  12:       // Email não é exposto no ranking
+  13:       return AppUser(
+  14:         id: doc.id,
+  15:         name: data['name'] ?? '',
+  16:         email: '',
+  17:         isAdmin: data['is_admin'] ?? false,
+  18:         totalPoints: data['total_points'] ?? 0,
+  19:       );
+  20:     }).toList();
+  21:   }
+  22:   Future<void> updatePoints(String userId, int points) async {
+  23:     await _db.collection('users').doc(userId).update({
+  24:       'total_points': points,
+  25:     });
+  26:   }
+  27: }
+
+
+==================================================
+ARQUIVO: C:\Users\Alex Salles\Apps - desenvolvimento\bolao_copa\lib\features\admin\admin_dashboard.dart
+==================================================
+   1: import 'package:flutter/material.dart';
+   2: import '../../core/routes/app_routes.dart';
+   3: class AdminDashboard extends StatelessWidget {
+   4:   const AdminDashboard({super.key});
+   5:   @override
+   6:   Widget build(BuildContext context) {
+   7:     return Scaffold(
+   8:       appBar: AppBar(
+   9:         title: const Text('Painel Admin'),
+  10:         backgroundColor: const Color(0xFF1A6B3C),
+  11:         foregroundColor: Colors.white,
+  12:       ),
+  13:       body: ListView(
+  14:         padding: const EdgeInsets.all(16),
+  15:         children: [
+  16:           _AdminMenuItem(
+  17:             icon: Icons.sports_soccer,
+  18:             label: 'Gerenciar Jogos',
+  19:             descricao: 'Visualize os jogos cadastrados',
+  20:             onTap: () =>
+  21:                 Navigator.pushNamed(context, AppRoutes.adminMatches),
+  22:           ),
+  23:           const SizedBox(height: 12),
+  24:           _AdminMenuItem(
+  25:             icon: Icons.scoreboard_outlined,
+  26:             label: 'Inserir Resultados',
+  27:             descricao: 'Registre o placar oficial dos jogos',
+  28:             onTap: () =>
+  29:                 Navigator.pushNamed(context, AppRoutes.adminResults),
+  30:           ),
+  31:           const SizedBox(height: 12),
+  32:           _AdminMenuItem(
+  33:             icon: Icons.quiz_outlined,
+  34:             label: 'Perguntas Extras',
+  35:             descricao: 'Gerencie as perguntas do bolão',
+  36:             onTap: () =>
+  37:                 Navigator.pushNamed(context, AppRoutes.adminExtraQuestions),
+  38:           ),
+  39:           const SizedBox(height: 12),
+  40:           _AdminMenuItem(
+  41:             icon: Icons.people_outline,
+  42:             label: 'Jogadores',
+  43:             descricao: 'Cadastre os jogadores de cada seleção',
+  44:             onTap: () =>
+  45:                 Navigator.pushNamed(context, AppRoutes.adminPlayers),
+  46:           ),
+  47:         ],
+  48:       ),
+  49:     );
+  50:   }
+  51: }
+  52: class _AdminMenuItem extends StatelessWidget {
+  53:   final IconData icon;
+  54:   final String label;
+  55:   final String descricao;
+  56:   final VoidCallback onTap;
+  57:   const _AdminMenuItem({
+  58:     required this.icon,
+  59:     required this.label,
+  60:     required this.descricao,
+  61:     required this.onTap,
+  62:   });
+  63:   @override
+  64:   Widget build(BuildContext context) {
+  65:     return Card(
+  66:       child: ListTile(
+  67:         leading: Icon(icon, color: const Color(0xFF1A6B3C), size: 32),
+  68:         title: Text(label,
+  69:             style: const TextStyle(fontWeight: FontWeight.bold)),
+  70:         subtitle: Text(descricao),
+  71:         trailing: const Icon(Icons.chevron_right),
+  72:         onTap: onTap,
+  73:       ),
+  74:     );
+  75:   }
+  76: }
+
+
+==================================================
+ARQUIVO: C:\Users\Alex Salles\Apps - desenvolvimento\bolao_copa\lib\features\admin\manage_extra_questions_screen.dart
+==================================================
+   1: import 'package:flutter/material.dart';
+   2: import 'package:cloud_firestore/cloud_firestore.dart';
+   3: import '../../data/models/extra_question.dart';
+   4: import '../../data/repositories/extra_prediction_repository.dart';
+   5: import '../../services/firestore_service.dart';
+   6: class ManageExtraQuestionsScreen extends StatefulWidget {
+   7:   const ManageExtraQuestionsScreen({super.key});
+   8:   @override
+   9:   State<ManageExtraQuestionsScreen> createState() =>
+  10:       _ManageExtraQuestionsScreenState();
+  11: }
+  12: class _ManageExtraQuestionsScreenState
+  13:     extends State<ManageExtraQuestionsScreen> {
+  14:   final _repo = ExtraPredictionRepository();
+  15:   final _firestoreService = FirestoreService();
+  16:   final _db = FirebaseFirestore.instance;
+  17:   List<ExtraQuestion> _questions = [];
+  18:   String? _cupId;
+  19:   bool _loading = true;
+  20:   String? _erro;
+  21:   @override
+  22:   void initState() {
+  23:     super.initState();
+  24:     _carregar();
+  25:   }
+  26:   Future<void> _carregar() async {
+  27:     try {
+  28:       final cup = await _firestoreService.fetchActiveCup();
+  29:       if (cup == null) {
+  30:         setState(() {
+  31:           _erro = 'Nenhum bolão ativo encontrado.';
+  32:           _loading = false;
+  33:         });
+  34:         return;
+  35:       }
+  36:       _cupId = cup.id;
+  37:       final questions = await _repo.fetchQuestions(cup.id);
+  38:       setState(() {
+  39:         _questions = questions;
+  40:         _loading = false;
+  41:       });
+  42:     } catch (e) {
+  43:       setState(() {
+  44:         _erro = 'Erro ao carregar perguntas.';
+  45:         _loading = false;
+  46:       });
+  47:     }
+  48:   }
+  49:   Future<void> _abrirFormulario({ExtraQuestion? question}) async {
+  50:     final textCtrl =
+  51:         TextEditingController(text: question?.question ?? '');
+  52:     ExtraQuestionType tipo = question?.type ?? ExtraQuestionType.team;
+  53:     await showDialog(
+  54:       context: context,
+  55:       builder: (context) {
+  56:         return StatefulBuilder(
+  57:           builder: (context, setDialogState) {
+  58:             return AlertDialog(
+  59:               title: Text(
+  60:                   question == null ? 'Nova Pergunta' : 'Editar Pergunta'),
+  61:               content: Column(
+  62:                 mainAxisSize: MainAxisSize.min,
+  63:                 children: [
+  64:                   TextField(
+  65:                     controller: textCtrl,
+  66:                     decoration: const InputDecoration(
+  67:                       labelText: 'Pergunta',
+  68:                       border: OutlineInputBorder(),
+  69:                     ),
+  70:                     maxLines: 2,
+  71:                   ),
+  72:                   const SizedBox(height: 16),
+  73:                   const Align(
+  74:                     alignment: Alignment.centerLeft,
+  75:                     child: Text('Tipo de resposta:',
+  76:                         style: TextStyle(fontWeight: FontWeight.bold)),
+  77:                   ),
+  78:                   RadioGroup<ExtraQuestionType>(
+  79:                     groupValue: tipo,
+  80:                     onChanged: (v) {
+  81:                       if (v != null) setDialogState(() => tipo = v);
+  82:                     },
+  83:                     child: const Column(
+  84:                       children: [
+  85:                         RadioListTile<ExtraQuestionType>(
+  86:                           title: Text('Seleção (time)'),
+  87:                           value: ExtraQuestionType.team,
+  88:                         ),
+  89:                         RadioListTile<ExtraQuestionType>(
+  90:                           title: Text('Jogador'),
+  91:                           value: ExtraQuestionType.player,
+  92:                         ),
+  93:                       ],
+  94:                     ),
+  95:                   ),
+  96:                 ],
+  97:               ),
+  98:               actions: [
+  99:                 TextButton(
+ 100:                   onPressed: () => Navigator.pop(context),
+ 101:                   child: const Text('Cancelar'),
+ 102:                 ),
+ 103:                 FilledButton(
+ 104:                   style: FilledButton.styleFrom(
+ 105:                       backgroundColor: const Color(0xFF1A6B3C)),
+ 106:                   onPressed: () async {
+ 107:                     if (textCtrl.text.trim().isEmpty) return;
+ 108:                     await _salvar(
+ 109:                       id: question?.id,
+ 110:                       text: textCtrl.text.trim(),
+ 111:                       type: tipo,
+ 112:                       order: question?.order ?? _questions.length,
+ 113:                     );
+ 114:                     if (context.mounted) Navigator.pop(context);
+ 115:                   },
+ 116:                   child: const Text('Salvar'),
+ 117:                 ),
+ 118:               ],
+ 119:             );
+ 120:           },
+ 121:         );
+ 122:       },
+ 123:     );
+ 124:     textCtrl.dispose();
+ 125:   }
+ 126:   Future<void> _salvar({
+ 127:     String? id,
+ 128:     required String text,
+ 129:     required ExtraQuestionType type,
+ 130:     required int order,
+ 131:   }) async {
+ 132:     if (_cupId == null) return;
+ 133:     final ref = _db
+ 134:         .collection('cups')
+ 135:         .doc(_cupId)
+ 136:         .collection('extra_questions');
+ 137:     final data = {
+ 138:       'question': text,
+ 139:       'type': type == ExtraQuestionType.team ? 'team' : 'player',
+ 140:       'order': order,
+ 141:     };
+ 142:     if (id == null) {
+ 143:       await ref.add(data);
+ 144:     } else {
+ 145:       await ref.doc(id).update(data);
+ 146:     }
+ 147:     await _carregar();
+ 148:   }
+ 149:   Future<void> _excluir(ExtraQuestion question) async {
+ 150:     final confirmar = await showDialog<bool>(
+ 151:       context: context,
+ 152:       builder: (_) => AlertDialog(
+ 153:         title: const Text('Excluir pergunta?'),
+ 154:         content: Text(question.question),
+ 155:         actions: [
+ 156:           TextButton(
+ 157:             onPressed: () => Navigator.pop(context, false),
+ 158:             child: const Text('Cancelar'),
+ 159:           ),
+ 160:           FilledButton(
+ 161:             style: FilledButton.styleFrom(backgroundColor: Colors.red),
+ 162:             onPressed: () => Navigator.pop(context, true),
+ 163:             child: const Text('Excluir'),
+ 164:           ),
+ 165:         ],
+ 166:       ),
+ 167:     );
+ 168:     if (confirmar == true && _cupId != null) {
+ 169:       await _db
+ 170:           .collection('cups')
+ 171:           .doc(_cupId)
+ 172:           .collection('extra_questions')
+ 173:           .doc(question.id)
+ 174:           .delete();
+ 175:       await _carregar();
+ 176:     }
+ 177:   }
+ 178:   @override
+ 179:   Widget build(BuildContext context) {
+ 180:     return Scaffold(
+ 181:       appBar: AppBar(
+ 182:         title: const Text('Perguntas Extras'),
+ 183:         backgroundColor: const Color(0xFF1A6B3C),
+ 184:         foregroundColor: Colors.white,
+ 185:       ),
+ 186:       floatingActionButton: FloatingActionButton(
+ 187:         backgroundColor: const Color(0xFF1A6B3C),
+ 188:         foregroundColor: Colors.white,
+ 189:         onPressed: () => _abrirFormulario(),
+ 190:         child: const Icon(Icons.add),
+ 191:       ),
+ 192:       body: _loading
+ 193:           ? const Center(child: CircularProgressIndicator())
+ 194:           : _erro != null
+ 195:               ? Center(child: Text(_erro!))
+ 196:               : _questions.isEmpty
+ 197:                   ? const Center(child: Text('Nenhuma pergunta cadastrada.'))
+ 198:                   : ListView.builder(
+ 199:                       padding: const EdgeInsets.symmetric(vertical: 8),
+ 200:                       itemCount: _questions.length,
+ 201:                       itemBuilder: (context, index) {
+ 202:                         final q = _questions[index];
+ 203:                         return Card(
+ 204:                           margin: const EdgeInsets.symmetric(
+ 205:                               horizontal: 12, vertical: 4),
+ 206:                           child: ListTile(
+ 207:                             leading: Icon(
+ 208:                               q.type == ExtraQuestionType.team
+ 209:                                   ? Icons.flag_outlined
+ 210:                                   : Icons.person_outline,
+ 211:                               color: const Color(0xFF1A6B3C),
+ 212:                             ),
+ 213:                             title: Text(q.question),
+ 214:                             subtitle: Text(
+ 215:                               q.type == ExtraQuestionType.team
+ 216:                                   ? 'Resposta: Seleção'
+ 217:                                   : 'Resposta: Jogador',
+ 218:                               style: const TextStyle(fontSize: 12),
+ 219:                             ),
+ 220:                             trailing: Row(
+ 221:                               mainAxisSize: MainAxisSize.min,
+ 222:                               children: [
+ 223:                                 IconButton(
+ 224:                                   icon: const Icon(Icons.edit_outlined),
+ 225:                                   onPressed: () =>
+ 226:                                       _abrirFormulario(question: q),
+ 227:                                 ),
+ 228:                                 IconButton(
+ 229:                                   icon: const Icon(Icons.delete_outline,
+ 230:                                       color: Colors.red),
+ 231:                                   onPressed: () => _excluir(q),
+ 232:                                 ),
+ 233:                               ],
+ 234:                             ),
+ 235:                           ),
+ 236:                         );
+ 237:                       },
+ 238:                     ),
+ 239:     );
+ 240:   }
+ 241: }
+
+
+==================================================
+ARQUIVO: C:\Users\Alex Salles\Apps - desenvolvimento\bolao_copa\lib\features\admin\manage_matches_screen.dart
+==================================================
+   1: import 'package:flutter/material.dart';
+   2: import 'package:intl/intl.dart';
+   3: import '../../data/models/match.dart';
+   4: import '../../data/models/team.dart';
+   5: import '../../data/repositories/match_repository.dart';
+   6: import '../../services/firestore_service.dart';
+   7: class ManageMatchesScreen extends StatefulWidget {
+   8:   const ManageMatchesScreen({super.key});
+   9:   @override
+  10:   State<ManageMatchesScreen> createState() => _ManageMatchesScreenState();
+  11: }
+  12: class _ManageMatchesScreenState extends State<ManageMatchesScreen>
+  13:     with SingleTickerProviderStateMixin {
+  14:   final _matchRepo = MatchRepository();
+  15:   final _firestoreService = FirestoreService();
+  16:   late TabController _tabController;
+  17:   List<Match> _groupMatches = [];
+  18:   List<Match> _knockoutMatches = [];
+  19:   Map<String, Team> _teams = {};
+  20:   bool _loading = true;
+  21:   String? _erro;
+  22:   @override
+  23:   void initState() {
+  24:     super.initState();
+  25:     _tabController = TabController(length: 2, vsync: this);
+  26:     _carregar();
+  27:   }
+  28:   @override
+  29:   void dispose() {
+  30:     _tabController.dispose();
+  31:     super.dispose();
+  32:   }
+  33:   Future<void> _carregar() async {
+  34:     try {
+  35:       final cup = await _firestoreService.fetchActiveCup();
+  36:       if (cup == null) {
+  37:         setState(() {
+  38:           _erro = 'Nenhum bolão ativo encontrado.';
+  39:           _loading = false;
+  40:         });
+  41:         return;
+  42:       }
+  43:       final results = await Future.wait([
+  44:         _matchRepo.fetchGroupMatches(cup.id),
+  45:         _matchRepo.fetchKnockoutMatches(cup.id),
+  46:         _matchRepo.fetchTeams(cup.id),
+  47:       ]);
+  48:       setState(() {
+  49:         _groupMatches = results[0] as List<Match>;
+  50:         _knockoutMatches = results[1] as List<Match>;
+  51:         _teams = results[2] as Map<String, Team>;
+  52:         _loading = false;
+  53:       });
+  54:     } catch (e) {
+  55:       setState(() {
+  56:         _erro = 'Erro ao carregar jogos.';
+  57:         _loading = false;
+  58:       });
+  59:     }
+  60:   }
+  61:   @override
+  62:   Widget build(BuildContext context) {
+  63:     return Scaffold(
+  64:       appBar: AppBar(
+  65:         title: const Text('Gerenciar Jogos'),
+  66:         backgroundColor: const Color(0xFF1A6B3C),
+  67:         foregroundColor: Colors.white,
+  68:         bottom: TabBar(
+  69:           controller: _tabController,
+  70:           labelColor: Colors.white,
+  71:           unselectedLabelColor: Colors.white60,
+  72:           indicatorColor: Colors.white,
+  73:           tabs: const [
+  74:             Tab(text: 'Fase de Grupos'),
+  75:             Tab(text: 'Mata-Mata'),
+  76:           ],
+  77:         ),
+  78:       ),
+  79:       body: _loading
+  80:           ? const Center(child: CircularProgressIndicator())
+  81:           : _erro != null
+  82:               ? Center(child: Text(_erro!))
+  83:               : TabBarView(
+  84:                   controller: _tabController,
+  85:                   children: [
+  86:                     _buildList(_groupMatches),
+  87:                     _buildList(_knockoutMatches),
+  88:                   ],
+  89:                 ),
+  90:     );
+  91:   }
+  92:   Widget _buildList(List<Match> matches) {
+  93:     if (matches.isEmpty) {
+  94:       return const Center(child: Text('Nenhum jogo cadastrado.'));
+  95:     }
+  96:     return ListView.builder(
+  97:       padding: const EdgeInsets.symmetric(vertical: 8),
+  98:       itemCount: matches.length,
+  99:       itemBuilder: (context, index) {
+ 100:         final match = matches[index];
+ 101:         final home = _teams[match.homeTeamId];
+ 102:         final away = _teams[match.awayTeamId];
+ 103:         final dateStr =
+ 104:             DateFormat('dd/MM/yyyy · HH:mm').format(match.matchTime);
+ 105:         return Card(
+ 106:           margin:
+ 107:               const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+ 108:           child: ListTile(
+ 109:             title: Text(
+ 110:               '${home?.name ?? match.homeTeamId} × ${away?.name ?? match.awayTeamId}',
+ 111:               style: const TextStyle(fontWeight: FontWeight.bold),
+ 112:             ),
+ 113:             subtitle: Text(dateStr),
+ 114:             trailing: match.finished
+ 115:                 ? Text(
+ 116:                     '${match.officialHomeGoals} × ${match.officialAwayGoals}',
+ 117:                     style: const TextStyle(
+ 118:                         fontWeight: FontWeight.bold,
+ 119:                         color: Color(0xFF1A6B3C)),
+ 120:                   )
+ 121:                 : const Text('Pendente',
+ 122:                     style: TextStyle(color: Colors.grey)),
+ 123:           ),
+ 124:         );
+ 125:       },
+ 126:     );
+ 127:   }
+ 128: }
+
+
+==================================================
+ARQUIVO: C:\Users\Alex Salles\Apps - desenvolvimento\bolao_copa\lib\features\admin\manage_players_screen.dart
+==================================================
+   1: import 'package:flutter/material.dart';
+   2: import 'package:cloud_firestore/cloud_firestore.dart';
+   3: import '../../data/models/player.dart';
+   4: import '../../data/models/team.dart';
+   5: import '../../data/repositories/extra_prediction_repository.dart';
+   6: import '../../services/firestore_service.dart';
+   7: class ManagePlayersScreen extends StatefulWidget {
+   8:   const ManagePlayersScreen({super.key});
+   9:   @override
+  10:   State<ManagePlayersScreen> createState() => _ManagePlayersScreenState();
+  11: }
+  12: class _ManagePlayersScreenState extends State<ManagePlayersScreen> {
+  13:   final _extraRepo = ExtraPredictionRepository();
+  14:   final _firestoreService = FirestoreService();
+  15:   final _db = FirebaseFirestore.instance;
+  16:   List<Player> _players = [];
+  17:   List<Team> _teams = [];
+  18:   String? _cupId;
+  19:   String? _teamFiltro;
+  20:   bool _loading = true;
+  21:   String? _erro;
+  22:   @override
+  23:   void initState() {
+  24:     super.initState();
+  25:     _carregar();
+  26:   }
+  27:   Future<void> _carregar() async {
+  28:     try {
+  29:       final cup = await _firestoreService.fetchActiveCup();
+  30:       if (cup == null) {
+  31:         setState(() {
+  32:           _erro = 'Nenhum bolão ativo encontrado.';
+  33:           _loading = false;
+  34:         });
+  35:         return;
+  36:       }
+  37:       _cupId = cup.id;
+  38:       final results = await Future.wait([
+  39:         _extraRepo.fetchPlayers(cup.id),
+  40:         _extraRepo.fetchTeams(cup.id),
+  41:       ]);
+  42:       setState(() {
+  43:         _players = results[0] as List<Player>;
+  44:         _teams = results[1] as List<Team>;
+  45:         _loading = false;
+  46:       });
+  47:     } catch (e) {
+  48:       setState(() {
+  49:         _erro = 'Erro ao carregar jogadores.';
+  50:         _loading = false;
+  51:       });
+  52:     }
+  53:   }
+  54:   List<Player> get _filtrados => _teamFiltro == null
+  55:       ? _players
+  56:       : _players.where((p) => p.teamId == _teamFiltro).toList();
+  57:   Future<void> _abrirFormulario({Player? player}) async {
+  58:     final nameCtrl = TextEditingController(text: player?.name ?? '');
+  59:     String? teamId = player?.teamId ?? _teams.firstOrNull?.id;
+  60:     await showDialog(
+  61:       context: context,
+  62:       builder: (context) {
+  63:         return StatefulBuilder(
+  64:           builder: (context, setDialogState) {
+  65:             return AlertDialog(
+  66:               title: Text(
+  67:                   player == null ? 'Novo Jogador' : 'Editar Jogador'),
+  68:               content: Column(
+  69:                 mainAxisSize: MainAxisSize.min,
+  70:                 children: [
+  71:                   TextField(
+  72:                     controller: nameCtrl,
+  73:                     decoration: const InputDecoration(
+  74:                       labelText: 'Nome do jogador',
+  75:                       border: OutlineInputBorder(),
+  76:                     ),
+  77:                   ),
+  78:                   const SizedBox(height: 16),
+  79:                   DropdownButtonFormField<String>(
+  80:                     initialValue: teamId,
+  81:                     decoration: const InputDecoration(
+  82:                       labelText: 'Seleção',
+  83:                       border: OutlineInputBorder(),
+  84:                     ),
+  85:                     items: _teams
+  86:                         .map((t) => DropdownMenuItem(
+  87:                               value: t.id,
+  88:                               child: Text(t.name),
+  89:                             ))
+  90:                         .toList(),
+  91:                     onChanged: (v) {
+  92:                       setDialogState(() => teamId = v);
+  93:                     },
+  94:                   ),
+  95:                 ],
+  96:               ),
+  97:               actions: [
+  98:                 TextButton(
+  99:                   onPressed: () => Navigator.pop(context),
+ 100:                   child: const Text('Cancelar'),
+ 101:                 ),
+ 102:                 FilledButton(
+ 103:                   style: FilledButton.styleFrom(
+ 104:                       backgroundColor: const Color(0xFF1A6B3C)),
+ 105:                   onPressed: () async {
+ 106:                     if (nameCtrl.text.trim().isEmpty || teamId == null) {
+ 107:                       return;
+ 108:                     }
+ 109:                     await _salvar(
+ 110:                       id: player?.id,
+ 111:                       name: nameCtrl.text.trim(),
+ 112:                       teamId: teamId!,
+ 113:                     );
+ 114:                     if (context.mounted) Navigator.pop(context);
+ 115:                   },
+ 116:                   child: const Text('Salvar'),
+ 117:                 ),
+ 118:               ],
+ 119:             );
+ 120:           },
+ 121:         );
+ 122:       },
+ 123:     );
+ 124:     nameCtrl.dispose();
+ 125:   }
+ 126:   Future<void> _salvar({
+ 127:     String? id,
+ 128:     required String name,
+ 129:     required String teamId,
+ 130:   }) async {
+ 131:     if (_cupId == null) return;
+ 132:     final ref = _db
+ 133:         .collection('cups')
+ 134:         .doc(_cupId)
+ 135:         .collection('players');
+ 136:     final data = {'name': name, 'team_id': teamId};
+ 137:     if (id == null) {
+ 138:       await ref.add(data);
+ 139:     } else {
+ 140:       await ref.doc(id).update(data);
+ 141:     }
+ 142:     await _carregar();
+ 143:   }
+ 144:   Future<void> _excluir(Player player) async {
+ 145:     final confirmar = await showDialog<bool>(
+ 146:       context: context,
+ 147:       builder: (_) => AlertDialog(
+ 148:         title: const Text('Excluir jogador?'),
+ 149:         content: Text(player.name),
+ 150:         actions: [
+ 151:           TextButton(
+ 152:             onPressed: () => Navigator.pop(context, false),
+ 153:             child: const Text('Cancelar'),
+ 154:           ),
+ 155:           FilledButton(
+ 156:             style: FilledButton.styleFrom(backgroundColor: Colors.red),
+ 157:             onPressed: () => Navigator.pop(context, true),
+ 158:             child: const Text('Excluir'),
+ 159:           ),
+ 160:         ],
+ 161:       ),
+ 162:     );
+ 163:     if (confirmar == true && _cupId != null) {
+ 164:       await _db
+ 165:           .collection('cups')
+ 166:           .doc(_cupId)
+ 167:           .collection('players')
+ 168:           .doc(player.id)
+ 169:           .delete();
+ 170:       await _carregar();
+ 171:     }
+ 172:   }
+ 173:   @override
+ 174:   Widget build(BuildContext context) {
+ 175:     return Scaffold(
+ 176:       appBar: AppBar(
+ 177:         title: const Text('Jogadores'),
+ 178:         backgroundColor: const Color(0xFF1A6B3C),
+ 179:         foregroundColor: Colors.white,
+ 180:       ),
+ 181:       floatingActionButton: FloatingActionButton(
+ 182:         backgroundColor: const Color(0xFF1A6B3C),
+ 183:         foregroundColor: Colors.white,
+ 184:         onPressed: () => _abrirFormulario(),
+ 185:         child: const Icon(Icons.add),
+ 186:       ),
+ 187:       body: _loading
+ 188:           ? const Center(child: CircularProgressIndicator())
+ 189:           : _erro != null
+ 190:               ? Center(child: Text(_erro!))
+ 191:               : Column(
+ 192:                   children: [
+ 193:                     Padding(
+ 194:                       padding: const EdgeInsets.all(12),
+ 195:                       child: DropdownButtonFormField<String?>(
+ 196:                         initialValue: _teamFiltro,
+ 197:                         decoration: const InputDecoration(
+ 198:                           labelText: 'Filtrar por seleção',
+ 199:                           border: OutlineInputBorder(),
+ 200:                           contentPadding: EdgeInsets.symmetric(
+ 201:                               horizontal: 12, vertical: 8),
+ 202:                         ),
+ 203:                         items: [
+ 204:                           const DropdownMenuItem(
+ 205:                             value: null,
+ 206:                             child: Text('Todas as seleções'),
+ 207:                           ),
+ 208:                           ..._teams.map((t) => DropdownMenuItem(
+ 209:                                 value: t.id,
+ 210:                                 child: Text(t.name),
+ 211:                               )),
+ 212:                         ],
+ 213:                         onChanged: (v) =>
+ 214:                             setState(() => _teamFiltro = v),
+ 215:                       ),
+ 216:                     ),
+ 217:                     Expanded(
+ 218:                       child: _filtrados.isEmpty
+ 219:                           ? const Center(
+ 220:                               child: Text('Nenhum jogador cadastrado.'))
+ 221:                           : ListView.builder(
+ 222:                               itemCount: _filtrados.length,
+ 223:                               itemBuilder: (context, index) {
+ 224:                                 final player = _filtrados[index];
+ 225:                                 final team = _teams.firstWhere(
+ 226:                                   (t) => t.id == player.teamId,
+ 227:                                   orElse: () => const Team(
+ 228:                                       id: '',
+ 229:                                       name: 'Desconhecida',
+ 230:                                       flagAsset: ''),
+ 231:                                 );
+ 232:                                 return ListTile(
+ 233:                                   leading: team.flagAsset.isNotEmpty
+ 234:                                       ? ClipRRect(
+ 235:                                           borderRadius:
+ 236:                                               BorderRadius.circular(4),
+ 237:                                           child: Image.asset(
+ 238:                                             team.flagAsset,
+ 239:                                             width: 40,
+ 240:                                             height: 27,
+ 241:                                             fit: BoxFit.cover,
+ 242:                                             errorBuilder: (_, __, ___) =>
+ 243:                                                 const Icon(
+ 244:                                                     Icons.person_outline),
+ 245:                                           ),
+ 246:                                         )
+ 247:                                       : const Icon(Icons.person_outline),
+ 248:                                   title: Text(player.name),
+ 249:                                   subtitle: Text(team.name),
+ 250:                                   trailing: Row(
+ 251:                                     mainAxisSize: MainAxisSize.min,
+ 252:                                     children: [
+ 253:                                       IconButton(
+ 254:                                         icon: const Icon(Icons.edit_outlined),
+ 255:                                         onPressed: () =>
+ 256:                                             _abrirFormulario(player: player),
+ 257:                                       ),
+ 258:                                       IconButton(
+ 259:                                         icon: const Icon(Icons.delete_outline,
+ 260:                                             color: Colors.red),
+ 261:                                         onPressed: () => _excluir(player),
+ 262:                                       ),
+ 263:                                     ],
+ 264:                                   ),
+ 265:                                 );
+ 266:                               },
+ 267:                             ),
+ 268:                     ),
+ 269:                   ],
+ 270:                 ),
+ 271:     );
+ 272:   }
+ 273: }
+
+
+==================================================
+ARQUIVO: C:\Users\Alex Salles\Apps - desenvolvimento\bolao_copa\lib\features\admin\manage_results_screen.dart
+==================================================
+   1: import 'package:flutter/material.dart';
+   2: import 'package:intl/intl.dart';
+   3: import 'package:cloud_firestore/cloud_firestore.dart';
+   4: import '../../data/models/match.dart';
+   5: import '../../data/models/team.dart';
+   6: import '../../data/repositories/match_repository.dart';
+   7: import '../../services/firestore_service.dart';
+   8: class ManageResultsScreen extends StatefulWidget {
+   9:   const ManageResultsScreen({super.key});
+  10:   @override
+  11:   State<ManageResultsScreen> createState() => _ManageResultsScreenState();
+  12: }
+  13: class _ManageResultsScreenState extends State<ManageResultsScreen> {
+  14:   final _matchRepo = MatchRepository();
+  15:   final _firestoreService = FirestoreService();
+  16:   final _db = FirebaseFirestore.instance;
+  17:   List<Match> _matches = [];
+  18:   Map<String, Team> _teams = {};
+  19:   String? _cupId;
+  20:   bool _loading = true;
+  21:   String? _erro;
+  22:   @override
+  23:   void initState() {
+  24:     super.initState();
+  25:     _carregar();
+  26:   }
+  27:   Future<void> _carregar({bool forceRefresh = false}) async {
+  28:     try {
+  29:       final cup = await _firestoreService.fetchActiveCup(
+  30:           forceRefresh: forceRefresh);
+  31:       if (cup == null) {
+  32:         setState(() {
+  33:           _erro = 'Nenhum bolão ativo encontrado.';
+  34:           _loading = false;
+  35:         });
+  36:         return;
+  37:       }
+  38:       _cupId = cup.id;
+  39:       final results = await Future.wait([
+  40:         _matchRepo.fetchGroupMatches(cup.id, forceRefresh: forceRefresh),
+  41:         _matchRepo.fetchKnockoutMatches(cup.id, forceRefresh: forceRefresh),
+  42:         _matchRepo.fetchTeams(cup.id, forceRefresh: forceRefresh),
+  43:       ]);
+  44:       final group = results[0] as List<Match>;
+  45:       final knockout = results[1] as List<Match>;
+  46:       setState(() {
+  47:         _matches = [...group, ...knockout]
+  48:           ..sort((a, b) => a.matchTime.compareTo(b.matchTime));
+  49:         _teams = results[2] as Map<String, Team>;
+  50:         _loading = false;
+  51:       });
+  52:     } catch (e) {
+  53:       setState(() {
+  54:         _erro = 'Erro ao carregar jogos.';
+  55:         _loading = false;
+  56:       });
+  57:     }
+  58:   }
+  59:   Future<void> _abrirEdicao(Match match) async {
+  60:     final homeCtrl = TextEditingController(
+  61:         text: match.officialHomeGoals?.toString() ?? '');
+  62:     final awayCtrl = TextEditingController(
+  63:         text: match.officialAwayGoals?.toString() ?? '');
+  64:     String? erroDialog;
+  65:     await showDialog(
+  66:       context: context,
+  67:       builder: (context) {
+  68:         return StatefulBuilder(
+  69:           builder: (context, setDialogState) {
+  70:             return AlertDialog(
+  71:               title: Text(
+  72:                 '${_teams[match.homeTeamId]?.name ?? match.homeTeamId} × '
+  73:                 '${_teams[match.awayTeamId]?.name ?? match.awayTeamId}',
+  74:               ),
+  75:               content: Column(
+  76:                 mainAxisSize: MainAxisSize.min,
+  77:                 children: [
+  78:                   Row(
+  79:                     mainAxisAlignment: MainAxisAlignment.center,
+  80:                     children: [
+  81:                       SizedBox(
+  82:                         width: 60,
+  83:                         child: TextField(
+  84:                           controller: homeCtrl,
+  85:                           keyboardType: TextInputType.number,
+  86:                           textAlign: TextAlign.center,
+  87:                           style: const TextStyle(
+  88:                               fontSize: 24, fontWeight: FontWeight.bold),
+  89:                           decoration: const InputDecoration(
+  90:                               border: OutlineInputBorder()),
+  91:                         ),
+  92:                       ),
+  93:                       const Padding(
+  94:                         padding: EdgeInsets.symmetric(horizontal: 12),
+  95:                         child: Text('×',
+  96:                             style: TextStyle(
+  97:                                 fontSize: 24, fontWeight: FontWeight.bold)),
+  98:                       ),
+  99:                       SizedBox(
+ 100:                         width: 60,
+ 101:                         child: TextField(
+ 102:                           controller: awayCtrl,
+ 103:                           keyboardType: TextInputType.number,
+ 104:                           textAlign: TextAlign.center,
+ 105:                           style: const TextStyle(
+ 106:                               fontSize: 24, fontWeight: FontWeight.bold),
+ 107:                           decoration: const InputDecoration(
+ 108:                               border: OutlineInputBorder()),
+ 109:                         ),
+ 110:                       ),
+ 111:                     ],
+ 112:                   ),
+ 113:                   if (erroDialog != null) ...[
+ 114:                     const SizedBox(height: 8),
+ 115:                     Text(erroDialog!,
+ 116:                         style: const TextStyle(color: Colors.red, fontSize: 13)),
+ 117:                   ],
+ 118:                 ],
+ 119:               ),
+ 120:               actions: [
+ 121:                 TextButton(
+ 122:                   onPressed: () => Navigator.pop(context),
+ 123:                   child: const Text('Cancelar'),
+ 124:                 ),
+ 125:                 FilledButton(
+ 126:                   style: FilledButton.styleFrom(
+ 127:                       backgroundColor: const Color(0xFF1A6B3C)),
+ 128:                   onPressed: () async {
+ 129:                     final home = int.tryParse(homeCtrl.text.trim());
+ 130:                     final away = int.tryParse(awayCtrl.text.trim());
+ 131:                     if (home == null || away == null) {
+ 132:                       setDialogState(() {
+ 133:                         erroDialog = 'Informe valores numéricos válidos.';
+ 134:                       });
+ 135:                       return;
+ 136:                     }
+ 137:                     await _salvarResultado(match, home, away);
+ 138:                     if (context.mounted) Navigator.pop(context);
+ 139:                   },
+ 140:                   child: const Text('Salvar'),
+ 141:                 ),
+ 142:               ],
+ 143:             );
+ 144:           },
+ 145:         );
+ 146:       },
+ 147:     );
+ 148:     homeCtrl.dispose();
+ 149:     awayCtrl.dispose();
+ 150:   }
+ 151:   Future<void> _salvarResultado(Match match, int home, int away) async {
+ 152:     if (_cupId == null) return;
+ 153:     final collection = match.groupId != null
+ 154:         ? _db
+ 155:             .collection('cups')
+ 156:             .doc(_cupId)
+ 157:             .collection('groups')
+ 158:             .doc(match.groupId)
+ 159:             .collection('matches')
+ 160:         : _db
+ 161:             .collection('cups')
+ 162:             .doc(_cupId)
+ 163:             .collection('knockout_matches');
+ 164:     await collection.doc(match.id).update({
+ 165:       'official_home_goals': home,
+ 166:       'official_away_goals': away,
+ 167:       'finished': true,
+ 168:     });
+ 169:     // Invalida cache para recarregar resultados atualizados
+ 170:     MatchRepository.clearCache();
+ 171:     await _carregar(forceRefresh: true);
+ 172:   }
+ 173:   @override
+ 174:   Widget build(BuildContext context) {
+ 175:     return Scaffold(
+ 176:       appBar: AppBar(
+ 177:         title: const Text('Inserir Resultados'),
+ 178:         backgroundColor: const Color(0xFF1A6B3C),
+ 179:         foregroundColor: Colors.white,
+ 180:       ),
+ 181:       body: _loading
+ 182:           ? const Center(child: CircularProgressIndicator())
+ 183:           : _erro != null
+ 184:               ? Center(child: Text(_erro!))
+ 185:               : ListView.builder(
+ 186:                   padding: const EdgeInsets.symmetric(vertical: 8),
+ 187:                   itemCount: _matches.length,
+ 188:                   itemBuilder: (context, index) {
+ 189:                     final match = _matches[index];
+ 190:                     final home = _teams[match.homeTeamId];
+ 191:                     final away = _teams[match.awayTeamId];
+ 192:                     final dateStr = DateFormat('dd/MM/yyyy · HH:mm')
+ 193:                         .format(match.matchTime);
+ 194:                     return Card(
+ 195:                       margin: const EdgeInsets.symmetric(
+ 196:                           horizontal: 12, vertical: 6),
+ 197:                       child: ListTile(
+ 198:                         title: Text(
+ 199:                           '${home?.name ?? match.homeTeamId} × '
+ 200:                           '${away?.name ?? match.awayTeamId}',
+ 201:                           style: const TextStyle(fontWeight: FontWeight.bold),
+ 202:                         ),
+ 203:                         subtitle: Text(dateStr),
+ 204:                         trailing: match.finished
+ 205:                             ? Text(
+ 206:                                 '${match.officialHomeGoals} × '
+ 207:                                 '${match.officialAwayGoals}',
+ 208:                                 style: const TextStyle(
+ 209:                                     fontWeight: FontWeight.bold,
+ 210:                                     color: Color(0xFF1A6B3C)),
+ 211:                               )
+ 212:                             : const Text('Pendente',
+ 213:                                 style: TextStyle(color: Colors.grey)),
+ 214:                         onTap: () => _abrirEdicao(match),
+ 215:                       ),
+ 216:                     );
+ 217:                   },
+ 218:                 ),
+ 219:     );
+ 220:   }
+ 221: }
+
+
+==================================================
+ARQUIVO: C:\Users\Alex Salles\Apps - desenvolvimento\bolao_copa\lib\features\auth\login_screen.dart
+==================================================
+   1: import 'package:flutter/material.dart';
+   2: import '../../services/auth_service.dart';
+   3: import '../../core/routes/app_routes.dart';
+   4: class LoginScreen extends StatefulWidget {
+   5:   const LoginScreen({super.key});
+   6:   @override
+   7:   State<LoginScreen> createState() => _LoginScreenState();
+   8: }
+   9: class _LoginScreenState extends State<LoginScreen> {
+  10:   final _formKey = GlobalKey<FormState>();
+  11:   final _emailController = TextEditingController();
+  12:   final _passwordController = TextEditingController();
+  13:   final _authService = AuthService();
+  14:   bool _loading = false;
+  15:   String? _erro;
+  16:   @override
+  17:   void dispose() {
+  18:     _emailController.dispose();
+  19:     _passwordController.dispose();
+  20:     super.dispose();
+  21:   }
+  22:   Future<void> _loginEmail() async {
+  23:     if (!_formKey.currentState!.validate()) return;
+  24:     setState(() { _loading = true; _erro = null; });
+  25:     try {
+  26:       await _authService.signInWithEmail(
+  27:         _emailController.text,
+  28:         _passwordController.text,
+  29:       );
+  30:       if (mounted) Navigator.pushReplacementNamed(context, AppRoutes.home);
+  31:     } on Exception catch (e) {
+  32:       setState(() { _erro = _traduzirErro(e.toString()); });
+  33:     } finally {
+  34:       if (mounted) setState(() { _loading = false; });
+  35:     }
+  36:   }
+  37:   Future<void> _loginGoogle() async {
+  38:     setState(() { _loading = true; _erro = null; });
+  39:     try {
+  40:       final result = await _authService.signInWithGoogle();
+  41:       if (result != null && mounted) {
+  42:         Navigator.pushReplacementNamed(context, AppRoutes.home);
+  43:       }
+  44:     } on Exception catch (e) {
+  45:       setState(() { _erro = _traduzirErro(e.toString()); });
+  46:     } finally {
+  47:       if (mounted) setState(() { _loading = false; });
+  48:     }
+  49:   }
+  50:   String _traduzirErro(String erro) {
+  51:     if (erro.contains('user-not-found')) return 'Usuário não encontrado.';
+  52:     if (erro.contains('wrong-password')) return 'Senha incorreta.';
+  53:     if (erro.contains('invalid-email')) return 'E-mail inválido.';
+  54:     if (erro.contains('too-many-requests')) return 'Muitas tentativas. Tente mais tarde.';
+  55:     return 'Erro ao entrar. Tente novamente.';
+  56:   }
+  57:   @override
+  58:   Widget build(BuildContext context) {
+  59:     return Scaffold(
+  60:       body: SafeArea(
+  61:         child: Center(
+  62:           child: SingleChildScrollView(
+  63:             padding: const EdgeInsets.all(32),
+  64:             child: Form(
+  65:               key: _formKey,
+  66:               child: Column(
+  67:                 mainAxisAlignment: MainAxisAlignment.center,
+  68:                 children: [
+  69:                   const Icon(Icons.emoji_events,
+  70:                       size: 80, color: Color(0xFF1A6B3C)),
+  71:                   const SizedBox(height: 16),
+  72:                   const Text(
+  73:                     'Bolão Copa do Mundo',
+  74:                     style: TextStyle(
+  75:                       fontSize: 24,
+  76:                       fontWeight: FontWeight.bold,
+  77:                     ),
+  78:                   ),
+  79:                   const SizedBox(height: 40),
+  80:                   TextFormField(
+  81:                     controller: _emailController,
+  82:                     keyboardType: TextInputType.emailAddress,
+  83:                     decoration: const InputDecoration(
+  84:                       labelText: 'E-mail',
+  85:                       border: OutlineInputBorder(),
+  86:                       prefixIcon: Icon(Icons.email_outlined),
+  87:                     ),
+  88:                     validator: (v) =>
+  89:                         v == null || v.isEmpty ? 'Informe o e-mail' : null,
+  90:                   ),
+  91:                   const SizedBox(height: 16),
+  92:                   TextFormField(
+  93:                     controller: _passwordController,
+  94:                     obscureText: true,
+  95:                     decoration: const InputDecoration(
+  96:                       labelText: 'Senha',
+  97:                       border: OutlineInputBorder(),
+  98:                       prefixIcon: Icon(Icons.lock_outline),
+  99:                     ),
+ 100:                     validator: (v) =>
+ 101:                         v == null || v.isEmpty ? 'Informe a senha' : null,
+ 102:                   ),
+ 103:                   if (_erro != null) ...[
+ 104:                     const SizedBox(height: 12),
+ 105:                     Text(_erro!,
+ 106:                         style: const TextStyle(color: Colors.red)),
+ 107:                   ],
+ 108:                   const SizedBox(height: 24),
+ 109:                   SizedBox(
+ 110:                     width: double.infinity,
+ 111:                     child: FilledButton(
+ 112:                       onPressed: _loading ? null : _loginEmail,
+ 113:                       child: _loading
+ 114:                           ? const SizedBox(
+ 115:                               height: 20,
+ 116:                               width: 20,
+ 117:                               child: CircularProgressIndicator(
+ 118:                                   strokeWidth: 2, color: Colors.white),
+ 119:                             )
+ 120:                           : const Text('Entrar'),
+ 121:                     ),
+ 122:                   ),
+ 123:                   const SizedBox(height: 12),
+ 124:                   SizedBox(
+ 125:                     width: double.infinity,
+ 126:                     child: OutlinedButton.icon(
+ 127:                       onPressed: _loading ? null : _loginGoogle,
+ 128:                       icon: const Icon(Icons.login),
+ 129:                       label: const Text('Entrar com Google'),
+ 130:                     ),
+ 131:                   ),
+ 132:                   const SizedBox(height: 24),
+ 133:                   TextButton(
+ 134:                     onPressed: () => Navigator.pushNamed(
+ 135:                         context, AppRoutes.register),
+ 136:                     child: const Text('Não tem conta? Cadastre-se'),
+ 137:                   ),
+ 138:                 ],
+ 139:               ),
+ 140:             ),
+ 141:           ),
+ 142:         ),
+ 143:       ),
+ 144:     );
+ 145:   }
+ 146: }
+
+
+==================================================
+ARQUIVO: C:\Users\Alex Salles\Apps - desenvolvimento\bolao_copa\lib\features\auth\register_screen.dart
+==================================================
+   1: import 'package:flutter/material.dart';
+   2: import '../../services/auth_service.dart';
+   3: import '../../core/routes/app_routes.dart';
+   4: class RegisterScreen extends StatefulWidget {
+   5:   const RegisterScreen({super.key});
+   6:   @override
+   7:   State<RegisterScreen> createState() => _RegisterScreenState();
+   8: }
+   9: class _RegisterScreenState extends State<RegisterScreen> {
+  10:   final _formKey = GlobalKey<FormState>();
+  11:   final _nameController = TextEditingController();
+  12:   final _emailController = TextEditingController();
+  13:   final _passwordController = TextEditingController();
+  14:   final _confirmController = TextEditingController();
+  15:   final _authService = AuthService();
+  16:   bool _loading = false;
+  17:   String? _erro;
+  18:   @override
+  19:   void dispose() {
+  20:     _nameController.dispose();
+  21:     _emailController.dispose();
+  22:     _passwordController.dispose();
+  23:     _confirmController.dispose();
+  24:     super.dispose();
+  25:   }
+  26:   Future<void> _registrar() async {
+  27:     if (!_formKey.currentState!.validate()) return;
+  28:     setState(() { _loading = true; _erro = null; });
+  29:     try {
+  30:       await _authService.registerWithEmail(
+  31:         name: _nameController.text.trim(),
+  32:         email: _emailController.text.trim(),
+  33:         password: _passwordController.text,
+  34:       );
+  35:       if (mounted) Navigator.pushReplacementNamed(context, AppRoutes.home);
+  36:     } on Exception catch (e) {
+  37:       setState(() { _erro = _traduzirErro(e.toString()); });
+  38:     } finally {
+  39:       if (mounted) setState(() { _loading = false; });
+  40:     }
+  41:   }
+  42:   String _traduzirErro(String erro) {
+  43:     if (erro.contains('email-already-in-use')) return 'E-mail já cadastrado.';
+  44:     if (erro.contains('weak-password')) return 'Senha fraca. Use ao menos 6 caracteres.';
+  45:     if (erro.contains('invalid-email')) return 'E-mail inválido.';
+  46:     return 'Erro ao cadastrar. Tente novamente.';
+  47:   }
+  48:   @override
+  49:   Widget build(BuildContext context) {
+  50:     return Scaffold(
+  51:       appBar: AppBar(title: const Text('Criar conta')),
+  52:       body: SafeArea(
+  53:         child: SingleChildScrollView(
+  54:           padding: const EdgeInsets.all(32),
+  55:           child: Form(
+  56:             key: _formKey,
+  57:             child: Column(
+  58:               children: [
+  59:                 TextFormField(
+  60:                   controller: _nameController,
+  61:                   textCapitalization: TextCapitalization.words,
+  62:                   decoration: const InputDecoration(
+  63:                     labelText: 'Nome',
+  64:                     border: OutlineInputBorder(),
+  65:                     prefixIcon: Icon(Icons.person_outline),
+  66:                   ),
+  67:                   validator: (v) =>
+  68:                       v == null || v.isEmpty ? 'Informe seu nome' : null,
+  69:                 ),
+  70:                 const SizedBox(height: 16),
+  71:                 TextFormField(
+  72:                   controller: _emailController,
+  73:                   keyboardType: TextInputType.emailAddress,
+  74:                   decoration: const InputDecoration(
+  75:                     labelText: 'E-mail',
+  76:                     border: OutlineInputBorder(),
+  77:                     prefixIcon: Icon(Icons.email_outlined),
+  78:                   ),
+  79:                   validator: (v) =>
+  80:                       v == null || v.isEmpty ? 'Informe o e-mail' : null,
+  81:                 ),
+  82:                 const SizedBox(height: 16),
+  83:                 TextFormField(
+  84:                   controller: _passwordController,
+  85:                   obscureText: true,
+  86:                   decoration: const InputDecoration(
+  87:                     labelText: 'Senha',
+  88:                     border: OutlineInputBorder(),
+  89:                     prefixIcon: Icon(Icons.lock_outline),
+  90:                   ),
+  91:                   validator: (v) {
+  92:                     if (v == null || v.isEmpty) return 'Informe a senha';
+  93:                     if (v.length < 6) return 'Mínimo 6 caracteres';
+  94:                     return null;
+  95:                   },
+  96:                 ),
+  97:                 const SizedBox(height: 16),
+  98:                 TextFormField(
+  99:                   controller: _confirmController,
+ 100:                   obscureText: true,
+ 101:                   decoration: const InputDecoration(
+ 102:                     labelText: 'Confirmar senha',
+ 103:                     border: OutlineInputBorder(),
+ 104:                     prefixIcon: Icon(Icons.lock_outline),
+ 105:                   ),
+ 106:                   validator: (v) {
+ 107:                     if (v != _passwordController.text) {
+ 108:                       return 'As senhas não coincidem';
+ 109:                     }
+ 110:                     return null;
+ 111:                   },
+ 112:                 ),
+ 113:                 if (_erro != null) ...[
+ 114:                   const SizedBox(height: 12),
+ 115:                   Text(_erro!, style: const TextStyle(color: Colors.red)),
+ 116:                 ],
+ 117:                 const SizedBox(height: 24),
+ 118:                 SizedBox(
+ 119:                   width: double.infinity,
+ 120:                   child: FilledButton(
+ 121:                     onPressed: _loading ? null : _registrar,
+ 122:                     child: _loading
+ 123:                         ? const SizedBox(
+ 124:                             height: 20,
+ 125:                             width: 20,
+ 126:                             child: CircularProgressIndicator(
+ 127:                                 strokeWidth: 2, color: Colors.white),
+ 128:                           )
+ 129:                         : const Text('Criar conta'),
+ 130:                   ),
+ 131:                 ),
+ 132:               ],
+ 133:             ),
+ 134:           ),
+ 135:         ),
+ 136:       ),
+ 137:     );
+ 138:   }
+ 139: }
+
+
+==================================================
+ARQUIVO: C:\Users\Alex Salles\Apps - desenvolvimento\bolao_copa\lib\features\extras\extra_predictions_screen.dart
+==================================================
+   1: import 'package:flutter/material.dart';
+   2: import 'package:firebase_auth/firebase_auth.dart';
+   3: import '../../data/models/extra_question.dart';
+   4: import '../../data/models/extra_prediction.dart';
+   5: import '../../data/models/team.dart';
+   6: import '../../data/models/player.dart';
+   7: import '../../data/repositories/extra_prediction_repository.dart';
+   8: import '../../services/firestore_service.dart';
+   9: import 'widgets/question_card.dart';
+  10: class ExtraPredictionsScreen extends StatefulWidget {
+  11:   const ExtraPredictionsScreen({super.key});
+  12:   @override
+  13:   State<ExtraPredictionsScreen> createState() =>
+  14:       _ExtraPredictionsScreenState();
+  15: }
+  16: class _ExtraPredictionsScreenState extends State<ExtraPredictionsScreen> {
+  17:   final _repo = ExtraPredictionRepository();
+  18:   final _firestoreService = FirestoreService();
+  19:   List<ExtraQuestion> _questions = [];
+  20:   Map<String, ExtraPrediction> _predictions = {};
+  21:   List<Team> _teams = [];
+  22:   List<Player> _players = [];
+  23:   bool _locked = false;
+  24:   bool _loading = true;
+  25:   String? _erro;
+  26:   String? _cupId;
+  27:   @override
+  28:   void initState() {
+  29:     super.initState();
+  30:     _carregar();
+  31:   }
+  32:   Future<void> _carregar() async {
+  33:     try {
+  34:       final cup = await _firestoreService.fetchActiveCup();
+  35:       if (cup == null) {
+  36:         setState(() {
+  37:           _erro = 'Nenhum bolão ativo encontrado.';
+  38:           _loading = false;
+  39:         });
+  40:         return;
+  41:       }
+  42:       _cupId = cup.id;
+  43:       _locked = cup.isLocked;
+  44:       final uid = FirebaseAuth.instance.currentUser!.uid;
+  45:       final results = await Future.wait([
+  46:         _repo.fetchQuestions(cup.id),
+  47:         _repo.fetchUserPredictions(uid),
+  48:         _repo.fetchTeams(cup.id),
+  49:         _repo.fetchPlayers(cup.id),
+  50:       ]);
+  51:       setState(() {
+  52:         _questions = results[0] as List<ExtraQuestion>;
+  53:         _predictions = results[1] as Map<String, ExtraPrediction>;
+  54:         _teams = results[2] as List<Team>;
+  55:         _players = results[3] as List<Player>;
+  56:         _loading = false;
+  57:       });
+  58:     } catch (e) {
+  59:       setState(() {
+  60:         _erro = 'Erro ao carregar perguntas.';
+  61:         _loading = false;
+  62:       });
+  63:     }
+  64:   }
+  65:   Future<void> _salvar(String questionId, String answer) async {
+  66:     if (_locked || _cupId == null) return;
+  67:     final uid = FirebaseAuth.instance.currentUser!.uid;
+  68:     final prediction = ExtraPrediction(
+  69:       questionId: questionId,
+  70:       userId: uid,
+  71:       answer: answer,
+  72:       savedAt: DateTime.now(),
+  73:     );
+  74:     await _repo.savePrediction(prediction);
+  75:     setState(() => _predictions[questionId] = prediction);
+  76:   }
+  77:   Set<String> _teamsJaEscolhidos(String questionIdAtual) {
+  78:     final Set<String> usados = {};
+  79:     for (final q in _questions) {
+  80:       if (q.type == ExtraQuestionType.team && q.id != questionIdAtual) {
+  81:         final pred = _predictions[q.id];
+  82:         if (pred != null && pred.answer.isNotEmpty) usados.add(pred.answer);
+  83:       }
+  84:     }
+  85:     return usados;
+  86:   }
+  87:   @override
+  88:   Widget build(BuildContext context) {
+  89:     return Scaffold(
+  90:       appBar: AppBar(
+  91:         title: const Text('Palpites Extras'),
+  92:         backgroundColor: const Color(0xFF1A6B3C),
+  93:         foregroundColor: Colors.white,
+  94:       ),
+  95:       body: _loading
+  96:           ? const Center(child: CircularProgressIndicator())
+  97:           : _erro != null
+  98:               ? Center(child: Text(_erro!))
+  99:               : _buildBody(),
+ 100:     );
+ 101:   }
+ 102:   Widget _buildBody() {
+ 103:     if (_questions.isEmpty) {
+ 104:       return const Center(child: Text('Nenhuma pergunta disponível.'));
+ 105:     }
+ 106:     return Column(
+ 107:       children: [
+ 108:         if (_locked)
+ 109:           Container(
+ 110:             width: double.infinity,
+ 111:             color: Colors.orange.withValues(alpha: 0.1),
+ 112:             padding:
+ 113:                 const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
+ 114:             child: const Row(
+ 115:               mainAxisAlignment: MainAxisAlignment.center,
+ 116:               children: [
+ 117:                 Icon(Icons.lock_outline, color: Colors.orange, size: 18),
+ 118:                 SizedBox(width: 8),
+ 119:                 Text('A Copa já começou. Palpites encerrados.',
+ 120:                     style: TextStyle(color: Colors.orange)),
+ 121:               ],
+ 122:             ),
+ 123:           ),
+ 124:         Expanded(
+ 125:           child: ListView.builder(
+ 126:             padding: const EdgeInsets.all(12),
+ 127:             itemCount: _questions.length,
+ 128:             itemBuilder: (context, index) {
+ 129:               final question = _questions[index];
+ 130:               return QuestionCard(
+ 131:                 question: question,
+ 132:                 prediction: _predictions[question.id],
+ 133:                 teams: _teams,
+ 134:                 players: _players,
+ 135:                 locked: _locked,
+ 136:                 teamsExcluidos: question.type == ExtraQuestionType.team
+ 137:                     ? _teamsJaEscolhidos(question.id)
+ 138:                     : {},
+ 139:                 onSave: (answer) => _salvar(question.id, answer),
+ 140:               );
+ 141:             },
+ 142:           ),
+ 143:         ),
+ 144:       ],
+ 145:     );
+ 146:   }
+ 147: }
+
+
+==================================================
+ARQUIVO: C:\Users\Alex Salles\Apps - desenvolvimento\bolao_copa\lib\features\extras\widgets\player_selection_sheet.dart
+==================================================
+   1: import 'package:flutter/material.dart';
+   2: import '../../../data/models/team.dart';
+   3: import '../../../data/models/player.dart';
+   4: class PlayerSelectionSheet extends StatefulWidget {
+   5:   final String title;
+   6:   final List<Team> teams;
+   7:   final List<Player> players;
+   8:   final String? selectedPlayerId;
+   9:   const PlayerSelectionSheet({
+  10:     super.key,
+  11:     required this.title,
+  12:     required this.teams,
+  13:     required this.players,
+  14:     required this.selectedPlayerId,
+  15:   });
+  16:   @override
+  17:   State<PlayerSelectionSheet> createState() => _PlayerSelectionSheetState();
+  18: }
+  19: class _PlayerSelectionSheetState extends State<PlayerSelectionSheet> {
+  20:   final _searchController = TextEditingController();
+  21:   String? _teamFiltro;
+  22:   String _busca = '';
+  23:   @override
+  24:   void initState() {
+  25:     super.initState();
+  26:     if (widget.selectedPlayerId != null) {
+  27:       final player = widget.players.firstWhere(
+  28:         (p) => p.id == widget.selectedPlayerId,
+  29:         orElse: () => const Player(id: '', name: '', teamId: ''),
+  30:       );
+  31:       if (player.teamId.isNotEmpty) _teamFiltro = player.teamId;
+  32:     }
+  33:   }
+  34:   @override
+  35:   void dispose() {
+  36:     _searchController.dispose();
+  37:     super.dispose();
+  38:   }
+  39:   List<Player> get _filtrados => widget.players.where((p) {
+  40:         final matchTeam = _teamFiltro == null || p.teamId == _teamFiltro;
+  41:         final matchBusca =
+  42:             p.name.toLowerCase().contains(_busca.toLowerCase());
+  43:         return matchTeam && matchBusca;
+  44:       }).toList();
+  45:   @override
+  46:   Widget build(BuildContext context) {
+  47:     final altura = MediaQuery.of(context).size.height * 0.85;
+  48:     final teamSelecionado = _teamFiltro == null
+  49:         ? null
+  50:         : widget.teams.firstWhere((t) => t.id == _teamFiltro,
+  51:             orElse: () => const Team(id: '', name: '', flagAsset: ''));
+  52:     return SizedBox(
+  53:       height: altura,
+  54:       child: Column(
+  55:         children: [
+  56:           const SizedBox(height: 12),
+  57:           Container(
+  58:             width: 40, height: 4,
+  59:             decoration: BoxDecoration(
+  60:                 color: Colors.grey[300],
+  61:                 borderRadius: BorderRadius.circular(2)),
+  62:           ),
+  63:           const SizedBox(height: 12),
+  64:           Padding(
+  65:             padding: const EdgeInsets.symmetric(horizontal: 16),
+  66:             child: Text(widget.title,
+  67:                 style: const TextStyle(
+  68:                     fontSize: 16, fontWeight: FontWeight.bold),
+  69:                 textAlign: TextAlign.center),
+  70:           ),
+  71:           const SizedBox(height: 12),
+  72:           Padding(
+  73:             padding: const EdgeInsets.symmetric(horizontal: 16),
+  74:             child: Row(
+  75:               children: [
+  76:                 if (teamSelecionado != null &&
+  77:                     teamSelecionado.flagAsset.isNotEmpty)
+  78:                   Padding(
+  79:                     padding: const EdgeInsets.only(right: 8),
+  80:                     child: ClipRRect(
+  81:                       borderRadius: BorderRadius.circular(4),
+  82:                       child: Image.asset(teamSelecionado.flagAsset,
+  83:                           width: 36, height: 24, fit: BoxFit.cover,
+  84:                           errorBuilder: (_, __, ___) => const SizedBox()),
+  85:                     ),
+  86:                   ),
+  87:                 Expanded(
+  88:                   child: DropdownButtonFormField<String?>(
+  89:                     initialValue: _teamFiltro,
+  90:                     decoration: const InputDecoration(
+  91:                       labelText: 'Selecione a seleção',
+  92:                       border: OutlineInputBorder(),
+  93:                       contentPadding: EdgeInsets.symmetric(
+  94:                           horizontal: 12, vertical: 8),
+  95:                     ),
+  96:                     items: [
+  97:                       const DropdownMenuItem(
+  98:                           value: null,
+  99:                           child: Text('Todas as seleções')),
+ 100:                       ...widget.teams.map((t) => DropdownMenuItem(
+ 101:                             value: t.id,
+ 102:                             child: Text(t.name),
+ 103:                           )),
+ 104:                     ],
+ 105:                     onChanged: (v) => setState(() {
+ 106:                       _teamFiltro = v;
+ 107:                       _busca = '';
+ 108:                       _searchController.clear();
+ 109:                     }),
+ 110:                   ),
+ 111:                 ),
+ 112:               ],
+ 113:             ),
+ 114:           ),
+ 115:           const SizedBox(height: 8),
+ 116:           Padding(
+ 117:             padding: const EdgeInsets.symmetric(horizontal: 16),
+ 118:             child: TextField(
+ 119:               controller: _searchController,
+ 120:               decoration: const InputDecoration(
+ 121:                 hintText: 'Buscar jogador...',
+ 122:                 prefixIcon: Icon(Icons.search),
+ 123:                 border: OutlineInputBorder(),
+ 124:                 contentPadding:
+ 125:                     EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+ 126:               ),
+ 127:               onChanged: (v) => setState(() => _busca = v),
+ 128:             ),
+ 129:           ),
+ 130:           const SizedBox(height: 8),
+ 131:           Expanded(
+ 132:             child: _teamFiltro == null
+ 133:                 ? const Center(
+ 134:                     child: Text(
+ 135:                       'Selecione uma seleção acima\npara ver os jogadores',
+ 136:                       textAlign: TextAlign.center,
+ 137:                       style: TextStyle(color: Colors.grey),
+ 138:                     ),
+ 139:                   )
+ 140:                 : _filtrados.isEmpty
+ 141:                     ? const Center(child: Text('Nenhum jogador encontrado.'))
+ 142:                     : ListView.builder(
+ 143:                         itemCount: _filtrados.length,
+ 144:                         itemBuilder: (context, index) {
+ 145:                           final player = _filtrados[index];
+ 146:                           final team = widget.teams.firstWhere(
+ 147:                             (t) => t.id == player.teamId,
+ 148:                             orElse: () =>
+ 149:                                 const Team(id: '', name: '', flagAsset: ''),
+ 150:                           );
+ 151:                           final selected =
+ 152:                               widget.selectedPlayerId == player.id;
+ 153:                           return ListTile(
+ 154:                             leading: team.flagAsset.isNotEmpty
+ 155:                                 ? ClipRRect(
+ 156:                                     borderRadius: BorderRadius.circular(4),
+ 157:                                     child: Image.asset(team.flagAsset,
+ 158:                                         width: 40, height: 27,
+ 159:                                         fit: BoxFit.cover,
+ 160:                                         errorBuilder: (_, __, ___) =>
+ 161:                                             const Icon(Icons.person_outline)),
+ 162:                                   )
+ 163:                                 : const Icon(Icons.person_outline),
+ 164:                             title: Text(player.name),
+ 165:                             subtitle: Text(team.name),
+ 166:                             trailing: selected
+ 167:                                 ? const Icon(Icons.check_circle,
+ 168:                                     color: Color(0xFF1A6B3C))
+ 169:                                 : null,
+ 170:                             onTap: () => Navigator.pop(context, player.id),
+ 171:                           );
+ 172:                         },
+ 173:                       ),
+ 174:           ),
+ 175:         ],
+ 176:       ),
+ 177:     );
+ 178:   }
+ 179: }
+
+
+==================================================
+ARQUIVO: C:\Users\Alex Salles\Apps - desenvolvimento\bolao_copa\lib\features\extras\widgets\question_card.dart
+==================================================
+   1: import 'package:flutter/material.dart';
+   2: import '../../../data/models/extra_question.dart';
+   3: import '../../../data/models/extra_prediction.dart';
+   4: import '../../../data/models/team.dart';
+   5: import '../../../data/models/player.dart';
+   6: import 'team_selection_sheet.dart';
+   7: import 'player_selection_sheet.dart';
+   8: class QuestionCard extends StatelessWidget {
+   9:   final ExtraQuestion question;
+  10:   final ExtraPrediction? prediction;
+  11:   final List<Team> teams;
+  12:   final List<Player> players;
+  13:   final bool locked;
+  14:   final Set<String> teamsExcluidos;
+  15:   final Future<void> Function(String answer) onSave;
+  16:   const QuestionCard({
+  17:     super.key,
+  18:     required this.question,
+  19:     required this.prediction,
+  20:     required this.teams,
+  21:     required this.players,
+  22:     required this.locked,
+  23:     required this.teamsExcluidos,
+  24:     required this.onSave,
+  25:   });
+  26:   Future<void> _abrirSelecao(BuildContext context) async {
+  27:     if (locked) return;
+  28:     if (question.type == ExtraQuestionType.team) {
+  29:       final result = await showModalBottomSheet<String>(
+  30:         context: context,
+  31:         isScrollControlled: true,
+  32:         shape: const RoundedRectangleBorder(
+  33:           borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+  34:         ),
+  35:         builder: (_) => TeamSelectionSheet(
+  36:           title: question.question,
+  37:           teams: teams,
+  38:           selectedId: prediction?.answer,
+  39:           teamsExcluidos: teamsExcluidos,
+  40:         ),
+  41:       );
+  42:       if (result != null) await onSave(result);
+  43:     } else {
+  44:       final result = await showModalBottomSheet<String>(
+  45:         context: context,
+  46:         isScrollControlled: true,
+  47:         shape: const RoundedRectangleBorder(
+  48:           borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+  49:         ),
+  50:         builder: (_) => PlayerSelectionSheet(
+  51:           title: question.question,
+  52:           teams: teams,
+  53:           players: players,
+  54:           selectedPlayerId: prediction?.answer,
+  55:         ),
+  56:       );
+  57:       if (result != null) await onSave(result);
+  58:     }
+  59:   }
+  60:   String _labelResposta() {
+  61:     if (prediction == null || prediction!.answer.isEmpty) {
+  62:       return 'Toque para responder';
+  63:     }
+  64:     if (question.type == ExtraQuestionType.team) {
+  65:       return teams
+  66:           .firstWhere((t) => t.id == prediction!.answer,
+  67:               orElse: () =>
+  68:                   const Team(id: '', name: 'Desconhecido', flagAsset: ''))
+  69:           .name;
+  70:     }
+  71:     final player = players.firstWhere(
+  72:       (p) => p.id == prediction!.answer,
+  73:       orElse: () => const Player(id: '', name: 'Desconhecido', teamId: ''),
+  74:     );
+  75:     final team = teams.firstWhere(
+  76:       (t) => t.id == player.teamId,
+  77:       orElse: () => const Team(id: '', name: '', flagAsset: ''),
+  78:     );
+  79:     return team.name.isNotEmpty ? '${player.name} (${team.name})' : player.name;
+  80:   }
+  81:   Widget _leading() {
+  82:     if (prediction == null || prediction!.answer.isEmpty) {
+  83:       return const Icon(Icons.help_outline, size: 32, color: Colors.grey);
+  84:     }
+  85:     String? flagAsset;
+  86:     if (question.type == ExtraQuestionType.team) {
+  87:       flagAsset = teams
+  88:           .firstWhere((t) => t.id == prediction!.answer,
+  89:               orElse: () => const Team(id: '', name: '', flagAsset: ''))
+  90:           .flagAsset;
+  91:     } else {
+  92:       final player = players.firstWhere(
+  93:         (p) => p.id == prediction!.answer,
+  94:         orElse: () => const Player(id: '', name: '', teamId: ''),
+  95:       );
+  96:       flagAsset = teams
+  97:           .firstWhere((t) => t.id == player.teamId,
+  98:               orElse: () => const Team(id: '', name: '', flagAsset: ''))
+  99:           .flagAsset;
+ 100:     }
+ 101:     if (flagAsset.isEmpty) {
+ 102:       return Icon(
+ 103:         question.type == ExtraQuestionType.team
+ 104:             ? Icons.flag_outlined
+ 105:             : Icons.person_outline,
+ 106:         size: 32,
+ 107:       );
+ 108:     }
+ 109:     return ClipRRect(
+ 110:       borderRadius: BorderRadius.circular(4),
+ 111:       child: Image.asset(flagAsset,
+ 112:           width: 48,
+ 113:           height: 32,
+ 114:           fit: BoxFit.cover,
+ 115:           errorBuilder: (_, __, ___) =>
+ 116:               const Icon(Icons.flag_outlined, size: 32)),
+ 117:     );
+ 118:   }
+ 119:   @override
+ 120:   Widget build(BuildContext context) {
+ 121:     final respondido = prediction != null && prediction!.answer.isNotEmpty;
+ 122:     return Card(
+ 123:       margin: const EdgeInsets.symmetric(vertical: 6),
+ 124:       child: ListTile(
+ 125:         leading: _leading(),
+ 126:         title: Text(question.question,
+ 127:             style: const TextStyle(fontWeight: FontWeight.bold)),
+ 128:         subtitle: Text(
+ 129:           _labelResposta(),
+ 130:           style: TextStyle(
+ 131:               color: respondido ? const Color(0xFF1A6B3C) : Colors.grey),
+ 132:         ),
+ 133:         trailing: locked
+ 134:             ? const Icon(Icons.lock_outline, color: Colors.orange)
+ 135:             : const Icon(Icons.chevron_right),
+ 136:         onTap: locked ? null : () => _abrirSelecao(context),
+ 137:       ),
+ 138:     );
+ 139:   }
+ 140: }
+
+
+==================================================
+ARQUIVO: C:\Users\Alex Salles\Apps - desenvolvimento\bolao_copa\lib\features\extras\widgets\team_selection_sheet.dart
+==================================================
+   1: import 'package:flutter/material.dart';
+   2: import '../../../data/models/team.dart';
+   3: class TeamSelectionSheet extends StatefulWidget {
+   4:   final String title;
+   5:   final List<Team> teams;
+   6:   final String? selectedId;
+   7:   final Set<String> teamsExcluidos;
+   8:   const TeamSelectionSheet({
+   9:     super.key,
+  10:     required this.title,
+  11:     required this.teams,
+  12:     required this.selectedId,
+  13:     required this.teamsExcluidos,
+  14:   });
+  15:   @override
+  16:   State<TeamSelectionSheet> createState() => _TeamSelectionSheetState();
+  17: }
+  18: class _TeamSelectionSheetState extends State<TeamSelectionSheet> {
+  19:   final _searchController = TextEditingController();
+  20:   String _busca = '';
+  21:   @override
+  22:   void dispose() {
+  23:     _searchController.dispose();
+  24:     super.dispose();
+  25:   }
+  26:   @override
+  27:   Widget build(BuildContext context) {
+  28:     final altura = MediaQuery.of(context).size.height * 0.75;
+  29:     final disponiveis = widget.teams
+  30:         .where((t) =>
+  31:             !widget.teamsExcluidos.contains(t.id) &&
+  32:             t.name.toLowerCase().contains(_busca.toLowerCase()))
+  33:         .toList();
+  34:     return SizedBox(
+  35:       height: altura,
+  36:       child: Column(
+  37:         children: [
+  38:           const SizedBox(height: 12),
+  39:           Container(
+  40:             width: 40, height: 4,
+  41:             decoration: BoxDecoration(
+  42:                 color: Colors.grey[300],
+  43:                 borderRadius: BorderRadius.circular(2)),
+  44:           ),
+  45:           const SizedBox(height: 12),
+  46:           Padding(
+  47:             padding: const EdgeInsets.symmetric(horizontal: 16),
+  48:             child: Text(widget.title,
+  49:                 style: const TextStyle(
+  50:                     fontSize: 16, fontWeight: FontWeight.bold),
+  51:                 textAlign: TextAlign.center),
+  52:           ),
+  53:           if (widget.teamsExcluidos.isNotEmpty)
+  54:             Padding(
+  55:               padding:
+  56:                   const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+  57:               child: Text(
+  58:                 '${widget.teamsExcluidos.length} seleção(ões) já escolhida(s)',
+  59:                 style:
+  60:                     const TextStyle(fontSize: 12, color: Colors.orange),
+  61:                 textAlign: TextAlign.center,
+  62:               ),
+  63:             ),
+  64:           const SizedBox(height: 8),
+  65:           Padding(
+  66:             padding: const EdgeInsets.symmetric(horizontal: 16),
+  67:             child: TextField(
+  68:               controller: _searchController,
+  69:               decoration: const InputDecoration(
+  70:                 hintText: 'Buscar seleção...',
+  71:                 prefixIcon: Icon(Icons.search),
+  72:                 border: OutlineInputBorder(),
+  73:                 contentPadding:
+  74:                     EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+  75:               ),
+  76:               onChanged: (v) => setState(() => _busca = v),
+  77:             ),
+  78:           ),
+  79:           const SizedBox(height: 8),
+  80:           Expanded(
+  81:             child: disponiveis.isEmpty
+  82:                 ? const Center(child: Text('Nenhuma seleção disponível.'))
+  83:                 : ListView.builder(
+  84:                     itemCount: disponiveis.length,
+  85:                     itemBuilder: (context, index) {
+  86:                       final team = disponiveis[index];
+  87:                       final selected = widget.selectedId == team.id;
+  88:                       return ListTile(
+  89:                         leading: ClipRRect(
+  90:                           borderRadius: BorderRadius.circular(4),
+  91:                           child: Image.asset(team.flagAsset,
+  92:                               width: 40,
+  93:                               height: 27,
+  94:                               fit: BoxFit.cover,
+  95:                               errorBuilder: (_, __, ___) =>
+  96:                                   const Icon(Icons.flag_outlined)),
+  97:                         ),
+  98:                         title: Text(team.name),
+  99:                         trailing: selected
+ 100:                             ? const Icon(Icons.check_circle,
+ 101:                                 color: Color(0xFF1A6B3C))
+ 102:                             : null,
+ 103:                         onTap: () => Navigator.pop(context, team.id),
+ 104:                       );
+ 105:                     },
+ 106:                   ),
+ 107:           ),
+ 108:         ],
+ 109:       ),
+ 110:     );
+ 111:   }
+ 112: }
+
+
+==================================================
+ARQUIVO: C:\Users\Alex Salles\Apps - desenvolvimento\bolao_copa\lib\features\home\home_screen.dart
+==================================================
+   1: import 'package:flutter/material.dart';
+   2: import '../../services/auth_service.dart';
+   3: import '../../data/models/app_user.dart';
+   4: import '../../core/routes/app_routes.dart';
+   5: import '../auth/login_screen.dart';
+   6: class HomeScreen extends StatefulWidget {
+   7:   const HomeScreen({super.key});
+   8:   @override
+   9:   State<HomeScreen> createState() => _HomeScreenState();
+  10: }
+  11: class _HomeScreenState extends State<HomeScreen> {
+  12:   final _authService = AuthService();
+  13:   AppUser? _appUser;
+  14:   bool _loading = true;
+  15:   @override
+  16:   void initState() {
+  17:     super.initState();
+  18:     _carregarUsuario();
+  19:   }
+  20:   Future<void> _carregarUsuario() async {
+  21:     final user = _authService.currentUser;
+  22:     if (user == null) {
+  23:       if (mounted) {
+  24:         Navigator.of(context).pushAndRemoveUntil(
+  25:           MaterialPageRoute(builder: (_) => const LoginScreen()),
+  26:           (route) => false,
+  27:         );
+  28:       }
+  29:       return;
+  30:     }
+  31:     final appUser = await _authService.fetchAppUser(user.uid);
+  32:     if (mounted) {
+  33:       setState(() {
+  34:         _appUser = appUser;
+  35:         _loading = false;
+  36:       });
+  37:     }
+  38:   }
+  39:   Future<void> _sair() async {
+  40:     await _authService.signOut();
+  41:     if (mounted) {
+  42:       Navigator.of(context).pushAndRemoveUntil(
+  43:         MaterialPageRoute(builder: (_) => const LoginScreen()),
+  44:         (route) => false,
+  45:       );
+  46:     }
+  47:   }
+  48:   @override
+  49:   Widget build(BuildContext context) {
+  50:     if (_loading) {
+  51:       return const Scaffold(
+  52:         body: Center(child: CircularProgressIndicator()),
+  53:       );
+  54:     }
+  55:     return Scaffold(
+  56:       appBar: AppBar(
+  57:         title: const Text('Bolão Copa do Mundo'),
+  58:         backgroundColor: const Color(0xFF1A6B3C),
+  59:         foregroundColor: Colors.white,
+  60:         actions: [
+  61:           if (_appUser?.isAdmin == true)
+  62:             IconButton(
+  63:               icon: const Icon(Icons.admin_panel_settings_outlined),
+  64:               tooltip: 'Admin',
+  65:               onPressed: () =>
+  66:                   Navigator.pushNamed(context, AppRoutes.adminDashboard),
+  67:             ),
+  68:           IconButton(
+  69:             icon: const Icon(Icons.logout),
+  70:             tooltip: 'Sair',
+  71:             onPressed: _sair,
+  72:           ),
+  73:         ],
+  74:       ),
+  75:       body: Padding(
+  76:         padding: const EdgeInsets.all(24),
+  77:         child: Column(
+  78:           crossAxisAlignment: CrossAxisAlignment.start,
+  79:           children: [
+  80:             Text(
+  81:               'Olá, ${_appUser?.name ?? 'Jogador'}!',
+  82:               style: const TextStyle(
+  83:                 fontSize: 22,
+  84:                 fontWeight: FontWeight.bold,
+  85:               ),
+  86:             ),
+  87:             const SizedBox(height: 8),
+  88:             Text(
+  89:               'Pontuação total: ${_appUser?.totalPoints ?? 0} pts',
+  90:               style: const TextStyle(fontSize: 16, color: Colors.grey),
+  91:             ),
+  92:             const SizedBox(height: 32),
+  93:             _MenuItem(
+  94:               icon: Icons.sports_soccer,
+  95:               label: 'Meus Palpites',
+  96:               descricao: 'Aposte nos resultados dos jogos',
+  97:               onTap: () => Navigator.pushNamed(context, AppRoutes.matches),
+  98:             ),
+  99:             const SizedBox(height: 12),
+ 100:             _MenuItem(
+ 101:               icon: Icons.star_outline,
+ 102:               label: 'Palpites Extras',
+ 103:               descricao: 'Campeão, artilheiro e mais',
+ 104:               onTap: () => Navigator.pushNamed(context, AppRoutes.extras),
+ 105:             ),
+ 106:             const SizedBox(height: 12),
+ 107:             _MenuItem(
+ 108:               icon: Icons.leaderboard_outlined,
+ 109:               label: 'Ranking',
+ 110:               descricao: 'Veja a classificação geral',
+ 111:               onTap: () => Navigator.pushNamed(context, AppRoutes.ranking),
+ 112:             ),
+ 113:           ],
+ 114:         ),
+ 115:       ),
+ 116:     );
+ 117:   }
+ 118: }
+ 119: class _MenuItem extends StatelessWidget {
+ 120:   final IconData icon;
+ 121:   final String label;
+ 122:   final String descricao;
+ 123:   final VoidCallback onTap;
+ 124:   const _MenuItem({
+ 125:     required this.icon,
+ 126:     required this.label,
+ 127:     required this.descricao,
+ 128:     required this.onTap,
+ 129:   });
+ 130:   @override
+ 131:   Widget build(BuildContext context) {
+ 132:     return Card(
+ 133:       child: ListTile(
+ 134:         leading: Icon(icon, color: const Color(0xFF1A6B3C), size: 32),
+ 135:         title: Text(label,
+ 136:             style: const TextStyle(fontWeight: FontWeight.bold)),
+ 137:         subtitle: Text(descricao),
+ 138:         trailing: const Icon(Icons.chevron_right),
+ 139:         onTap: onTap,
+ 140:       ),
+ 141:     );
+ 142:   }
+ 143: }
+
+
+==================================================
+ARQUIVO: C:\Users\Alex Salles\Apps - desenvolvimento\bolao_copa\lib\features\matches\match_prediction_screen.dart
+==================================================
+   1: import 'package:flutter/material.dart';
+   2: import 'package:firebase_auth/firebase_auth.dart';
+   3: import 'package:intl/intl.dart';
+   4: import '../../data/models/match.dart';
+   5: import '../../data/models/team.dart';
+   6: import '../../data/models/prediction.dart';
+   7: import '../../data/models/cup.dart';
+   8: import '../../data/repositories/match_repository.dart';
+   9: import '../../data/repositories/prediction_repository.dart';
+  10: import '../../services/firestore_service.dart';
+  11: class MatchPredictionScreen extends StatefulWidget {
+  12:   const MatchPredictionScreen({super.key});
+  13:   @override
+  14:   State<MatchPredictionScreen> createState() => _MatchPredictionScreenState();
+  15: }
+  16: class _MatchPredictionScreenState extends State<MatchPredictionScreen> {
+  17:   final _matchRepo = MatchRepository();
+  18:   final _predictionRepo = PredictionRepository();
+  19:   final _firestoreService = FirestoreService();
+  20:   final _formKey = GlobalKey<FormState>();
+  21:   final _homeController = TextEditingController();
+  22:   final _awayController = TextEditingController();
+  23:   Match? _match;
+  24:   Team? _homeTeam;
+  25:   Team? _awayTeam;
+  26:   Cup? _cup;
+  27:   bool _loading = true;
+  28:   bool _saving = false;
+  29:   String? _erro;
+  30:   String? _sucesso;
+  31:   late String _cupId;
+  32:   late String _matchId;
+  33:   String? _groupId;
+  34:   @override
+  35:   void didChangeDependencies() {
+  36:     super.didChangeDependencies();
+  37:     final args =
+  38:         ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+  39:     _cupId = args['cupId'];
+  40:     _matchId = args['matchId'];
+  41:     _groupId = args['groupId'];
+  42:     _carregar();
+  43:   }
+  44:   @override
+  45:   void dispose() {
+  46:     _homeController.dispose();
+  47:     _awayController.dispose();
+  48:     super.dispose();
+  49:   }
+  50:   Future<void> _carregar() async {
+  51:     try {
+  52:       final cup = await _firestoreService.fetchActiveCup();
+  53:       _cup = cup;
+  54:       final results = await Future.wait([
+  55:         _matchRepo.fetchMatch(_cupId, _matchId, _groupId),
+  56:         _matchRepo.fetchTeams(_cupId),
+  57:       ]);
+  58:       final match = results[0] as Match?;
+  59:       final teams = results[1] as Map<String, Team>;
+  60:       if (match == null) {
+  61:         setState(() {
+  62:           _erro = 'Jogo não encontrado.';
+  63:           _loading = false;
+  64:         });
+  65:         return;
+  66:       }
+  67:       final uid = FirebaseAuth.instance.currentUser!.uid;
+  68:       final prediction = await _predictionRepo.fetchPrediction(uid, _matchId);
+  69:       setState(() {
+  70:         _match = match;
+  71:         _homeTeam = teams[match.homeTeamId];
+  72:         _awayTeam = teams[match.awayTeamId];
+  73:         _homeController.text =
+  74:             prediction != null ? prediction.homeGoals.toString() : '';
+  75:         _awayController.text =
+  76:             prediction != null ? prediction.awayGoals.toString() : '';
+  77:         _loading = false;
+  78:       });
+  79:     } catch (e) {
+  80:       setState(() {
+  81:         _erro = 'Erro ao carregar jogo.';
+  82:         _loading = false;
+  83:       });
+  84:     }
+  85:   }
+  86:   Future<void> _salvar() async {
+  87:     if (!_formKey.currentState!.validate()) return;
+  88:     if (_cup?.isLocked ?? true) return;
+  89:     setState(() {
+  90:       _saving = true;
+  91:       _erro = null;
+  92:       _sucesso = null;
+  93:     });
+  94:     try {
+  95:       final uid = FirebaseAuth.instance.currentUser!.uid;
+  96:       final prediction = Prediction(
+  97:         matchId: _matchId,
+  98:         userId: uid,
+  99:         homeGoals: int.parse(_homeController.text),
+ 100:         awayGoals: int.parse(_awayController.text),
+ 101:         savedAt: DateTime.now(),
+ 102:       );
+ 103:       await _predictionRepo.savePrediction(prediction);
+ 104:       setState(() { _sucesso = 'Palpite salvo com sucesso!'; });
+ 105:     } catch (e) {
+ 106:       setState(() { _erro = 'Erro ao salvar palpite.'; });
+ 107:     } finally {
+ 108:       if (mounted) setState(() { _saving = false; });
+ 109:     }
+ 110:   }
+ 111:   @override
+ 112:   Widget build(BuildContext context) {
+ 113:     return Scaffold(
+ 114:       appBar: AppBar(
+ 115:         title: const Text('Meu Palpite'),
+ 116:         backgroundColor: const Color(0xFF1A6B3C),
+ 117:         foregroundColor: Colors.white,
+ 118:       ),
+ 119:       body: _loading
+ 120:           ? const Center(child: CircularProgressIndicator())
+ 121:           : _erro != null && _match == null
+ 122:               ? Center(child: Text(_erro!))
+ 123:               : _buildBody(),
+ 124:     );
+ 125:   }
+ 126:   Widget _buildBody() {
+ 127:     final match = _match!;
+ 128:     final locked = _cup?.isLocked ?? true;
+ 129:     final dateStr = DateFormat('dd/MM/yyyy · HH:mm').format(match.matchTime);
+ 130:     final startsAt = _cup?.startsAt;
+ 131:     final lockStr = startsAt != null
+ 132:         ? DateFormat('dd/MM/yyyy · HH:mm').format(startsAt)
+ 133:         : '';
+ 134:     return SingleChildScrollView(
+ 135:       padding: const EdgeInsets.all(24),
+ 136:       child: Form(
+ 137:         key: _formKey,
+ 138:         child: Column(
+ 139:           children: [
+ 140:             Text(
+ 141:               dateStr,
+ 142:               style: const TextStyle(color: Colors.grey, fontSize: 14),
+ 143:             ),
+ 144:             const SizedBox(height: 4),
+ 145:             Text(
+ 146:               _faseLabel(match.phase),
+ 147:               style: const TextStyle(
+ 148:                   fontWeight: FontWeight.bold, fontSize: 13),
+ 149:             ),
+ 150:             const SizedBox(height: 24),
+ 151:             Row(
+ 152:               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+ 153:               crossAxisAlignment: CrossAxisAlignment.center,
+ 154:               children: [
+ 155:                 _TeamBlock(team: _homeTeam),
+ 156:                 _ScoreInput(
+ 157:                   homeController: _homeController,
+ 158:                   awayController: _awayController,
+ 159:                   locked: locked || match.finished,
+ 160:                 ),
+ 161:                 _TeamBlock(team: _awayTeam),
+ 162:               ],
+ 163:             ),
+ 164:             const SizedBox(height: 28),
+ 165:             if (match.finished)
+ 166:               Container(
+ 167:                 padding: const EdgeInsets.symmetric(
+ 168:                     horizontal: 20, vertical: 10),
+ 169:                 decoration: BoxDecoration(
+ 170:                   color: const Color(0xFF1A6B3C).withValues(alpha: 0.1),
+ 171:                   borderRadius: BorderRadius.circular(8),
+ 172:                 ),
+ 173:                 child: Text(
+ 174:                   'Resultado oficial: '
+ 175:                   '${match.officialHomeGoals} × ${match.officialAwayGoals}',
+ 176:                   style: const TextStyle(
+ 177:                       fontWeight: FontWeight.bold, fontSize: 15),
+ 178:                 ),
+ 179:               ),
+ 180:             if (locked && !match.finished)
+ 181:               Container(
+ 182:                 padding: const EdgeInsets.symmetric(
+ 183:                     horizontal: 16, vertical: 10),
+ 184:                 decoration: BoxDecoration(
+ 185:                   color: Colors.orange.withValues(alpha: 0.1),
+ 186:                   borderRadius: BorderRadius.circular(8),
+ 187:                 ),
+ 188:                 child: Row(
+ 189:                   mainAxisAlignment: MainAxisAlignment.center,
+ 190:                   children: [
+ 191:                     const Icon(Icons.lock_outline,
+ 192:                         color: Colors.orange, size: 18),
+ 193:                     const SizedBox(width: 8),
+ 194:                     Text(
+ 195:                       'Palpites encerrados em $lockStr',
+ 196:                       style: const TextStyle(color: Colors.orange),
+ 197:                     ),
+ 198:                   ],
+ 199:                 ),
+ 200:               ),
+ 201:             if (!locked && !match.finished)
+ 202:               Text(
+ 203:                 'Prazo para palpitar: $lockStr',
+ 204:                 style: const TextStyle(color: Colors.grey, fontSize: 13),
+ 205:               ),
+ 206:             const SizedBox(height: 24),
+ 207:             if (_sucesso != null)
+ 208:               Text(_sucesso!,
+ 209:                   style: const TextStyle(
+ 210:                       color: Color(0xFF1A6B3C),
+ 211:                       fontWeight: FontWeight.bold)),
+ 212:             if (_erro != null)
+ 213:               Text(_erro!, style: const TextStyle(color: Colors.red)),
+ 214:             const SizedBox(height: 16),
+ 215:             if (!locked && !match.finished)
+ 216:               SizedBox(
+ 217:                 width: double.infinity,
+ 218:                 child: FilledButton(
+ 219:                   style: FilledButton.styleFrom(
+ 220:                     backgroundColor: const Color(0xFF1A6B3C),
+ 221:                   ),
+ 222:                   onPressed: _saving ? null : _salvar,
+ 223:                   child: _saving
+ 224:                       ? const SizedBox(
+ 225:                           height: 20,
+ 226:                           width: 20,
+ 227:                           child: CircularProgressIndicator(
+ 228:                               strokeWidth: 2, color: Colors.white),
+ 229:                         )
+ 230:                       : const Text('Salvar Palpite'),
+ 231:                 ),
+ 232:               ),
+ 233:           ],
+ 234:         ),
+ 235:       ),
+ 236:     );
+ 237:   }
+ 238:   String _faseLabel(String phase) {
+ 239:     switch (phase) {
+ 240:       case 'group':
+ 241:         return 'Fase de Grupos — Grupo ${_match?.groupId?.toUpperCase() ?? ''}';
+ 242:       case 'round_of_16':
+ 243:         return 'Oitavas de Final';
+ 244:       case 'quarter':
+ 245:         return 'Quartas de Final';
+ 246:       case 'semi':
+ 247:         return 'Semifinal';
+ 248:       case 'final':
+ 249:         return 'Final';
+ 250:       default:
+ 251:         return phase;
+ 252:     }
+ 253:   }
+ 254: }
+ 255: class _TeamBlock extends StatelessWidget {
+ 256:   final Team? team;
+ 257:   const _TeamBlock({required this.team});
+ 258:   @override
+ 259:   Widget build(BuildContext context) {
+ 260:     return SizedBox(
+ 261:       width: 90,
+ 262:       child: Column(
+ 263:         children: [
+ 264:           ClipRRect(
+ 265:             borderRadius: BorderRadius.circular(4),
+ 266:             child: Image.asset(
+ 267:               team?.flagAsset ?? '',
+ 268:               width: 64,
+ 269:               height: 42,
+ 270:               fit: BoxFit.cover,
+ 271:               errorBuilder: (_, __, ___) =>
+ 272:                   const Icon(Icons.flag_outlined, size: 42),
+ 273:             ),
+ 274:           ),
+ 275:           const SizedBox(height: 8),
+ 276:           Text(
+ 277:             team?.name ?? '?',
+ 278:             textAlign: TextAlign.center,
+ 279:             style: const TextStyle(
+ 280:                 fontWeight: FontWeight.bold, fontSize: 13),
+ 281:             maxLines: 2,
+ 282:             overflow: TextOverflow.ellipsis,
+ 283:           ),
+ 284:         ],
+ 285:       ),
+ 286:     );
+ 287:   }
+ 288: }
+ 289: class _ScoreInput extends StatelessWidget {
+ 290:   final TextEditingController homeController;
+ 291:   final TextEditingController awayController;
+ 292:   final bool locked;
+ 293:   const _ScoreInput({
+ 294:     required this.homeController,
+ 295:     required this.awayController,
+ 296:     required this.locked,
+ 297:   });
+ 298:   @override
+ 299:   Widget build(BuildContext context) {
+ 300:     return Row(
+ 301:       mainAxisSize: MainAxisSize.min,
+ 302:       children: [
+ 303:         _GoalField(controller: homeController, locked: locked),
+ 304:         const Padding(
+ 305:           padding: EdgeInsets.symmetric(horizontal: 8),
+ 306:           child: Text('×',
+ 307:               style: TextStyle(
+ 308:                   fontSize: 24, fontWeight: FontWeight.bold)),
+ 309:         ),
+ 310:         _GoalField(controller: awayController, locked: locked),
+ 311:       ],
+ 312:     );
+ 313:   }
+ 314: }
+ 315: class _GoalField extends StatelessWidget {
+ 316:   final TextEditingController controller;
+ 317:   final bool locked;
+ 318:   const _GoalField({
+ 319:     required this.controller,
+ 320:     required this.locked,
+ 321:   });
+ 322:   @override
+ 323:   Widget build(BuildContext context) {
+ 324:     return SizedBox(
+ 325:       width: 52,
+ 326:       child: TextFormField(
+ 327:         controller: controller,
+ 328:         enabled: !locked,
+ 329:         keyboardType: TextInputType.number,
+ 330:         textAlign: TextAlign.center,
+ 331:         style: const TextStyle(
+ 332:             fontSize: 28, fontWeight: FontWeight.bold),
+ 333:         decoration: InputDecoration(
+ 334:           border: const OutlineInputBorder(),
+ 335:           filled: locked,
+ 336:           fillColor: Colors.grey.withValues(alpha: 0.15),
+ 337:           contentPadding: const EdgeInsets.symmetric(
+ 338:               vertical: 12, horizontal: 4),
+ 339:         ),
+ 340:         validator: (v) {
+ 341:           if (v == null || v.isEmpty) return '?';
+ 342:           if (int.tryParse(v) == null) return '?';
+ 343:           return null;
+ 344:         },
+ 345:       ),
+ 346:     );
+ 347:   }
+ 348: }
+
+
+==================================================
+ARQUIVO: C:\Users\Alex Salles\Apps - desenvolvimento\bolao_copa\lib\features\matches\matches_screen.dart
+==================================================
+   1: import 'package:flutter/material.dart';
+   2: import 'package:firebase_auth/firebase_auth.dart';
+   3: import '../../data/models/match.dart';
+   4: import '../../data/models/team.dart';
+   5: import '../../data/models/cup.dart';
+   6: import '../../data/models/prediction.dart';
+   7: import '../../data/repositories/match_repository.dart';
+   8: import '../../data/repositories/prediction_repository.dart';
+   9: import '../../services/firestore_service.dart';
+  10: import 'widgets/match_list_tab.dart';
+  11: class MatchesScreen extends StatefulWidget {
+  12:   const MatchesScreen({super.key});
+  13:   @override
+  14:   State<MatchesScreen> createState() => _MatchesScreenState();
+  15: }
+  16: class _MatchesScreenState extends State<MatchesScreen>
+  17:     with SingleTickerProviderStateMixin {
+  18:   final _matchRepo = MatchRepository();
+  19:   final _predictionRepo = PredictionRepository();
+  20:   final _firestoreService = FirestoreService();
+  21:   late TabController _tabController;
+  22:   List<Match> _groupMatches = [];
+  23:   List<Match> _knockoutMatches = [];
+  24:   Map<String, Team> _teams = {};
+  25:   Cup? _cup;
+  26:   final Map<String, List<int>> _palpites = {};
+  27:   final Map<String, bool> _saving = {};
+  28:   bool _savingAll = false;
+  29:   bool _loading = true;
+  30:   String? _erro;
+  31:   @override
+  32:   void initState() {
+  33:     super.initState();
+  34:     _tabController = TabController(length: 2, vsync: this);
+  35:     _carregar();
+  36:   }
+  37:   @override
+  38:   void dispose() {
+  39:     _tabController.dispose();
+  40:     super.dispose();
+  41:   }
+  42:   Future<void> _carregar() async {
+  43:     try {
+  44:       final cup = await _firestoreService.fetchActiveCup();
+  45:       if (cup == null) {
+  46:         setState(() {
+  47:           _erro = 'Nenhum bolão ativo encontrado.';
+  48:           _loading = false;
+  49:         });
+  50:         return;
+  51:       }
+  52:       _cup = cup;
+  53:       final uid = FirebaseAuth.instance.currentUser!.uid;
+  54:       final results = await Future.wait([
+  55:         _matchRepo.fetchGroupMatches(cup.id),
+  56:         _matchRepo.fetchKnockoutMatches(cup.id),
+  57:         _matchRepo.fetchTeams(cup.id),
+  58:         _predictionRepo.fetchAllPredictions(uid),
+  59:       ]);
+  60:       final groupMatches = results[0] as List<Match>;
+  61:       final knockoutMatches = results[1] as List<Match>;
+  62:       final teams = results[2] as Map<String, Team>;
+  63:       final predictions = results[3] as List<Prediction>;
+  64:       final Map<String, List<int>> palpites = {};
+  65:       for (final p in predictions) {
+  66:         palpites[p.matchId] = [p.homeGoals, p.awayGoals];
+  67:       }
+  68:       for (final m in [...groupMatches, ...knockoutMatches]) {
+  69:         palpites.putIfAbsent(m.id, () => [0, 0]);
+  70:       }
+  71:       setState(() {
+  72:         _groupMatches = groupMatches;
+  73:         _knockoutMatches = knockoutMatches;
+  74:         _teams = teams;
+  75:         _palpites.addAll(palpites);
+  76:         _loading = false;
+  77:       });
+  78:     } catch (e) {
+  79:       setState(() {
+  80:         _erro = 'Erro ao carregar jogos.';
+  81:         _loading = false;
+  82:       });
+  83:     }
+  84:   }
+  85:   void _incrementar(String matchId, int side) {
+  86:     if (_cup?.isLocked ?? true) return;
+  87:     setState(() {
+  88:       _palpites[matchId]![side] =
+  89:           (_palpites[matchId]![side] + 1).clamp(0, 99);
+  90:     });
+  91:   }
+  92:   void _decrementar(String matchId, int side) {
+  93:     if (_cup?.isLocked ?? true) return;
+  94:     setState(() {
+  95:       _palpites[matchId]![side] =
+  96:           (_palpites[matchId]![side] - 1).clamp(0, 99);
+  97:     });
+  98:   }
+  99:   Future<void> _salvarUm(Match match) async {
+ 100:     final uid = FirebaseAuth.instance.currentUser!.uid;
+ 101:     setState(() => _saving[match.id] = true);
+ 102:     try {
+ 103:       final gols = _palpites[match.id]!;
+ 104:       await _predictionRepo.savePrediction(Prediction(
+ 105:         matchId: match.id,
+ 106:         userId: uid,
+ 107:         homeGoals: gols[0],
+ 108:         awayGoals: gols[1],
+ 109:         savedAt: DateTime.now(),
+ 110:       ));
+ 111:       if (mounted) {
+ 112:         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+ 113:           content: Text('Palpite salvo!'),
+ 114:           duration: Duration(seconds: 1),
+ 115:           backgroundColor: Color(0xFF1A6B3C),
+ 116:         ));
+ 117:       }
+ 118:     } catch (_) {
+ 119:       if (mounted) {
+ 120:         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+ 121:           content: Text('Erro ao salvar palpite.'),
+ 122:           backgroundColor: Colors.red,
+ 123:         ));
+ 124:       }
+ 125:     } finally {
+ 126:       if (mounted) setState(() => _saving[match.id] = false);
+ 127:     }
+ 128:   }
+ 129:   Future<void> _salvarTodos(List<Match> matches) async {
+ 130:     final uid = FirebaseAuth.instance.currentUser!.uid;
+ 131:     setState(() => _savingAll = true);
+ 132:     try {
+ 133:       for (final match in matches) {
+ 134:         final gols = _palpites[match.id]!;
+ 135:         await _predictionRepo.savePrediction(Prediction(
+ 136:           matchId: match.id,
+ 137:           userId: uid,
+ 138:           homeGoals: gols[0],
+ 139:           awayGoals: gols[1],
+ 140:           savedAt: DateTime.now(),
+ 141:         ));
+ 142:       }
+ 143:       if (mounted) {
+ 144:         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+ 145:           content: Text('${matches.length} palpites salvos!'),
+ 146:           backgroundColor: const Color(0xFF1A6B3C),
+ 147:         ));
+ 148:       }
+ 149:     } catch (_) {
+ 150:       if (mounted) {
+ 151:         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+ 152:           content: Text('Erro ao salvar palpites.'),
+ 153:           backgroundColor: Colors.red,
+ 154:         ));
+ 155:       }
+ 156:     } finally {
+ 157:       if (mounted) setState(() => _savingAll = false);
+ 158:     }
+ 159:   }
+ 160:   @override
+ 161:   Widget build(BuildContext context) {
+ 162:     return Scaffold(
+ 163:       appBar: AppBar(
+ 164:         title: const Text('Meus Palpites'),
+ 165:         backgroundColor: const Color(0xFF1A6B3C),
+ 166:         foregroundColor: Colors.white,
+ 167:         bottom: TabBar(
+ 168:           controller: _tabController,
+ 169:           labelColor: Colors.white,
+ 170:           unselectedLabelColor: Colors.white60,
+ 171:           indicatorColor: Colors.white,
+ 172:           tabs: const [
+ 173:             Tab(text: 'Fase de Grupos'),
+ 174:             Tab(text: 'Mata-Mata'),
+ 175:           ],
+ 176:         ),
+ 177:       ),
+ 178:       body: _loading
+ 179:           ? const Center(child: CircularProgressIndicator())
+ 180:           : _erro != null
+ 181:               ? Center(child: Text(_erro!))
+ 182:               : TabBarView(
+ 183:                   controller: _tabController,
+ 184:                   children: [
+ 185:                     MatchListTab(
+ 186:                       matches: _groupMatches,
+ 187:                       teams: _teams,
+ 188:                       cup: _cup!,
+ 189:                       palpites: _palpites,
+ 190:                       saving: _saving,
+ 191:                       savingAll: _savingAll,
+ 192:                       onIncrement: _incrementar,
+ 193:                       onDecrement: _decrementar,
+ 194:                       onSaveOne: _salvarUm,
+ 195:                       onSaveAll: () => _salvarTodos(_groupMatches),
+ 196:                     ),
+ 197:                     MatchListTab(
+ 198:                       matches: _knockoutMatches,
+ 199:                       teams: _teams,
+ 200:                       cup: _cup!,
+ 201:                       palpites: _palpites,
+ 202:                       saving: _saving,
+ 203:                       savingAll: _savingAll,
+ 204:                       onIncrement: _incrementar,
+ 205:                       onDecrement: _decrementar,
+ 206:                       onSaveOne: _salvarUm,
+ 207:                       onSaveAll: () => _salvarTodos(_knockoutMatches),
+ 208:                     ),
+ 209:                   ],
+ 210:                 ),
+ 211:     );
+ 212:   }
+ 213: }
+
+
+==================================================
+ARQUIVO: C:\Users\Alex Salles\Apps - desenvolvimento\bolao_copa\lib\features\matches\widgets\match_card.dart
+==================================================
+   1: import 'package:flutter/material.dart';
+   2: import 'package:intl/intl.dart';
+   3: import '../../../data/models/match.dart';
+   4: import '../../../data/models/team.dart';
+   5: import 'team_block.dart';
+   6: import 'score_control.dart';
+   7: class MatchCard extends StatelessWidget {
+   8:   final Match match;
+   9:   final Team? home;
+  10:   final Team? away;
+  11:   final List<int> palpite;
+  12:   final bool locked;
+  13:   final bool isSaving;
+  14:   final void Function(int side) onIncrement;
+  15:   final void Function(int side) onDecrement;
+  16:   final VoidCallback onSave;
+  17:   const MatchCard({
+  18:     super.key,
+  19:     required this.match,
+  20:     required this.home,
+  21:     required this.away,
+  22:     required this.palpite,
+  23:     required this.locked,
+  24:     required this.isSaving,
+  25:     required this.onIncrement,
+  26:     required this.onDecrement,
+  27:     required this.onSave,
+  28:   });
+  29:   @override
+  30:   Widget build(BuildContext context) {
+  31:     final dateStr = DateFormat('dd/MM/yyyy · HH:mm').format(match.matchTime);
+  32:     return Card(
+  33:       margin: const EdgeInsets.symmetric(vertical: 6),
+  34:       child: Padding(
+  35:         padding: const EdgeInsets.all(12),
+  36:         child: Column(
+  37:           children: [
+  38:             Text(dateStr,
+  39:                 style: const TextStyle(fontSize: 12, color: Colors.grey)),
+  40:             const SizedBox(height: 10),
+  41:             Row(
+  42:               children: [
+  43:                 Expanded(child: TeamBlock(team: home)),
+  44:                 ScoreControl(
+  45:                   homeGoals: palpite[0],
+  46:                   awayGoals: palpite[1],
+  47:                   locked: locked,
+  48:                   onIncrementHome: () => onIncrement(0),
+  49:                   onDecrementHome: () => onDecrement(0),
+  50:                   onIncrementAway: () => onIncrement(1),
+  51:                   onDecrementAway: () => onDecrement(1),
+  52:                 ),
+  53:                 Expanded(child: TeamBlock(team: away, alignRight: true)),
+  54:               ],
+  55:             ),
+  56:             const SizedBox(height: 10),
+  57:             if (match.finished)
+  58:               Text(
+  59:                 'Resultado oficial: '
+  60:                 '${match.officialHomeGoals} × ${match.officialAwayGoals}',
+  61:                 style: const TextStyle(
+  62:                     fontWeight: FontWeight.bold,
+  63:                     color: Color(0xFF1A6B3C),
+  64:                     fontSize: 13),
+  65:               )
+  66:             else if (!locked)
+  67:               SizedBox(
+  68:                 width: double.infinity,
+  69:                 child: OutlinedButton(
+  70:                   onPressed: isSaving ? null : onSave,
+  71:                   style: OutlinedButton.styleFrom(
+  72:                     foregroundColor: const Color(0xFF1A6B3C),
+  73:                     side: const BorderSide(color: Color(0xFF1A6B3C)),
+  74:                     padding: const EdgeInsets.symmetric(vertical: 6),
+  75:                   ),
+  76:                   child: isSaving
+  77:                       ? const SizedBox(
+  78:                           height: 16,
+  79:                           width: 16,
+  80:                           child: CircularProgressIndicator(
+  81:                               strokeWidth: 2, color: Color(0xFF1A6B3C)),
+  82:                         )
+  83:                       : const Text('Salvar este palpite'),
+  84:                 ),
+  85:               ),
+  86:           ],
+  87:         ),
+  88:       ),
+  89:     );
+  90:   }
+  91: }
+
+
+==================================================
+ARQUIVO: C:\Users\Alex Salles\Apps - desenvolvimento\bolao_copa\lib\features\matches\widgets\match_list_tab.dart
+==================================================
+   1: import 'package:flutter/material.dart';
+   2: import '../../../data/models/match.dart';
+   3: import '../../../data/models/team.dart';
+   4: import '../../../data/models/cup.dart';
+   5: import 'match_card.dart';
+   6: class MatchListTab extends StatelessWidget {
+   7:   final List<Match> matches;
+   8:   final Map<String, Team> teams;
+   9:   final Cup cup;
+  10:   final Map<String, List<int>> palpites;
+  11:   final Map<String, bool> saving;
+  12:   final bool savingAll;
+  13:   final void Function(String matchId, int side) onIncrement;
+  14:   final void Function(String matchId, int side) onDecrement;
+  15:   final Future<void> Function(Match match) onSaveOne;
+  16:   final Future<void> Function() onSaveAll;
+  17:   const MatchListTab({
+  18:     super.key,
+  19:     required this.matches,
+  20:     required this.teams,
+  21:     required this.cup,
+  22:     required this.palpites,
+  23:     required this.saving,
+  24:     required this.savingAll,
+  25:     required this.onIncrement,
+  26:     required this.onDecrement,
+  27:     required this.onSaveOne,
+  28:     required this.onSaveAll,
+  29:   });
+  30:   @override
+  31:   Widget build(BuildContext context) {
+  32:     if (matches.isEmpty) {
+  33:       return const Center(child: Text('Nenhum jogo disponível.'));
+  34:     }
+  35:     return Column(
+  36:       children: [
+  37:         if (cup.isLocked)
+  38:           Container(
+  39:             width: double.infinity,
+  40:             color: Colors.orange.withValues(alpha: 0.1),
+  41:             padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+  42:             child: const Row(
+  43:               mainAxisAlignment: MainAxisAlignment.center,
+  44:               children: [
+  45:                 Icon(Icons.lock_outline, color: Colors.orange, size: 16),
+  46:                 SizedBox(width: 8),
+  47:                 Text('Palpites encerrados',
+  48:                     style: TextStyle(color: Colors.orange)),
+  49:               ],
+  50:             ),
+  51:           ),
+  52:         Expanded(
+  53:           child: ListView.builder(
+  54:             padding: const EdgeInsets.fromLTRB(12, 8, 12, 100),
+  55:             itemCount: matches.length,
+  56:             itemBuilder: (context, index) {
+  57:               final match = matches[index];
+  58:               return MatchCard(
+  59:                 match: match,
+  60:                 home: teams[match.homeTeamId],
+  61:                 away: teams[match.awayTeamId],
+  62:                 palpite: palpites[match.id] ?? [0, 0],
+  63:                 locked: cup.isLocked || match.finished,
+  64:                 isSaving: saving[match.id] ?? false,
+  65:                 onIncrement: (side) => onIncrement(match.id, side),
+  66:                 onDecrement: (side) => onDecrement(match.id, side),
+  67:                 onSave: () => onSaveOne(match),
+  68:               );
+  69:             },
+  70:           ),
+  71:         ),
+  72:         if (!cup.isLocked)
+  73:           SafeArea(
+  74:             child: Padding(
+  75:               padding: const EdgeInsets.fromLTRB(16, 8, 16, 12),
+  76:               child: SizedBox(
+  77:                 width: double.infinity,
+  78:                 child: FilledButton.icon(
+  79:                   style: FilledButton.styleFrom(
+  80:                     backgroundColor: const Color(0xFF1A6B3C),
+  81:                     padding: const EdgeInsets.symmetric(vertical: 14),
+  82:                   ),
+  83:                   onPressed: savingAll ? null : onSaveAll,
+  84:                   icon: savingAll
+  85:                       ? const SizedBox(
+  86:                           width: 18,
+  87:                           height: 18,
+  88:                           child: CircularProgressIndicator(
+  89:                               strokeWidth: 2, color: Colors.white),
+  90:                         )
+  91:                       : const Icon(Icons.save_outlined),
+  92:                   label: const Text('Salvar todos os palpites',
+  93:                       style: TextStyle(fontSize: 15)),
+  94:                 ),
+  95:               ),
+  96:             ),
+  97:           ),
+  98:       ],
+  99:     );
+ 100:   }
+ 101: }
+
+
+==================================================
+ARQUIVO: C:\Users\Alex Salles\Apps - desenvolvimento\bolao_copa\lib\features\matches\widgets\score_control.dart
+==================================================
+   1: import 'package:flutter/material.dart';
+   2: class ScoreControl extends StatelessWidget {
+   3:   final int homeGoals;
+   4:   final int awayGoals;
+   5:   final bool locked;
+   6:   final VoidCallback onIncrementHome;
+   7:   final VoidCallback onDecrementHome;
+   8:   final VoidCallback onIncrementAway;
+   9:   final VoidCallback onDecrementAway;
+  10:   const ScoreControl({
+  11:     super.key,
+  12:     required this.homeGoals,
+  13:     required this.awayGoals,
+  14:     required this.locked,
+  15:     required this.onIncrementHome,
+  16:     required this.onDecrementHome,
+  17:     required this.onIncrementAway,
+  18:     required this.onDecrementAway,
+  19:   });
+  20:   @override
+  21:   Widget build(BuildContext context) {
+  22:     return Row(
+  23:       mainAxisSize: MainAxisSize.min,
+  24:       children: [
+  25:         GoalStepper(
+  26:           value: homeGoals,
+  27:           locked: locked,
+  28:           onIncrement: onIncrementHome,
+  29:           onDecrement: onDecrementHome,
+  30:         ),
+  31:         Padding(
+  32:           padding: const EdgeInsets.symmetric(horizontal: 6),
+  33:           child: Text(
+  34:             '×',
+  35:             style: TextStyle(
+  36:               fontSize: 20,
+  37:               fontWeight: FontWeight.bold,
+  38:               color: locked ? Colors.grey : Colors.black87,
+  39:             ),
+  40:           ),
+  41:         ),
+  42:         GoalStepper(
+  43:           value: awayGoals,
+  44:           locked: locked,
+  45:           onIncrement: onIncrementAway,
+  46:           onDecrement: onDecrementAway,
+  47:         ),
+  48:       ],
+  49:     );
+  50:   }
+  51: }
+  52: class GoalStepper extends StatelessWidget {
+  53:   final int value;
+  54:   final bool locked;
+  55:   final VoidCallback onIncrement;
+  56:   final VoidCallback onDecrement;
+  57:   const GoalStepper({
+  58:     super.key,
+  59:     required this.value,
+  60:     required this.locked,
+  61:     required this.onIncrement,
+  62:     required this.onDecrement,
+  63:   });
+  64:   @override
+  65:   Widget build(BuildContext context) {
+  66:     return Column(
+  67:       mainAxisSize: MainAxisSize.min,
+  68:       children: [
+  69:         SizedBox(
+  70:           width: 36,
+  71:           height: 36,
+  72:           child: IconButton.filled(
+  73:             onPressed: locked ? null : onIncrement,
+  74:             icon: const Icon(Icons.add, size: 18),
+  75:             style: IconButton.styleFrom(
+  76:               backgroundColor: locked
+  77:                   ? Colors.grey.withValues(alpha: 0.2)
+  78:                   : const Color(0xFF1A6B3C),
+  79:               foregroundColor: Colors.white,
+  80:               padding: EdgeInsets.zero,
+  81:             ),
+  82:           ),
+  83:         ),
+  84:         const SizedBox(height: 4),
+  85:         Text(
+  86:           '$value',
+  87:           style: TextStyle(
+  88:             fontSize: 26,
+  89:             fontWeight: FontWeight.bold,
+  90:             color: locked ? Colors.grey : Colors.black87,
+  91:           ),
+  92:         ),
+  93:         const SizedBox(height: 4),
+  94:         SizedBox(
+  95:           width: 36,
+  96:           height: 36,
+  97:           child: IconButton.filled(
+  98:             onPressed: locked ? null : onDecrement,
+  99:             icon: const Icon(Icons.remove, size: 18),
+ 100:             style: IconButton.styleFrom(
+ 101:               backgroundColor: locked
+ 102:                   ? Colors.grey.withValues(alpha: 0.2)
+ 103:                   : const Color(0xFF1A6B3C),
+ 104:               foregroundColor: Colors.white,
+ 105:               padding: EdgeInsets.zero,
+ 106:             ),
+ 107:           ),
+ 108:         ),
+ 109:       ],
+ 110:     );
+ 111:   }
+ 112: }
+
+
+==================================================
+ARQUIVO: C:\Users\Alex Salles\Apps - desenvolvimento\bolao_copa\lib\features\matches\widgets\team_block.dart
+==================================================
+   1: import 'package:flutter/material.dart';
+   2: import '../../../data/models/team.dart';
+   3: class TeamBlock extends StatelessWidget {
+   4:   final Team? team;
+   5:   final bool alignRight;
+   6:   const TeamBlock({super.key, required this.team, this.alignRight = false});
+   7:   @override
+   8:   Widget build(BuildContext context) {
+   9:     return Column(
+  10:       children: [
+  11:         ClipRRect(
+  12:           borderRadius: BorderRadius.circular(4),
+  13:           child: Image.asset(
+  14:             team?.flagAsset ?? '',
+  15:             width: 48,
+  16:             height: 32,
+  17:             fit: BoxFit.cover,
+  18:             errorBuilder: (_, __, ___) =>
+  19:                 const Icon(Icons.flag_outlined, size: 32),
+  20:           ),
+  21:         ),
+  22:         const SizedBox(height: 4),
+  23:         Text(
+  24:           team?.name ?? '?',
+  25:           textAlign: alignRight ? TextAlign.right : TextAlign.left,
+  26:           style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+  27:           maxLines: 2,
+  28:           overflow: TextOverflow.ellipsis,
+  29:         ),
+  30:       ],
+  31:     );
+  32:   }
+  33: }
+
+
+==================================================
+ARQUIVO: C:\Users\Alex Salles\Apps - desenvolvimento\bolao_copa\lib\features\ranking\ranking_screen.dart
+==================================================
+   1: import 'package:flutter/material.dart';
+   2: import 'package:firebase_auth/firebase_auth.dart';
+   3: import '../../data/models/app_user.dart';
+   4: import '../../data/repositories/user_repository.dart';
+   5: class RankingScreen extends StatefulWidget {
+   6:   const RankingScreen({super.key});
+   7:   @override
+   8:   State<RankingScreen> createState() => _RankingScreenState();
+   9: }
+  10: class _RankingScreenState extends State<RankingScreen> {
+  11:   final _userRepo = UserRepository();
+  12:   List<AppUser> _users = [];
+  13:   bool _loading = true;
+  14:   String? _erro;
+  15:   String? _currentUid;
+  16:   @override
+  17:   void initState() {
+  18:     super.initState();
+  19:     _currentUid = FirebaseAuth.instance.currentUser?.uid;
+  20:     _carregar();
+  21:   }
+  22:   Future<void> _carregar() async {
+  23:     try {
+  24:       final users = await _userRepo.fetchAllUsers();
+  25:       setState(() {
+  26:         _users = users;
+  27:         _loading = false;
+  28:       });
+  29:     } catch (e) {
+  30:       setState(() {
+  31:         _erro = 'Erro ao carregar ranking.';
+  32:         _loading = false;
+  33:       });
+  34:     }
+  35:   }
+  36:   @override
+  37:   Widget build(BuildContext context) {
+  38:     return Scaffold(
+  39:       appBar: AppBar(
+  40:         title: const Text('Ranking'),
+  41:         backgroundColor: const Color(0xFF1A6B3C),
+  42:         foregroundColor: Colors.white,
+  43:       ),
+  44:       body: _loading
+  45:           ? const Center(child: CircularProgressIndicator())
+  46:           : _erro != null
+  47:               ? Center(child: Text(_erro!))
+  48:               : _users.isEmpty
+  49:                   ? const Center(child: Text('Nenhum participante ainda.'))
+  50:                   : ListView.builder(
+  51:                       padding: const EdgeInsets.symmetric(vertical: 8),
+  52:                       itemCount: _users.length,
+  53:                       itemBuilder: (context, index) {
+  54:                         final user = _users[index];
+  55:                         final posicao = index + 1;
+  56:                         final isMe = user.id == _currentUid;
+  57:                         return Container(
+  58:                           margin: const EdgeInsets.symmetric(
+  59:                               horizontal: 12, vertical: 4),
+  60:                           decoration: BoxDecoration(
+  61:                             color: isMe
+  62:                                 ? const Color(0xFF1A6B3C).withValues(alpha: 0.08)
+  63:                                 : null,
+  64:                             borderRadius: BorderRadius.circular(12),
+  65:                           ),
+  66:                           child: ListTile(
+  67:                             leading: _PosicaoWidget(posicao: posicao),
+  68:                             title: Text(
+  69:                               user.name,
+  70:                               style: TextStyle(
+  71:                                 fontWeight: isMe
+  72:                                     ? FontWeight.bold
+  73:                                     : FontWeight.normal,
+  74:                               ),
+  75:                             ),
+  76:                             subtitle: isMe
+  77:                                 ? const Text('Você',
+  78:                                     style: TextStyle(
+  79:                                         color: Color(0xFF1A6B3C),
+  80:                                         fontSize: 12))
+  81:                                 : null,
+  82:                             trailing: Text(
+  83:                               '${user.totalPoints} pts',
+  84:                               style: const TextStyle(
+  85:                                 fontWeight: FontWeight.bold,
+  86:                                 fontSize: 16,
+  87:                               ),
+  88:                             ),
+  89:                           ),
+  90:                         );
+  91:                       },
+  92:                     ),
+  93:     );
+  94:   }
+  95: }
+  96: class _PosicaoWidget extends StatelessWidget {
+  97:   final int posicao;
+  98:   const _PosicaoWidget({required this.posicao});
+  99:   @override
+ 100:   Widget build(BuildContext context) {
+ 101:     if (posicao == 1) {
+ 102:       return const Text('🥇', style: TextStyle(fontSize: 28));
+ 103:     } else if (posicao == 2) {
+ 104:       return const Text('🥈', style: TextStyle(fontSize: 28));
+ 105:     } else if (posicao == 3) {
+ 106:       return const Text('🥉', style: TextStyle(fontSize: 28));
+ 107:     }
+ 108:     return SizedBox(
+ 109:       width: 36,
+ 110:       child: Text(
+ 111:         '$posicao°',
+ 112:         textAlign: TextAlign.center,
+ 113:         style: const TextStyle(
+ 114:             fontWeight: FontWeight.bold, color: Colors.grey),
+ 115:       ),
+ 116:     );
+ 117:   }
+ 118: }
+
+
+==================================================
+ARQUIVO: C:\Users\Alex Salles\Apps - desenvolvimento\bolao_copa\lib\services\auth_service.dart
+==================================================
+   1: import 'package:firebase_auth/firebase_auth.dart';
+   2: import 'package:google_sign_in/google_sign_in.dart';
+   3: import 'package:cloud_firestore/cloud_firestore.dart';
+   4: import '../data/models/app_user.dart';
+   5: class AuthService {
+   6:   final FirebaseAuth _auth = FirebaseAuth.instance;
+   7:   final GoogleSignIn _googleSignIn = GoogleSignIn();
+   8:   final FirebaseFirestore _db = FirebaseFirestore.instance;
+   9:   // Usuário autenticado atual
+  10:   User? get currentUser => _auth.currentUser;
+  11:   // Stream de mudanças de autenticação
+  12:   Stream<User?> get authStateChanges => _auth.authStateChanges();
+  13:   // Login com e-mail e senha
+  14:   Future<UserCredential> signInWithEmail(String email, String password) async {
+  15:     return await _auth.signInWithEmailAndPassword(
+  16:       email: email.trim(),
+  17:       password: password,
+  18:     );
+  19:   }
+  20:   // Registro com e-mail e senha
+  21:   Future<UserCredential> registerWithEmail({
+  22:     required String name,
+  23:     required String email,
+  24:     required String password,
+  25:   }) async {
+  26:     final credential = await _auth.createUserWithEmailAndPassword(
+  27:       email: email.trim(),
+  28:       password: password,
+  29:     );
+  30:     await credential.user?.updateDisplayName(name);
+  31:     await _saveUserToFirestore(
+  32:       uid: credential.user!.uid,
+  33:       name: name,
+  34:       email: email.trim(),
+  35:     );
+  36:     return credential;
+  37:   }
+  38:   // Login com Google
+  39:   Future<UserCredential?> signInWithGoogle() async {
+  40:     final googleUser = await _googleSignIn.signIn();
+  41:     if (googleUser == null) return null;
+  42:     final googleAuth = await googleUser.authentication;
+  43:     final credential = GoogleAuthProvider.credential(
+  44:       accessToken: googleAuth.accessToken,
+  45:       idToken: googleAuth.idToken,
+  46:     );
+  47:     final userCredential = await _auth.signInWithCredential(credential);
+  48:     // Cria o perfil no Firestore apenas se for o primeiro login
+  49:     final doc = await _db
+  50:         .collection('users')
+  51:         .doc(userCredential.user!.uid)
+  52:         .get();
+  53:     if (!doc.exists) {
+  54:       await _saveUserToFirestore(
+  55:         uid: userCredential.user!.uid,
+  56:         name: googleUser.displayName ?? 'Usuário',
+  57:         email: googleUser.email,
+  58:       );
+  59:     }
+  60:     return userCredential;
+  61:   }
+  62:   // Logout
+  63:   Future<void> signOut() async {
+  64:     await _googleSignIn.signOut();
+  65:     await _auth.signOut();
+  66:   }
+  67:   // Busca o perfil do usuário no Firestore
+  68:   Future<AppUser?> fetchAppUser(String uid) async {
+  69:     final doc = await _db.collection('users').doc(uid).get();
+  70:     if (!doc.exists) return null;
+  71:     return AppUser.fromFirestore(uid, doc.data()!);
+  72:   }
+  73:   // Salva usuário novo no Firestore
+  74:   Future<void> _saveUserToFirestore({
+  75:     required String uid,
+  76:     required String name,
+  77:     required String email,
+  78:   }) async {
+  79:     await _db.collection('users').doc(uid).set({
+  80:       'name': name,
+  81:       'email': email,
+  82:       'is_admin': false,
+  83:       'total_points': 0,
+  84:       'created_at': FieldValue.serverTimestamp(),
+  85:     });
+  86:   }
+  87: }
+
+
+==================================================
+ARQUIVO: C:\Users\Alex Salles\Apps - desenvolvimento\bolao_copa\lib\services\firestore_service.dart
+==================================================
+   1: import 'package:cloud_firestore/cloud_firestore.dart';
+   2: import '../data/models/cup.dart';
+   3: class FirestoreService {
+   4:   final FirebaseFirestore _db = FirebaseFirestore.instance;
+   5:   // Cache em memória — evita leituras repetidas ao Firestore
+   6:   static Cup? _cachedCup;
+   7:   Future<Cup?> fetchActiveCup({bool forceRefresh = false}) async {
+   8:     if (!forceRefresh && _cachedCup != null) return _cachedCup;
+   9:     final query = await _db
+  10:         .collection('cups')
+  11:         .where('active', isEqualTo: true)
+  12:         .limit(1)
+  13:         .get();
+  14:     if (query.docs.isEmpty) return null;
+  15:     final doc = query.docs.first;
+  16:     _cachedCup = Cup.fromFirestore(doc.id, doc.data());
+  17:     return _cachedCup;
+  18:   }
+  19:   static void clearCache() {
+  20:     _cachedCup = null;
+  21:   }
+  22: }
+
+
+==================================================
+Total de arquivos exportados: 62
+==================================================

@@ -1,0 +1,586 @@
+==================================================
+AUDITORIA DE CÓDIGO — auditoria_parte2_models.txt
+Gerado em: 03/04/2026 07:44:36
+Pasta raiz: C:\Users\Alex Salles\Apps - desenvolvimento\bolao_copa
+==================================================
+
+==================================================
+ARQUIVO: C:\Users\Alex Salles\Apps - desenvolvimento\bolao_copa\lib\data\models\app_user.dart
+==================================================
+   1: class AppUser {
+   2:   final String id;
+   3:   final String name;
+   4:   final String email;
+   5:   final bool isAdmin;
+   6:   final int totalPoints;
+   7:   const AppUser({
+   8:     required this.id,
+   9:     required this.name,
+  10:     required this.email,
+  11:     required this.isAdmin,
+  12:     required this.totalPoints,
+  13:   });
+  14:   factory AppUser.fromFirestore(String id, Map<String, dynamic> data) {
+  15:     return AppUser(
+  16:       id: id,
+  17:       name: data['name'] ?? '',
+  18:       email: data['email'] ?? '',
+  19:       isAdmin: data['is_admin'] ?? false,
+  20:       totalPoints: data['total_points'] ?? 0,
+  21:     );
+  22:   }
+  23:   Map<String, dynamic> toFirestore() {
+  24:     return {
+  25:       'name': name,
+  26:       'email': email,
+  27:       'is_admin': isAdmin,
+  28:       'total_points': totalPoints,
+  29:     };
+  30:   }
+  31: }
+
+
+==================================================
+ARQUIVO: C:\Users\Alex Salles\Apps - desenvolvimento\bolao_copa\lib\data\models\cup.dart
+==================================================
+   1: class Cup {
+   2:   final String id;
+   3:   final String name;
+   4:   final int year;
+   5:   final bool active;
+   6:   final DateTime startsAt;
+   7:   const Cup({
+   8:     required this.id,
+   9:     required this.name,
+  10:     required this.year,
+  11:     required this.active,
+  12:     required this.startsAt,
+  13:   });
+  14:   bool get isLocked => DateTime.now().isAfter(startsAt);
+  15:   factory Cup.fromFirestore(String id, Map<String, dynamic> data) {
+  16:     return Cup(
+  17:       id: id,
+  18:       name: data['name'] ?? '',
+  19:       year: data['year'] ?? 0,
+  20:       active: data['active'] ?? false,
+  21:       startsAt: (data['starts_at'] as dynamic).toDate(),
+  22:     );
+  23:   }
+  24:   Map<String, dynamic> toFirestore() {
+  25:     return {
+  26:       'name': name,
+  27:       'year': year,
+  28:       'active': active,
+  29:       'starts_at': startsAt,
+  30:     };
+  31:   }
+  32: }
+
+
+==================================================
+ARQUIVO: C:\Users\Alex Salles\Apps - desenvolvimento\bolao_copa\lib\data\models\extra_prediction.dart
+==================================================
+   1: class ExtraPrediction {
+   2:   final String questionId;
+   3:   final String userId;
+   4:   final String answer;
+   5:   final DateTime savedAt;
+   6:   const ExtraPrediction({
+   7:     required this.questionId,
+   8:     required this.userId,
+   9:     required this.answer,
+  10:     required this.savedAt,
+  11:   });
+  12:   factory ExtraPrediction.fromFirestore(
+  13:       String questionId, Map<String, dynamic> data) {
+  14:     return ExtraPrediction(
+  15:       questionId: questionId,
+  16:       userId: data['user_id'] ?? '',
+  17:       answer: data['answer'] ?? '',
+  18:       savedAt: (data['saved_at'] as dynamic).toDate(),
+  19:     );
+  20:   }
+  21:   Map<String, dynamic> toFirestore() {
+  22:     return {
+  23:       'user_id': userId,
+  24:       'answer': answer,
+  25:       'saved_at': savedAt,
+  26:     };
+  27:   }
+  28: }
+
+
+==================================================
+ARQUIVO: C:\Users\Alex Salles\Apps - desenvolvimento\bolao_copa\lib\data\models\extra_question.dart
+==================================================
+   1: enum ExtraQuestionType { team, player }
+   2: 
+   3: class ExtraQuestion {
+   4:   final String id;
+   5:   final String question;
+   6:   final ExtraQuestionType type;
+   7:   final int order;
+   8:   final String? positionFilter;
+   9: 
+  10:   const ExtraQuestion({
+  11:     required this.id,
+  12:     required this.question,
+  13:     required this.type,
+  14:     required this.order,
+  15:     this.positionFilter,
+  16:   });
+  17: 
+  18:   factory ExtraQuestion.fromFirestore(String id, Map<String, dynamic> data) {
+  19:     return ExtraQuestion(
+  20:       id: id,
+  21:       question: data['question'] ?? '',
+  22:       type: data['type'] == 'team'
+  23:           ? ExtraQuestionType.team
+  24:           : ExtraQuestionType.player,
+  25:       order: data['order'] ?? 0,
+  26:       positionFilter: data['position_filter'],
+  27:     );
+  28:   }
+  29: 
+  30:   Map<String, dynamic> toFirestore() {
+  31:     return {
+  32:       'question': question,
+  33:       'type': type == ExtraQuestionType.team ? 'team' : 'player',
+  34:       'order': order,
+  35:       if (positionFilter != null) 'position_filter': positionFilter,
+  36:     };
+  37:   }
+  38: }
+
+
+==================================================
+ARQUIVO: C:\Users\Alex Salles\Apps - desenvolvimento\bolao_copa\lib\data\models\group.dart
+==================================================
+   1: class Group {
+   2:   final String id;
+   3:   final String name;
+   4:   const Group({
+   5:     required this.id,
+   6:     required this.name,
+   7:   });
+   8:   factory Group.fromFirestore(String id, Map<String, dynamic> data) {
+   9:     return Group(
+  10:       id: id,
+  11:       name: data['name'] ?? '',
+  12:     );
+  13:   }
+  14:   Map<String, dynamic> toFirestore() {
+  15:     return {'name': name};
+  16:   }
+  17: }
+
+
+==================================================
+ARQUIVO: C:\Users\Alex Salles\Apps - desenvolvimento\bolao_copa\lib\data\models\match.dart
+==================================================
+   1: class Match {
+   2:   final String id;
+   3:   final String homeTeamId;
+   4:   final String awayTeamId;
+   5:   final DateTime matchTime;
+   6:   final String phase;
+   7:   final String? groupId;
+   8:   final int? officialHomeGoals;
+   9:   final int? officialAwayGoals;
+  10:   final bool finished;
+  11:   const Match({
+  12:     required this.id,
+  13:     required this.homeTeamId,
+  14:     required this.awayTeamId,
+  15:     required this.matchTime,
+  16:     required this.phase,
+  17:     this.groupId,
+  18:     this.officialHomeGoals,
+  19:     this.officialAwayGoals,
+  20:     required this.finished,
+  21:   });
+  22:   factory Match.fromFirestore(String id, Map<String, dynamic> data) {
+  23:     return Match(
+  24:       id: id,
+  25:       homeTeamId: data['home_team_id'] ?? '',
+  26:       awayTeamId: data['away_team_id'] ?? '',
+  27:       matchTime: (data['match_time'] as dynamic).toDate(),
+  28:       phase: data['phase'] ?? 'group',
+  29:       groupId: data['group_id'],
+  30:       officialHomeGoals: data['official_home_goals'],
+  31:       officialAwayGoals: data['official_away_goals'],
+  32:       finished: data['finished'] ?? false,
+  33:     );
+  34:   }
+  35:   Map<String, dynamic> toFirestore() {
+  36:     return {
+  37:       'home_team_id': homeTeamId,
+  38:       'away_team_id': awayTeamId,
+  39:       'match_time': matchTime,
+  40:       'phase': phase,
+  41:       'group_id': groupId,
+  42:       'official_home_goals': officialHomeGoals,
+  43:       'official_away_goals': officialAwayGoals,
+  44:       'finished': finished,
+  45:     };
+  46:   }
+  47: }
+
+
+==================================================
+ARQUIVO: C:\Users\Alex Salles\Apps - desenvolvimento\bolao_copa\lib\data\models\player.dart
+==================================================
+   1: class Player {
+   2:   final String id;
+   3:   final String name;
+   4:   final String teamId;
+   5:   final String position;
+   6:   final int number;
+   7:   final bool reserva;
+   8: 
+   9:   const Player({
+  10:     required this.id,
+  11:     required this.name,
+  12:     required this.teamId,
+  13:     required this.position,
+  14:     this.number = 0,
+  15:     this.reserva = false,
+  16:   });
+  17: 
+  18:   factory Player.fromFirestore(String id, Map<String, dynamic> data) {
+  19:     return Player(
+  20:       id: id,
+  21:       name: data['name'] ?? '',
+  22:       teamId: data['team_id'] ?? '',
+  23:       position: data['position'] ?? '',
+  24:       number: data['number'] ?? 0,
+  25:       reserva: data['reserva'] ?? false,
+  26:     );
+  27:   }
+  28: 
+  29:   Map<String, dynamic> toFirestore() {
+  30:     return {
+  31:       'name': name,
+  32:       'team_id': teamId,
+  33:       'position': position,
+  34:       'number': number,
+  35:       'reserva': reserva,
+  36:     };
+  37:   }
+  38: }
+
+
+==================================================
+ARQUIVO: C:\Users\Alex Salles\Apps - desenvolvimento\bolao_copa\lib\data\models\prediction.dart
+==================================================
+   1: class Prediction {
+   2:   final String matchId;
+   3:   final String userId;
+   4:   final int homeGoals;
+   5:   final int awayGoals;
+   6:   final DateTime savedAt;
+   7:   const Prediction({
+   8:     required this.matchId,
+   9:     required this.userId,
+  10:     required this.homeGoals,
+  11:     required this.awayGoals,
+  12:     required this.savedAt,
+  13:   });
+  14:   factory Prediction.fromFirestore(String matchId, Map<String, dynamic> data) {
+  15:     return Prediction(
+  16:       matchId: matchId,
+  17:       userId: data['user_id'] ?? '',
+  18:       homeGoals: data['home_goals'] ?? 0,
+  19:       awayGoals: data['away_goals'] ?? 0,
+  20:       savedAt: (data['saved_at'] as dynamic).toDate(),
+  21:     );
+  22:   }
+  23:   Map<String, dynamic> toFirestore() {
+  24:     return {
+  25:       'user_id': userId,
+  26:       'home_goals': homeGoals,
+  27:       'away_goals': awayGoals,
+  28:       'saved_at': savedAt,
+  29:     };
+  30:   }
+  31: }
+
+
+==================================================
+ARQUIVO: C:\Users\Alex Salles\Apps - desenvolvimento\bolao_copa\lib\data\models\team.dart
+==================================================
+   1: class Team {
+   2:   final String id;       // ex: "BRA"
+   3:   final String name;     // ex: "Brasil"
+   4:   final String flagAsset; // ex: "assets/flags/bra.png"
+   5:   const Team({
+   6:     required this.id,
+   7:     required this.name,
+   8:     required this.flagAsset,
+   9:   });
+  10:   factory Team.fromFirestore(String id, Map<String, dynamic> data) {
+  11:     return Team(
+  12:       id: id,
+  13:       name: data['name'] ?? '',
+  14:       flagAsset: 'assets/flags/${id.toLowerCase()}.png',
+  15:     );
+  16:   }
+  17:   Map<String, dynamic> toFirestore() {
+  18:     return {
+  19:       'name': name,
+  20:     };
+  21:   }
+  22: }
+
+
+==================================================
+ARQUIVO: C:\Users\Alex Salles\Apps - desenvolvimento\bolao_copa\lib\data\repositories\extra_prediction_repository.dart
+==================================================
+   1: import 'package:cloud_firestore/cloud_firestore.dart';
+   2: import '../models/extra_question.dart';
+   3: import '../models/extra_prediction.dart';
+   4: import '../models/team.dart';
+   5: import '../models/player.dart';
+   6: class ExtraPredictionRepository {
+   7:   final FirebaseFirestore _db = FirebaseFirestore.instance;
+   8:   // Busca todas as perguntas extras de uma copa, ordenadas
+   9:   Future<List<ExtraQuestion>> fetchQuestions(String cupId) async {
+  10:     final snapshot = await _db
+  11:         .collection('cups')
+  12:         .doc(cupId)
+  13:         .collection('extra_questions')
+  14:         .orderBy('order')
+  15:         .get();
+  16:     return snapshot.docs
+  17:         .map((doc) => ExtraQuestion.fromFirestore(doc.id, doc.data()))
+  18:         .toList();
+  19:   }
+  20:   // Busca todos os palpites extras de um usuário
+  21:   Future<Map<String, ExtraPrediction>> fetchUserPredictions(
+  22:       String userId) async {
+  23:     final snapshot = await _db
+  24:         .collection('users')
+  25:         .doc(userId)
+  26:         .collection('extra_predictions')
+  27:         .get();
+  28:     return {
+  29:       for (final doc in snapshot.docs)
+  30:         doc.id: ExtraPrediction.fromFirestore(doc.id, doc.data())
+  31:     };
+  32:   }
+  33:   // Salva ou atualiza um palpite extra
+  34:   Future<void> savePrediction(ExtraPrediction prediction) async {
+  35:     await _db
+  36:         .collection('users')
+  37:         .doc(prediction.userId)
+  38:         .collection('extra_predictions')
+  39:         .doc(prediction.questionId)
+  40:         .set(prediction.toFirestore());
+  41:   }
+  42:   // Busca todos os times de uma copa
+  43:   Future<List<Team>> fetchTeams(String cupId) async {
+  44:     final snapshot = await _db
+  45:         .collection('cups')
+  46:         .doc(cupId)
+  47:         .collection('teams')
+  48:         .orderBy('name')
+  49:         .get();
+  50:     return snapshot.docs
+  51:         .map((doc) => Team.fromFirestore(doc.id, doc.data()))
+  52:         .toList();
+  53:   }
+  54:   // Busca todos os jogadores de uma copa
+  55:   Future<List<Player>> fetchPlayers(String cupId) async {
+  56:     final snapshot = await _db
+  57:         .collection('cups')
+  58:         .doc(cupId)
+  59:         .collection('players')
+  60:         .orderBy('name')
+  61:         .get();
+  62:     return snapshot.docs
+  63:         .map((doc) => Player.fromFirestore(doc.id, doc.data()))
+  64:         .toList();
+  65:   }
+  66: }
+
+
+==================================================
+ARQUIVO: C:\Users\Alex Salles\Apps - desenvolvimento\bolao_copa\lib\data\repositories\match_repository.dart
+==================================================
+   1: import 'package:cloud_firestore/cloud_firestore.dart';
+   2: import '../models/match.dart';
+   3: import '../models/team.dart';
+   4: class MatchRepository {
+   5:   final FirebaseFirestore _db = FirebaseFirestore.instance;
+   6:   // Cache em memória por copa
+   7:   static final Map<String, List<Match>> _groupMatchesCache = {};
+   8:   static final Map<String, List<Match>> _knockoutMatchesCache = {};
+   9:   static final Map<String, Map<String, Team>> _teamsCache = {};
+  10:   static void clearCache() {
+  11:     _groupMatchesCache.clear();
+  12:     _knockoutMatchesCache.clear();
+  13:     _teamsCache.clear();
+  14:   }
+  15:   Future<List<Match>> fetchGroupMatches(String cupId,
+  16:       {bool forceRefresh = false}) async {
+  17:     if (!forceRefresh && _groupMatchesCache.containsKey(cupId)) {
+  18:       return _groupMatchesCache[cupId]!;
+  19:     }
+  20:     final groupsSnapshot = await _db
+  21:         .collection('cups')
+  22:         .doc(cupId)
+  23:         .collection('groups')
+  24:         .get();
+  25:     final List<Match> matches = [];
+  26:     for (final groupDoc in groupsSnapshot.docs) {
+  27:       final matchesSnapshot = await _db
+  28:           .collection('cups')
+  29:           .doc(cupId)
+  30:           .collection('groups')
+  31:           .doc(groupDoc.id)
+  32:           .collection('matches')
+  33:           .get();
+  34:       for (final doc in matchesSnapshot.docs) {
+  35:         matches.add(Match.fromFirestore(doc.id, doc.data()));
+  36:       }
+  37:     }
+  38:     matches.sort((a, b) => a.matchTime.compareTo(b.matchTime));
+  39:     _groupMatchesCache[cupId] = matches;
+  40:     return matches;
+  41:   }
+  42:   Future<List<Match>> fetchKnockoutMatches(String cupId,
+  43:       {bool forceRefresh = false}) async {
+  44:     if (!forceRefresh && _knockoutMatchesCache.containsKey(cupId)) {
+  45:       return _knockoutMatchesCache[cupId]!;
+  46:     }
+  47:     final snapshot = await _db
+  48:         .collection('cups')
+  49:         .doc(cupId)
+  50:         .collection('knockout_matches')
+  51:         .get();
+  52:     final matches = snapshot.docs
+  53:         .map((doc) => Match.fromFirestore(doc.id, doc.data()))
+  54:         .toList();
+  55:     matches.sort((a, b) => a.matchTime.compareTo(b.matchTime));
+  56:     _knockoutMatchesCache[cupId] = matches;
+  57:     return matches;
+  58:   }
+  59:   Future<Match?> fetchMatch(
+  60:       String cupId, String matchId, String? groupId) async {
+  61:     DocumentSnapshot doc;
+  62:     if (groupId != null) {
+  63:       doc = await _db
+  64:           .collection('cups')
+  65:           .doc(cupId)
+  66:           .collection('groups')
+  67:           .doc(groupId)
+  68:           .collection('matches')
+  69:           .doc(matchId)
+  70:           .get();
+  71:     } else {
+  72:       doc = await _db
+  73:           .collection('cups')
+  74:           .doc(cupId)
+  75:           .collection('knockout_matches')
+  76:           .doc(matchId)
+  77:           .get();
+  78:     }
+  79:     if (!doc.exists) return null;
+  80:     return Match.fromFirestore(doc.id, doc.data() as Map<String, dynamic>);
+  81:   }
+  82:   Future<Map<String, Team>> fetchTeams(String cupId,
+  83:       {bool forceRefresh = false}) async {
+  84:     if (!forceRefresh && _teamsCache.containsKey(cupId)) {
+  85:       return _teamsCache[cupId]!;
+  86:     }
+  87:     final snapshot = await _db
+  88:         .collection('cups')
+  89:         .doc(cupId)
+  90:         .collection('teams')
+  91:         .get();
+  92:     final teams = {
+  93:       for (final doc in snapshot.docs)
+  94:         doc.id: Team.fromFirestore(doc.id, doc.data())
+  95:     };
+  96:     _teamsCache[cupId] = teams;
+  97:     return teams;
+  98:   }
+  99: }
+
+
+==================================================
+ARQUIVO: C:\Users\Alex Salles\Apps - desenvolvimento\bolao_copa\lib\data\repositories\prediction_repository.dart
+==================================================
+   1: import 'package:cloud_firestore/cloud_firestore.dart';
+   2: import '../models/prediction.dart';
+   3: class PredictionRepository {
+   4:   final FirebaseFirestore _db = FirebaseFirestore.instance;
+   5:   // Busca palpite de um usuário para um jogo
+   6:   Future<Prediction?> fetchPrediction(String userId, String matchId) async {
+   7:     final doc = await _db
+   8:         .collection('users')
+   9:         .doc(userId)
+  10:         .collection('predictions')
+  11:         .doc(matchId)
+  12:         .get();
+  13:     if (!doc.exists) return null;
+  14:     return Prediction.fromFirestore(matchId, doc.data()!);
+  15:   }
+  16:   // Busca todos os palpites de um usuário
+  17:   Future<List<Prediction>> fetchAllPredictions(String userId) async {
+  18:     final snapshot = await _db
+  19:         .collection('users')
+  20:         .doc(userId)
+  21:         .collection('predictions')
+  22:         .get();
+  23:     return snapshot.docs
+  24:         .map((doc) => Prediction.fromFirestore(doc.id, doc.data()))
+  25:         .toList();
+  26:   }
+  27:   // Salva ou atualiza palpite
+  28:   Future<void> savePrediction(Prediction prediction) async {
+  29:     await _db
+  30:         .collection('users')
+  31:         .doc(prediction.userId)
+  32:         .collection('predictions')
+  33:         .doc(prediction.matchId)
+  34:         .set(prediction.toFirestore());
+  35:   }
+  36: }
+
+
+==================================================
+ARQUIVO: C:\Users\Alex Salles\Apps - desenvolvimento\bolao_copa\lib\data\repositories\user_repository.dart
+==================================================
+   1: import 'package:cloud_firestore/cloud_firestore.dart';
+   2: import '../models/app_user.dart';
+   3: class UserRepository {
+   4:   final FirebaseFirestore _db = FirebaseFirestore.instance;
+   5:   Future<List<AppUser>> fetchAllUsers() async {
+   6:     final snapshot = await _db
+   7:         .collection('users')
+   8:         .orderBy('total_points', descending: true)
+   9:         .get();
+  10:     return snapshot.docs.map((doc) {
+  11:       final data = doc.data();
+  12:       // Email não é exposto no ranking
+  13:       return AppUser(
+  14:         id: doc.id,
+  15:         name: data['name'] ?? '',
+  16:         email: '',
+  17:         isAdmin: data['is_admin'] ?? false,
+  18:         totalPoints: data['total_points'] ?? 0,
+  19:       );
+  20:     }).toList();
+  21:   }
+  22:   Future<void> updatePoints(String userId, int points) async {
+  23:     await _db.collection('users').doc(userId).update({
+  24:       'total_points': points,
+  25:     });
+  26:   }
+  27: }
+
+
+==================================================
+Total de arquivos nesta parte: 13
+==================================================

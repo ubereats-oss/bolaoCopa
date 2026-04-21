@@ -1,0 +1,24 @@
+{
+  "indexes": [
+    {
+      "collectionGroup": "matches",
+      "queryScope": "COLLECTION_GROUP",
+      "fields": [
+        {
+          "fieldPath": "phase",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "match_time",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "__name__",
+          "order": "ASCENDING"
+        }
+      ],
+      "density": "SPARSE_ALL"
+    }
+  ],
+  "fieldOverrides": []
+}

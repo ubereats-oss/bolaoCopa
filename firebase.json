@@ -1,0 +1,28 @@
+{
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "bolao-copa-do-mundo-salles",
+          "appId": "1:212214398916:android:56b9db4e84c71cdab26e91",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "bolao-copa-do-mundo-salles",
+          "configurations": {
+            "android": "1:212214398916:android:56b9db4e84c71cdab26e91",
+            "ios": "1:212214398916:ios:653b33fb963832ffb26e91"
+          }
+        }
+      }
+    }
+  },
+  "firestore": {
+    "database": "(default)",
+    "location": "southamerica-east1",
+    "rules": "firestore.rules",
+    "indexes": "firestore.indexes.json"
+  }
+}
