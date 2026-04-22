@@ -3,16 +3,7 @@
 import 'package:firebase_core/firebase_core.dart' show FirebaseOptions;
 import 'package:flutter/foundation.dart'
     show defaultTargetPlatform, kIsWeb, TargetPlatform;
-/// Default [FirebaseOptions] for use with your Firebase apps.
-///
-/// Example:
-/// ```dart
-/// import 'firebase_options.dart';
-/// // ...
-/// await Firebase.initializeApp(
-///   options: DefaultFirebaseOptions.currentPlatform,
-/// );
-/// ```
+
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
@@ -40,6 +31,7 @@ class DefaultFirebaseOptions {
           'DefaultFirebaseOptions are not supported for this platform.',
         );
     }
+  }
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyDpz0YeMhxXwCO39fognthNL0hyztcPNgU',
@@ -47,10 +39,6 @@ class DefaultFirebaseOptions {
     messagingSenderId: '212214398916',
     projectId: 'bolao-copa-do-mundo-salles',
     storageBucket: 'bolao-copa-do-mundo-salles.firebasestorage.app',
-  );
-
-  }
-
   );
 
   static const FirebaseOptions web = FirebaseOptions(
@@ -69,8 +57,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '212214398916',
     projectId: 'bolao-copa-do-mundo-salles',
     storageBucket: 'bolao-copa-do-mundo-salles.firebasestorage.app',
-    iosClientId: '212214398916-j17cmqger48mjdvf3ithep459p2aabuj.apps.googleusercontent.com',
+    iosClientId:
+        '212214398916-j17cmqger48mjdvf3ithep459p2aabuj.apps.googleusercontent.com',
     iosBundleId: 'com.salles.bolaocopadomundo',
   );
-
 }

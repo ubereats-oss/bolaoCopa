@@ -18,6 +18,9 @@ class AppRoutes {
   static const String adminResults = '/admin/results';
   static const String adminExtraQuestions = '/admin/extra-questions';
   static const String adminPlayers = '/admin/players';
+  static const String matches = '/matches';
+  static const String extras = '/extras';
+  static const String ranking = '/ranking';
 
   static Map<String, WidgetBuilder> get routes => {
         register: (_) => const RegisterScreen(),
