@@ -12,7 +12,12 @@
           "package_name": "com.seunome.bolao_copa"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "212214398916-fugto03jv5ji4j5els9ctivahgismnlg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyDpz0YeMhxXwCO39fognthNL0hyztcPNgU"
@@ -20,7 +25,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "212214398916-fugto03jv5ji4j5els9ctivahgismnlg.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "212214398916-f62kvknt6rufcfhlktao7k8qja0e80i0.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.bolaocopadomundo"
+              }
+            }
+          ]
         }
       }
     }
