@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../services/auth_service.dart';
-import '../../core/routes/app_routes.dart';
+//import '../../core/routes/app_routes.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -44,17 +44,19 @@ class _RegisterScreenState extends State<RegisterScreen> {
         _erro = _traduzirErro(e.toString());
       });
     } finally {
-      if (mounted)
+      if (mounted) {
         setState(() {
           _loading = false;
         });
+      }
     }
   }
 
   String _traduzirErro(String erro) {
     if (erro.contains('email-already-in-use')) return 'E-mail já cadastrado.';
-    if (erro.contains('weak-password'))
+    if (erro.contains('weak-password')) {
       return 'Senha fraca. Use ao menos 6 caracteres.';
+    }
     if (erro.contains('invalid-email')) return 'E-mail inválido.';
     return 'Erro ao cadastrar. Tente novamente.';
   }

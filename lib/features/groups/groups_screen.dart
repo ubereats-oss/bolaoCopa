@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import '../../data/models/bolao_group.dart';
 import '../../data/repositories/group_repository.dart';
 import '../../services/auth_service.dart';
-import '../../core/routes/app_routes.dart';
+//import '../../core/routes/app_routes.dart';
 import '../../core/widgets/sobre_dialog.dart';
 import '../auth/login_screen.dart';
 import 'widgets/group_card_bolao.dart';
@@ -164,8 +164,7 @@ class _GroupsScreenState extends State<GroupsScreen> {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Text(_erro!,
-                          style: const TextStyle(color: Colors.red)),
+                      Text(_erro!, style: const TextStyle(color: Colors.red)),
                       const SizedBox(height: 12),
                       FilledButton(
                         onPressed: _carregar,

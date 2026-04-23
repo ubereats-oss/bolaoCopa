@@ -1,6 +1,6 @@
 // Chaveamento oficial da Copa do Mundo 2026
-// Fonte: FIFA / FOX Sports
-// Slots de 3º colocado: lista de grupos candidatos (definidos pela FIFA)
+// Fonte: Federação / F-O-X Sports
+// Slots de 3º colocado: lista de grupos candidatos (definidos pela Federação)
 // O app resolve qual time ocupa cada slot em função dos palpites do usuário.
 
 class BracketSlot {
@@ -40,7 +40,7 @@ class BracketData {
     '3rd': '3º Lugar',
   };
 
-  /// Round of 32 — chaveamento oficial FIFA 2026
+  /// Round of 32 — chaveamento oficial Copa 2026
   static const List<BracketMatchDef> r32 = [
     BracketMatchDef(
         id: 'r32_01',

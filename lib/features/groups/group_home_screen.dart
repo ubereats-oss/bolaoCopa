@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+//import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
 import '../../core/widgets/sobre_dialog.dart';
 import '../../data/models/bolao_group.dart';
 import '../../data/models/app_user.dart';
 import '../../data/repositories/group_repository.dart';
 import '../../services/auth_service.dart';
-import '../../services/firestore_service.dart';
+//import '../../services/firestore_service.dart';
 import '../matches/matches_screen.dart';
 import '../extras/extra_predictions_screen.dart';
 import '../ranking/ranking_screen.dart';
-import '../admin/admin_dashboard.dart';
+//import '../admin/admin_dashboard.dart';
 
 class GroupHomeScreen extends StatefulWidget {
   final BolaoGroup group;
@@ -24,7 +24,7 @@ class GroupHomeScreen extends StatefulWidget {
 class _GroupHomeScreenState extends State<GroupHomeScreen> {
   final _authService = AuthService();
   final _groupRepo = GroupRepository();
-  final _firestoreService = FirestoreService();
+  //final _firestoreService = FirestoreService();
 
   AppUser? _appUser;
   BolaoMember? _member;
@@ -187,7 +187,7 @@ class _GroupHomeScreenState extends State<GroupHomeScreen> {
           _MenuItem(
             icon: Icons.sports_soccer,
             label: 'Meus Palpites',
-            descricao: 'Aposte nos resultados dos jogos',
+            descricao: 'Coloque seus palpites nos resultados dos jogos',
             onTap: _abrirMatches,
           ),
           const SizedBox(height: 12),

@@ -73,6 +73,29 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
+  Future<void> _loginApple() async {
+    setState(() {
+      _loading = true;
+      _erro = null;
+    });
+    try {
+      await _authService.signInWithApple();
+      if (mounted) {
+        Navigator.pushReplacementNamed(context, '/groups');
+      }
+    } on Exception catch (e) {
+      setState(() {
+        _erro = _traduzirErro(e.toString());
+      });
+    } finally {
+      if (mounted) {
+        setState(() {
+          _loading = false;
+        });
+      }
+    }
+  }
+
   String _traduzirErro(String erro) {
     const map = {
       'user-not-found': 'Usuário não encontrado.',
@@ -235,6 +258,15 @@ class _LoginScreenState extends State<LoginScreen> {
                           onPressed: _loading ? null : _loginGoogle,
                           icon: const Icon(Icons.login),
                           label: const Text('Entrar com Google'),
+                        ),
+                      ),
+                      const SizedBox(height: 12),
+                      SizedBox(
+                        width: double.infinity,
+                        child: OutlinedButton.icon(
+                          onPressed: _loading ? null : _loginApple,
+                          icon: const Icon(Icons.apple),
+                          label: const Text('Entrar com Apple'),
                         ),
                       ),
                       const SizedBox(height: 24),

@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../data/models/app_user.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -59,6 +60,43 @@ class AuthService {
       );
     }
     return userCredential;
+  }
+
+  Future<UserCredential> signInWithApple() async {
+    final appleCredential = await SignInWithApple.getAppleIDCredential(
+      scopes: [
+        AppleIDAuthorizationScopes.email,
+        AppleIDAuthorizationScopes.fullName,
+      ],
+    );
+
+    final oauthCredential = OAuthProvider("apple.com").credential(
+      idToken: appleCredential.identityToken,
+      accessToken: appleCredential.authorizationCode,
+    );
+
+    return await _auth.signInWithCredential(oauthCredential);
+  }
+
+  Future<void> deleteAccount() async {
+    final user = FirebaseAuth.instance.currentUser;
+
+    if (user == null) {
+      throw Exception('Usuário não autenticado');
+    }
+
+    final uid = user.uid;
+
+    // 🔥 deletar dados do Firestore (ajuste conforme sua estrutura)
+    final firestore = FirebaseFirestore.instance;
+
+    await firestore.collection('users').doc(uid).delete();
+
+    // ⚠️ deletar outros dados vinculados se existirem
+    // ex: apostas, grupos, etc
+
+    // 🔴 deletar usuário do Auth (por último)
+    await user.delete();
   }
 
   // Logout

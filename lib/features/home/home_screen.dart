@@ -104,7 +104,7 @@ class _HomeScreenState extends State<HomeScreen> {
             _MenuItem(
               icon: Icons.sports_soccer,
               label: 'Meus Palpites',
-              descricao: 'Aposte nos resultados dos jogos',
+              descricao: 'Coloque seus palpites nos resultados dos jogos',
               onTap: () => Navigator.pushNamed(context, AppRoutes.matches),
             ),
             const SizedBox(height: 12),
