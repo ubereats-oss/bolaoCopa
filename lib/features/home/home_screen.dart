@@ -60,7 +60,7 @@ class _HomeScreenState extends State<HomeScreen> {
     }
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Bolão Copa do Mundo'),
+        title: const Text('Bolão Copa'),
         backgroundColor: const Color(0xFF1A6B3C),
         foregroundColor: Colors.white,
         actions: [

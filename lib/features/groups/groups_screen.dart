@@ -59,6 +59,80 @@ class _GroupsScreenState extends State<GroupsScreen> {
     }
   }
 
+  Future<void> _abrirConfigConta() async {
+    final user = FirebaseAuth.instance.currentUser;
+    final displayName = user?.displayName ?? user?.email ?? 'Usuário';
+    await showModalBottomSheet(
+      context: context,
+      builder: (ctx) => SafeArea(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ListTile(
+              leading: const Icon(Icons.person_outline),
+              title: Text(displayName),
+              subtitle: user?.email != null && user!.email != displayName
+                  ? Text(user.email!)
+                  : null,
+            ),
+            const Divider(),
+            ListTile(
+              leading: const Icon(Icons.delete_forever, color: Colors.red),
+              title: const Text('Excluir conta',
+                  style: TextStyle(color: Colors.red)),
+              onTap: () {
+                Navigator.pop(ctx);
+                _confirmarExcluirConta();
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Future<void> _confirmarExcluirConta() async {
+    final confirm = await showDialog<bool>(
+      context: context,
+      builder: (_) => AlertDialog(
+        title: const Text('Excluir conta?'),
+        content: const Text(
+          'Todos os seus dados serão removidos permanentemente. Esta ação não pode ser desfeita.',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text('Cancelar'),
+          ),
+          FilledButton(
+            style: FilledButton.styleFrom(backgroundColor: Colors.red),
+            onPressed: () => Navigator.pop(context, true),
+            child: const Text('Excluir'),
+          ),
+        ],
+      ),
+    );
+    if (confirm != true || !mounted) return;
+    try {
+      await _authService.deleteAccount();
+      if (mounted) {
+        Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (_) => const LoginScreen()),
+          (route) => false,
+        );
+      }
+    } on Exception catch (e) {
+      if (mounted) {
+        final msg = e.toString().contains('requires-recent-login')
+            ? 'Por segurança, saia e entre novamente antes de excluir a conta.'
+            : 'Erro ao excluir conta. Tente novamente.';
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(msg), backgroundColor: Colors.red),
+        );
+      }
+    }
+  }
+
   void _abrirCriarGrupo() async {
     final criado = await Navigator.push<BolaoGroup>(
       context,
@@ -141,10 +215,15 @@ class _GroupsScreenState extends State<GroupsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Bolão Copa do Mundo'),
+        title: const Text('Bolão Copa'),
         backgroundColor: const Color(0xFF1A6B3C),
         foregroundColor: Colors.white,
         actions: [
+          IconButton(
+            icon: const Icon(Icons.account_circle_outlined),
+            tooltip: 'Minha conta',
+            onPressed: _abrirConfigConta,
+          ),
           IconButton(
             icon: const Icon(Icons.info_outline),
             tooltip: 'Sobre',

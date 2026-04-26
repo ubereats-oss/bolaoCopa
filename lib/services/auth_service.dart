@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:math';
+import 'package:crypto/crypto.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -62,20 +65,55 @@ class AuthService {
     return userCredential;
   }
 
+  String _generateNonce([int length = 32]) {
+    const charset =
+        '0123456789ABCDEFGHIJKLMNOPQRSTUVXYZabcdefghijklmnopqrstuvwxyz-._';
+    final random = Random.secure();
+    return List.generate(
+        length, (_) => charset[random.nextInt(charset.length)]).join();
+  }
+
+  String _sha256ofString(String input) {
+    final bytes = utf8.encode(input);
+    final digest = sha256.convert(bytes);
+    return digest.toString();
+  }
+
   Future<UserCredential> signInWithApple() async {
+    final rawNonce = _generateNonce();
+    final nonce = _sha256ofString(rawNonce);
+
     final appleCredential = await SignInWithApple.getAppleIDCredential(
       scopes: [
         AppleIDAuthorizationScopes.email,
         AppleIDAuthorizationScopes.fullName,
       ],
+      nonce: nonce,
     );
 
     final oauthCredential = OAuthProvider("apple.com").credential(
       idToken: appleCredential.identityToken,
       accessToken: appleCredential.authorizationCode,
+      rawNonce: rawNonce,
     );
 
-    return await _auth.signInWithCredential(oauthCredential);
+    final userCredential = await _auth.signInWithCredential(oauthCredential);
+
+    // Save profile to Firestore on first Apple login
+    final doc =
+        await _db.collection('users').doc(userCredential.user!.uid).get();
+    if (!doc.exists) {
+      final given = appleCredential.givenName ?? '';
+      final family = appleCredential.familyName ?? '';
+      final name = '$given $family'.trim();
+      await _saveUserToFirestore(
+        uid: userCredential.user!.uid,
+        name: name.isEmpty ? 'Usuário' : name,
+        email: appleCredential.email ?? userCredential.user!.email ?? '',
+      );
+    }
+
+    return userCredential;
   }
 
   Future<void> deleteAccount() async {
