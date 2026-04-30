@@ -60,7 +60,7 @@ class _HomeScreenState extends State<HomeScreen> {
     }
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Bolão Entre Amigos'),
+        title: const Text('Bolão com Amigos'),
         backgroundColor: const Color(0xFF1A6B3C),
         foregroundColor: Colors.white,
         actions: [
