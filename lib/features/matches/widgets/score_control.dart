@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 class ScoreControl extends StatelessWidget {
-  final int homeGoals;
-  final int awayGoals;
+  final int? homeGoals;
+  final int? awayGoals;
   final bool locked;
   final VoidCallback onIncrementHome;
   final VoidCallback onDecrementHome;
@@ -50,7 +50,7 @@ class ScoreControl extends StatelessWidget {
   }
 }
 class GoalStepper extends StatelessWidget {
-  final int value;
+  final int? value;
   final bool locked;
   final VoidCallback onIncrement;
   final VoidCallback onDecrement;
@@ -83,11 +83,11 @@ class GoalStepper extends StatelessWidget {
         ),
         const SizedBox(height: 4),
         Text(
-          '$value',
+          value != null ? '$value' : '—',
           style: TextStyle(
             fontSize: 26,
             fontWeight: FontWeight.bold,
-            color: locked ? Colors.grey : Colors.black87,
+            color: value != null && !locked ? Colors.black87 : Colors.grey,
           ),
         ),
         const SizedBox(height: 4),

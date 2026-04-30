@@ -19,14 +19,16 @@ class TeamBlock extends StatelessWidget {
       children: [
         ClipRRect(
           borderRadius: BorderRadius.circular(4),
-          child: Image.asset(
-            team?.flagAsset ?? '',
-            width: 48,
-            height: 32,
-            fit: BoxFit.cover,
-            errorBuilder: (_, __, ___) =>
-                const Icon(Icons.flag_outlined, size: 32),
-          ),
+          child: (team?.flagAsset.isNotEmpty ?? false)
+              ? Image.asset(
+                  team!.flagAsset,
+                  width: 48,
+                  height: 32,
+                  fit: BoxFit.cover,
+                  errorBuilder: (_, __, ___) =>
+                      const Icon(Icons.flag_outlined, size: 32),
+                )
+              : const Icon(Icons.flag_outlined, size: 32),
         ),
         const SizedBox(height: 4),
         Text(

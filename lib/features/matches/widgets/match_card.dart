@@ -47,17 +47,17 @@ class MatchCard extends StatelessWidget {
             Row(
               children: [
                 Expanded(child: TeamBlock(team: home)),
-                temPalpite
+                (temPalpite || !locked)
                     ? ScoreControl(
-                        homeGoals: palpite![0],
-                        awayGoals: palpite![1],
+                        homeGoals: palpite?[0],
+                        awayGoals: palpite?[1],
                         locked: locked,
                         onIncrementHome: () => onIncrement(0),
                         onDecrementHome: () => onDecrement(0),
                         onIncrementAway: () => onIncrement(1),
                         onDecrementAway: () => onDecrement(1),
                       )
-                    : _SemPalpiteDisplay(locked: locked),
+                    : const _SemPalpiteDisplay(locked: true),
                 Expanded(child: TeamBlock(team: away, alignRight: true)),
               ],
             ),

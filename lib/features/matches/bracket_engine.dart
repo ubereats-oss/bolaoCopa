@@ -2,7 +2,6 @@ import '../../core/constants/bracket_data.dart';
 import '../../data/models/group_standing.dart';
 import '../../data/models/match.dart';
 import '../../data/models/knockout_prediction.dart';
-import 'package:flutter/foundation.dart';
 
 /// Resultado resolvido de um confronto do mata-mata
 class ResolvedMatch {
@@ -58,19 +57,6 @@ class BracketEngine {
 
   Map<String, GroupStanding> computeStandings() {
     final effective = _effectiveGroupTeams();
-    debugPrint('=== BracketEngine ===');
-    debugPrint('groupMatches.length: ${groupMatches.length}');
-    debugPrint('groupPredictions.length: ${groupPredictions.length}');
-    debugPrint('groupTeams.length: ${groupTeams.length}');
-    debugPrint('effectiveGroupTeams.length: ${effective.length}');
-    debugPrint('effectiveGroupTeams keys: ${effective.keys.toList()}');
-    if (groupMatches.isNotEmpty) {
-      final m = groupMatches.first;
-      debugPrint(
-          'primeiro jogo: id=${m.id} groupId=${m.groupId} home=${m.homeTeamId} away=${m.awayTeamId}');
-      debugPrint('palpite primeiro jogo: ${groupPredictions[m.id]}');
-    }
-
     final Map<String, Map<String, TeamStanding>> raw = {};
     for (final entry in effective.entries) {
       raw[entry.key] = {
@@ -146,14 +132,70 @@ class BracketEngine {
     return thirds.take(8).toList();
   }
 
-  // ─── Resolução de slots ────────────────────────────────────────────────────
+  // ─── Atribuição dos melhores 3ºs via backtracking ─────────────────────────
+  //
+  // O algoritmo greedy sequencial falha quando os candidatos se sobrepõem
+  // (ex: grupo I aparece em 6 dos 8 slots). O backtracking garante encontrar
+  // a atribuição válida para qualquer combinação de 8 grupos qualificados.
+  //
+  // Retorna mapa de "${def.id}_h" ou "${def.id}_a" → teamId.
+
+  Map<String, String?> _assignBestThirds(
+      List<MapEntry<String, TeamStanding>> bestThirds) {
+    final defIds = <String>[];
+    final isHomeSlot = <bool>[];
+    final groupCandidates = <List<String>>[];
+
+    for (final def in BracketData.r32) {
+      if (def.home.isThird) {
+        defIds.add(def.id);
+        isHomeSlot.add(true);
+        groupCandidates.add(def.home.thirdGroups);
+      }
+      if (def.away.isThird) {
+        defIds.add(def.id);
+        isHomeSlot.add(false);
+        groupCandidates.add(def.away.thirdGroups);
+      }
+    }
+
+    final assignment = <int, int>{}; // slotIndex -> bestThirds index
+    final usedIdx = <int>{};
+
+    bool backtrack(int si) {
+      if (si >= defIds.length) return true;
+      final groups = groupCandidates[si];
+
+      for (int ti = 0; ti < bestThirds.length; ti++) {
+        if (usedIdx.contains(ti)) continue;
+        if (!groups.contains(bestThirds[ti].key)) continue;
+
+        assignment[si] = ti;
+        usedIdx.add(ti);
+        if (backtrack(si + 1)) return true;
+        assignment.remove(si);
+        usedIdx.remove(ti);
+      }
+      return false;
+    }
+
+    backtrack(0);
+
+    final result = <String, String?>{};
+    for (int si = 0; si < defIds.length; si++) {
+      final key = '${defIds[si]}_${isHomeSlot[si] ? 'h' : 'a'}';
+      final ti = assignment[si];
+      result[key] = ti != null ? bestThirds[ti].value.teamId : null;
+    }
+    return result;
+  }
+
+  // ─── Resolução de slots (exceto Melhor 3º, tratado por _assignBestThirds) ──
 
   String? resolveSlot(
     String code,
     Map<String, GroupStanding> standings,
-    List<MapEntry<String, TeamStanding>> bestThirds,
     Map<String, String> winners,
-    Set<String> usedThirds,
   ) {
     if (code.startsWith('W') || code.startsWith('L')) {
       final isWinner = code.startsWith('W');
@@ -166,16 +208,6 @@ class BracketEngine {
       final gs = standings[groupId];
       if (gs == null || gs.standings.length <= pos) return null;
       return gs.standings[pos].teamId;
-    }
-    if (code.startsWith('3')) {
-      final candidates = code.substring(1).split('');
-      for (final entry in bestThirds) {
-        if (candidates.contains(entry.key) && !usedThirds.contains(entry.key)) {
-          usedThirds.add(entry.key);
-          return entry.value.teamId;
-        }
-      }
-      return null;
     }
     return null;
   }
@@ -199,8 +231,9 @@ class BracketEngine {
   List<ResolvedMatch> resolveAll() {
     final standings = computeStandings();
     final bestThirds = computeBestThirds(standings);
+    final thirdsAssignment = _assignBestThirds(bestThirds);
+
     final Map<String, String> resolved = {};
-    final Set<String> usedThirds = {};
     final phaseOrder = ['r32', 'r16', 'qf', 'sf', 'final', '3rd'];
     final result = <ResolvedMatch>[];
     final phasePredicted = <String, bool>{};
@@ -213,10 +246,13 @@ class BracketEngine {
       bool allThisPhasePredicted = true;
 
       for (final def in matches) {
-        final homeId = resolveSlot(
-            def.home.code, standings, bestThirds, resolved, usedThirds);
-        final awayId = resolveSlot(
-            def.away.code, standings, bestThirds, resolved, usedThirds);
+        final homeId = def.home.isThird
+            ? thirdsAssignment['${def.id}_h']
+            : resolveSlot(def.home.code, standings, resolved);
+
+        final awayId = def.away.isThird
+            ? thirdsAssignment['${def.id}_a']
+            : resolveSlot(def.away.code, standings, resolved);
 
         final canPredict = prevDone && homeId != null && awayId != null;
 
