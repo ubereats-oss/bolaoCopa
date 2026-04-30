@@ -56,6 +56,7 @@ ios/Podfile
 ios/Runner/AppDelegate.swift
 ios/Runner/GoogleService-Info.plist
 ios/Runner/Info.plist
+ios/Runner/Runner.entitlements
 lib/core/constants/app_colors.dart
 lib/core/constants/app_text_styles.dart
 lib/core/constants/bracket_data.dart
@@ -445,79 +446,17 @@ This section contains the contents of the repository's files.
 16: }
 </file>
 
-<file path="ios/Runner/Info.plist">
+<file path="ios/Runner/Runner.entitlements">
  1: <?xml version="1.0" encoding="UTF-8"?>
  2: <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
  3: <plist version="1.0">
  4: <dict>
- 5: 	<key>CADisableMinimumFrameDurationOnPhone</key>
- 6: 	<true/>
- 7: 	<key>CFBundleDevelopmentRegion</key>
- 8: 	<string>$(DEVELOPMENT_LANGUAGE)</string>
- 9: 	<key>CFBundleDisplayName</key>
-10: 	<string>Bolao Copa</string>
-11: 	<key>CFBundleExecutable</key>
-12: 	<string>$(EXECUTABLE_NAME)</string>
-13: 	<key>CFBundleIdentifier</key>
-14: 	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
-15: 	<key>CFBundleInfoDictionaryVersion</key>
-16: 	<string>6.0</string>
-17: 	<key>CFBundleName</key>
-18: 	<string>bolao_copa</string>
-19: 	<key>CFBundlePackageType</key>
-20: 	<string>APPL</string>
-21: 	<key>CFBundleShortVersionString</key>
-22: 	<string>$(FLUTTER_BUILD_NAME)</string>
-23: 	<key>CFBundleSignature</key>
-24: 	<string>????</string>
-25: 	<key>CFBundleVersion</key>
-26: 	<string>$(FLUTTER_BUILD_NUMBER)</string>
-27: 	<key>ITSAppUsesNonExemptEncryption</key>
-28:     <false/>
-29: 	<key>LSRequiresIPhoneOS</key>
-30: 	<true/>
-31: 	<key>UIApplicationSceneManifest</key>
-32: 	<dict>
-33: 		<key>UIApplicationSupportsMultipleScenes</key>
-34: 		<false/>
-35: 		<key>UISceneConfigurations</key>
-36: 		<dict>
-37: 			<key>UIWindowSceneSessionRoleApplication</key>
-38: 			<array>
-39: 				<dict>
-40: 					<key>UISceneClassName</key>
-41: 					<string>UIWindowScene</string>
-42: 					<key>UISceneConfigurationName</key>
-43: 					<string>flutter</string>
-44: 					<key>UISceneDelegateClassName</key>
-45: 					<string>$(PRODUCT_MODULE_NAME).SceneDelegate</string>
-46: 					<key>UISceneStoryboardFile</key>
-47: 					<string>Main</string>
-48: 				</dict>
-49: 			</array>
-50: 		</dict>
-51: 	</dict>
-52: 	<key>UIApplicationSupportsIndirectInputEvents</key>
-53: 	<true/>
-54: 	<key>UILaunchStoryboardName</key>
-55: 	<string>LaunchScreen</string>
-56: 	<key>UIMainStoryboardFile</key>
-57: 	<string>Main</string>
-58: 	<key>UISupportedInterfaceOrientations</key>
-59: 	<array>
-60: 		<string>UIInterfaceOrientationPortrait</string>
-61: 		<string>UIInterfaceOrientationLandscapeLeft</string>
-62: 		<string>UIInterfaceOrientationLandscapeRight</string>
-63: 	</array>
-64: 	<key>UISupportedInterfaceOrientations~ipad</key>
-65: 	<array>
-66: 		<string>UIInterfaceOrientationPortrait</string>
-67: 		<string>UIInterfaceOrientationPortraitUpsideDown</string>
-68: 		<string>UIInterfaceOrientationLandscapeLeft</string>
-69: 		<string>UIInterfaceOrientationLandscapeRight</string>
-70: 	</array>
-71: </dict>
-72: </plist>
+ 5: 	<key>com.apple.developer.applesignin</key>
+ 6: 	<array>
+ 7: 		<string>Default</string>
+ 8: 	</array>
+ 9: </dict>
+10: </plist>
 </file>
 
 <file path="lib/core/constants/app_colors.dart">
@@ -557,97 +496,6 @@ This section contains the contents of the repository's files.
 7:   static String date(DateTime dt) => _date.format(dt);
 8:   static String time(DateTime dt) => _time.format(dt);
 9: }
-</file>
-
-<file path="lib/core/widgets/sobre_dialog.dart">
- 1: import 'package:flutter/material.dart';
- 2: import 'package:flutter/services.dart';
- 3: import 'package:package_info_plus/package_info_plus.dart';
- 4: 
- 5: const _email = 'sallesconsultant@gmail.com';
- 6: const _linkedin = 'https://www.linkedin.com/in/salles-apps/';
- 7: 
- 8: Future<void> mostrarSobre(BuildContext context) async {
- 9:   final info = await PackageInfo.fromPlatform();
-10:   final versao = info.version;
-11: 
-12:   if (!context.mounted) return;
-13: 
-14:   showDialog(
-15:     context: context,
-16:     builder: (_) => AlertDialog(
-17:       title: const Text('Sobre o app'),
-18:       content: Column(
-19:         mainAxisSize: MainAxisSize.min,
-20:         crossAxisAlignment: CrossAxisAlignment.start,
-21:         children: [
-22:           const Center(
-23:             child: Icon(Icons.emoji_events, size: 48, color: Color(0xFF1A6B3C)),
-24:           ),
-25:           const SizedBox(height: 12),
-26:           const Center(
-27:             child: Text(
-28:               'Bolão Copa do Mundo',
-29:               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-30:             ),
-31:           ),
-32:           Center(
-33:             child: Text(
-34:               'Versão $versao',
-35:               style: const TextStyle(fontSize: 12, color: Colors.grey),
-36:             ),
-37:           ),
-38:           const SizedBox(height: 20),
-39:           const Text('Desenvolvido por',
-40:               style: TextStyle(fontSize: 12, color: Colors.grey)),
-41:           const Text('Salles Apps',
-42:               style: TextStyle(fontWeight: FontWeight.bold)),
-43:           const SizedBox(height: 8),
-44:           GestureDetector(
-45:             onTap: () {
-46:               Clipboard.setData(const ClipboardData(text: _email));
-47:               ScaffoldMessenger.of(context).showSnackBar(
-48:                 const SnackBar(content: Text('E-mail copiado!')),
-49:               );
-50:             },
-51:             child: const Text(
-52:               _email,
-53:               style: TextStyle(
-54:                 color: Color(0xFF1A6B3C),
-55:                 decoration: TextDecoration.underline,
-56:               ),
-57:             ),
-58:           ),
-59:           const SizedBox(height: 4),
-60:           GestureDetector(
-61:             onTap: () {
-62:               Clipboard.setData(const ClipboardData(text: _linkedin));
-63:               ScaffoldMessenger.of(context).showSnackBar(
-64:                 const SnackBar(content: Text('Link copiado!')),
-65:               );
-66:             },
-67:             child: const Text(
-68:               _linkedin,
-69:               style: TextStyle(
-70:                 color: Color(0xFF1A6B3C),
-71:                 decoration: TextDecoration.underline,
-72:                 fontSize: 12,
-73:               ),
-74:             ),
-75:           ),
-76:         ],
-77:       ),
-78:       actions: [
-79:         FilledButton(
-80:           style:
-81:               FilledButton.styleFrom(backgroundColor: const Color(0xFF1A6B3C)),
-82:           onPressed: () => Navigator.pop(context),
-83:           child: const Text('Fechar'),
-84:         ),
-85:       ],
-86:     ),
-87:   );
-88: }
 </file>
 
 <file path="lib/data/models/app_user.dart">
@@ -5679,53 +5527,6 @@ This section contains the contents of the repository's files.
 180: }
 </file>
 
-<file path="lib/main.dart">
- 1: import 'package:flutter/material.dart';
- 2: import 'package:firebase_core/firebase_core.dart';
- 3: import 'package:firebase_auth/firebase_auth.dart';
- 4: import 'firebase_options.dart';
- 5: import 'core/routes/app_routes.dart';
- 6: import 'features/auth/login_screen.dart';
- 7: import 'features/groups/groups_screen.dart';
- 8: 
- 9: void main() async {
-10:   WidgetsFlutterBinding.ensureInitialized();
-11:   await Firebase.initializeApp(
-12:     options: DefaultFirebaseOptions.currentPlatform,
-13:   );
-14:   runApp(const BolaoApp());
-15: }
-16: 
-17: class BolaoApp extends StatelessWidget {
-18:   const BolaoApp({super.key});
-19: 
-20:   @override
-21:   Widget build(BuildContext context) {
-22:     return MaterialApp(
-23:       title: 'Bolão Copa do Mundo',
-24:       debugShowCheckedModeBanner: false,
-25:       theme: ThemeData(
-26:         colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF1A6B3C)),
-27:         useMaterial3: true,
-28:       ),
-29:       home: StreamBuilder<User?>(
-30:         stream: FirebaseAuth.instance.authStateChanges(),
-31:         builder: (context, snapshot) {
-32:           if (snapshot.connectionState == ConnectionState.waiting) {
-33:             return const Scaffold(
-34:               body: Center(child: CircularProgressIndicator()),
-35:             );
-36:           }
-37:           if (snapshot.hasData) return const GroupsScreen();
-38:           return const LoginScreen();
-39:         },
-40:       ),
-41:       routes: AppRoutes.routes,
-42:     );
-43:   }
-44: }
-</file>
-
 <file path="lib/services/firestore_service.dart">
  1: import 'package:cloud_firestore/cloud_firestore.dart';
  2: import '../data/models/cup.dart';
@@ -5902,254 +5703,6 @@ This section contains the contents of the repository's files.
 34: </plist>
 </file>
 
-<file path="lib/core/constants/bracket_data.dart">
-  1: // Chaveamento oficial da Copa do Mundo 2026
-  2: // Fonte: Federação / F-O-X Sports
-  3: // Slots de 3º colocado: lista de grupos candidatos (definidos pela Federação)
-  4: // O app resolve qual time ocupa cada slot em função dos palpites do usuário.
-  5: 
-  6: class BracketSlot {
-  7:   /// Ex: '1A' = 1º do grupo A | '2B' = 2º do grupo B | '3ABCDF' = melhor 3º entre grupos A,B,C,D,F
-  8:   final String code;
-  9:   const BracketSlot(this.code);
- 10: 
- 11:   bool get isThird => code.startsWith('3');
- 12: 
- 13:   /// Grupos candidatos para slots de 3º colocado (ex: '3ABCDF' → ['A','B','C','D','F'])
- 14:   List<String> get thirdGroups => isThird ? code.substring(1).split('') : [];
- 15: }
- 16: 
- 17: class BracketMatchDef {
- 18:   final String id; // identificador único do confronto (ex: 'r32_01')
- 19:   final String phase; // 'r32' | 'r16' | 'qf' | 'sf' | '3rd' | 'final'
- 20:   final BracketSlot home;
- 21:   final BracketSlot away;
- 22: 
- 23:   const BracketMatchDef({
- 24:     required this.id,
- 25:     required this.phase,
- 26:     required this.home,
- 27:     required this.away,
- 28:   });
- 29: }
- 30: 
- 31: class BracketData {
- 32:   static const List<String> phases = ['r32', 'r16', 'qf', 'sf', 'final', '3rd'];
- 33: 
- 34:   static const Map<String, String> phaseLabels = {
- 35:     'r32': 'Rodada de 32',
- 36:     'r16': 'Oitavas de Final',
- 37:     'qf': 'Quartas de Final',
- 38:     'sf': 'Semifinais',
- 39:     'final': 'Final',
- 40:     '3rd': '3º Lugar',
- 41:   };
- 42: 
- 43:   /// Round of 32 — chaveamento oficial Copa 2026
- 44:   static const List<BracketMatchDef> r32 = [
- 45:     BracketMatchDef(
- 46:         id: 'r32_01',
- 47:         phase: 'r32',
- 48:         home: BracketSlot('2A'),
- 49:         away: BracketSlot('2B')),
- 50:     BracketMatchDef(
- 51:         id: 'r32_02',
- 52:         phase: 'r32',
- 53:         home: BracketSlot('1E'),
- 54:         away: BracketSlot('3ABCDF')),
- 55:     BracketMatchDef(
- 56:         id: 'r32_03',
- 57:         phase: 'r32',
- 58:         home: BracketSlot('1C'),
- 59:         away: BracketSlot('2F')),
- 60:     BracketMatchDef(
- 61:         id: 'r32_04',
- 62:         phase: 'r32',
- 63:         home: BracketSlot('1F'),
- 64:         away: BracketSlot('2C')),
- 65:     BracketMatchDef(
- 66:         id: 'r32_05',
- 67:         phase: 'r32',
- 68:         home: BracketSlot('2E'),
- 69:         away: BracketSlot('2I')),
- 70:     BracketMatchDef(
- 71:         id: 'r32_06',
- 72:         phase: 'r32',
- 73:         home: BracketSlot('1A'),
- 74:         away: BracketSlot('3CEFHI')),
- 75:     BracketMatchDef(
- 76:         id: 'r32_07',
- 77:         phase: 'r32',
- 78:         home: BracketSlot('1I'),
- 79:         away: BracketSlot('3CDFGH')),
- 80:     BracketMatchDef(
- 81:         id: 'r32_08',
- 82:         phase: 'r32',
- 83:         home: BracketSlot('1L'),
- 84:         away: BracketSlot('3EHIJK')),
- 85:     BracketMatchDef(
- 86:         id: 'r32_09',
- 87:         phase: 'r32',
- 88:         home: BracketSlot('1J'),
- 89:         away: BracketSlot('2H')),
- 90:     BracketMatchDef(
- 91:         id: 'r32_10',
- 92:         phase: 'r32',
- 93:         home: BracketSlot('2D'),
- 94:         away: BracketSlot('2G')),
- 95:     BracketMatchDef(
- 96:         id: 'r32_11',
- 97:         phase: 'r32',
- 98:         home: BracketSlot('1G'),
- 99:         away: BracketSlot('3AEHIJ')),
-100:     BracketMatchDef(
-101:         id: 'r32_12',
-102:         phase: 'r32',
-103:         home: BracketSlot('1D'),
-104:         away: BracketSlot('3BEFIJ')),
-105:     BracketMatchDef(
-106:         id: 'r32_13',
-107:         phase: 'r32',
-108:         home: BracketSlot('1H'),
-109:         away: BracketSlot('2J')),
-110:     BracketMatchDef(
-111:         id: 'r32_14',
-112:         phase: 'r32',
-113:         home: BracketSlot('2K'),
-114:         away: BracketSlot('2L')),
-115:     BracketMatchDef(
-116:         id: 'r32_15',
-117:         phase: 'r32',
-118:         home: BracketSlot('1B'),
-119:         away: BracketSlot('3EFGIJ')),
-120:     BracketMatchDef(
-121:         id: 'r32_16',
-122:         phase: 'r32',
-123:         home: BracketSlot('1K'),
-124:         away: BracketSlot('3DEIJL')),
-125:   ];
-126: 
-127:   /// Oitavas: vencedores dos pares de jogos do R32 (ordem do chaveamento FIFA)
-128:   /// W(id) = vencedor do jogo com aquele id
-129:   static const List<BracketMatchDef> r16 = [
-130:     BracketMatchDef(
-131:         id: 'r16_01',
-132:         phase: 'r16',
-133:         home: BracketSlot('Wr32_01'),
-134:         away: BracketSlot('Wr32_02')),
-135:     BracketMatchDef(
-136:         id: 'r16_02',
-137:         phase: 'r16',
-138:         home: BracketSlot('Wr32_03'),
-139:         away: BracketSlot('Wr32_04')),
-140:     BracketMatchDef(
-141:         id: 'r16_03',
-142:         phase: 'r16',
-143:         home: BracketSlot('Wr32_05'),
-144:         away: BracketSlot('Wr32_06')),
-145:     BracketMatchDef(
-146:         id: 'r16_04',
-147:         phase: 'r16',
-148:         home: BracketSlot('Wr32_07'),
-149:         away: BracketSlot('Wr32_08')),
-150:     BracketMatchDef(
-151:         id: 'r16_05',
-152:         phase: 'r16',
-153:         home: BracketSlot('Wr32_09'),
-154:         away: BracketSlot('Wr32_10')),
-155:     BracketMatchDef(
-156:         id: 'r16_06',
-157:         phase: 'r16',
-158:         home: BracketSlot('Wr32_11'),
-159:         away: BracketSlot('Wr32_12')),
-160:     BracketMatchDef(
-161:         id: 'r16_07',
-162:         phase: 'r16',
-163:         home: BracketSlot('Wr32_13'),
-164:         away: BracketSlot('Wr32_14')),
-165:     BracketMatchDef(
-166:         id: 'r16_08',
-167:         phase: 'r16',
-168:         home: BracketSlot('Wr32_15'),
-169:         away: BracketSlot('Wr32_16')),
-170:   ];
-171: 
-172:   static const List<BracketMatchDef> qf = [
-173:     BracketMatchDef(
-174:         id: 'qf_01',
-175:         phase: 'qf',
-176:         home: BracketSlot('Wr16_01'),
-177:         away: BracketSlot('Wr16_02')),
-178:     BracketMatchDef(
-179:         id: 'qf_02',
-180:         phase: 'qf',
-181:         home: BracketSlot('Wr16_03'),
-182:         away: BracketSlot('Wr16_04')),
-183:     BracketMatchDef(
-184:         id: 'qf_03',
-185:         phase: 'qf',
-186:         home: BracketSlot('Wr16_05'),
-187:         away: BracketSlot('Wr16_06')),
-188:     BracketMatchDef(
-189:         id: 'qf_04',
-190:         phase: 'qf',
-191:         home: BracketSlot('Wr16_07'),
-192:         away: BracketSlot('Wr16_08')),
-193:   ];
-194: 
-195:   static const List<BracketMatchDef> sf = [
-196:     BracketMatchDef(
-197:         id: 'sf_01',
-198:         phase: 'sf',
-199:         home: BracketSlot('Wqf_01'),
-200:         away: BracketSlot('Wqf_02')),
-201:     BracketMatchDef(
-202:         id: 'sf_02',
-203:         phase: 'sf',
-204:         home: BracketSlot('Wqf_03'),
-205:         away: BracketSlot('Wqf_04')),
-206:   ];
-207: 
-208:   static const List<BracketMatchDef> thirdPlace = [
-209:     BracketMatchDef(
-210:         id: '3rd_01',
-211:         phase: '3rd',
-212:         home: BracketSlot('Lsf_01'),
-213:         away: BracketSlot('Lsf_02')),
-214:   ];
-215: 
-216:   static const List<BracketMatchDef> finalMatch = [
-217:     BracketMatchDef(
-218:         id: 'final_01',
-219:         phase: 'final',
-220:         home: BracketSlot('Wsf_01'),
-221:         away: BracketSlot('Wsf_02')),
-222:   ];
-223: 
-224:   static List<BracketMatchDef> get allMatches =>
-225:       [...r32, ...r16, ...qf, ...sf, ...thirdPlace, ...finalMatch];
-226: 
-227:   static List<BracketMatchDef> matchesForPhase(String phase) =>
-228:       allMatches.where((m) => m.phase == phase).toList();
-229: 
-230:   /// Grupos de A a L
-231:   static const List<String> groups = [
-232:     'A',
-233:     'B',
-234:     'C',
-235:     'D',
-236:     'E',
-237:     'F',
-238:     'G',
-239:     'H',
-240:     'I',
-241:     'J',
-242:     'K',
-243:     'L'
-244:   ];
-245: }
-</file>
-
 <file path="lib/core/routes/app_routes.dart">
  1: import 'package:flutter/material.dart';
  2: import '../../features/auth/register_screen.dart';
@@ -6185,312 +5738,6 @@ This section contains the contents of the repository's files.
 32:         groups: (_) => const GroupsScreen(),
 33:       };
 34: }
-</file>
-
-<file path="lib/features/auth/login_screen.dart">
-  1: import 'package:flutter/material.dart';
-  2: import '../../services/auth_service.dart';
-  3: import '../../core/routes/app_routes.dart';
-  4: import '../../core/widgets/sobre_dialog.dart';
-  5: 
-  6: class LoginScreen extends StatefulWidget {
-  7:   const LoginScreen({super.key});
-  8:   @override
-  9:   State<LoginScreen> createState() => _LoginScreenState();
- 10: }
- 11: 
- 12: class _LoginScreenState extends State<LoginScreen> {
- 13:   final _formKey = GlobalKey<FormState>();
- 14:   final _emailController = TextEditingController();
- 15:   final _passwordController = TextEditingController();
- 16:   final _authService = AuthService();
- 17:   bool _loading = false;
- 18:   bool _senhaVisivel = false;
- 19:   String? _erro;
- 20: 
- 21:   @override
- 22:   void dispose() {
- 23:     _emailController.dispose();
- 24:     _passwordController.dispose();
- 25:     super.dispose();
- 26:   }
- 27: 
- 28:   Future<void> _loginEmail() async {
- 29:     if (!_formKey.currentState!.validate()) return;
- 30:     setState(() {
- 31:       _loading = true;
- 32:       _erro = null;
- 33:     });
- 34:     try {
- 35:       await _authService.signInWithEmail(
- 36:         _emailController.text,
- 37:         _passwordController.text,
- 38:       );
- 39:       if (mounted) Navigator.pushReplacementNamed(context, '/groups');
- 40:     } on Exception catch (e) {
- 41:       setState(() {
- 42:         _erro = _traduzirErro(e.toString());
- 43:       });
- 44:     } finally {
- 45:       if (mounted) {
- 46:         setState(() {
- 47:           _loading = false;
- 48:         });
- 49:       }
- 50:     }
- 51:   }
- 52: 
- 53:   Future<void> _loginGoogle() async {
- 54:     setState(() {
- 55:       _loading = true;
- 56:       _erro = null;
- 57:     });
- 58:     try {
- 59:       final result = await _authService.signInWithGoogle();
- 60:       if (result != null && mounted) {
- 61:         Navigator.pushReplacementNamed(context, '/groups');
- 62:       }
- 63:     } on Exception catch (e) {
- 64:       setState(() {
- 65:         _erro = _traduzirErro(e.toString());
- 66:       });
- 67:     } finally {
- 68:       if (mounted) {
- 69:         setState(() {
- 70:           _loading = false;
- 71:         });
- 72:       }
- 73:     }
- 74:   }
- 75: 
- 76:   Future<void> _loginApple() async {
- 77:     setState(() {
- 78:       _loading = true;
- 79:       _erro = null;
- 80:     });
- 81:     try {
- 82:       await _authService.signInWithApple();
- 83:       if (mounted) {
- 84:         Navigator.pushReplacementNamed(context, '/groups');
- 85:       }
- 86:     } on Exception catch (e) {
- 87:       setState(() {
- 88:         _erro = _traduzirErro(e.toString());
- 89:       });
- 90:     } finally {
- 91:       if (mounted) {
- 92:         setState(() {
- 93:           _loading = false;
- 94:         });
- 95:       }
- 96:     }
- 97:   }
- 98: 
- 99:   String _traduzirErro(String erro) {
-100:     const map = {
-101:       'user-not-found': 'Usuário não encontrado.',
-102:       'wrong-password': 'Senha incorreta.',
-103:       'invalid-email': 'E-mail inválido.',
-104:       'invalid-credential': 'E-mail ou senha incorretos.',
-105:       'too-many-requests': 'Muitas tentativas. Tente mais tarde.',
-106:     };
-107:     for (final entry in map.entries) {
-108:       if (erro.contains(entry.key)) {
-109:         return entry.value;
-110:       }
-111:     }
-112:     return 'Erro ao entrar. Tente novamente.';
-113:   }
-114: 
-115:   Future<void> _recuperarSenha() async {
-116:     final emailCtrl = TextEditingController(text: _emailController.text.trim());
-117:     await showDialog(
-118:       context: context,
-119:       builder: (ctx) => AlertDialog(
-120:         title: const Text('Recuperar senha'),
-121:         content: Column(
-122:           mainAxisSize: MainAxisSize.min,
-123:           children: [
-124:             const Text(
-125:                 'Informe seu e-mail para receber o link de redefinição.'),
-126:             const SizedBox(height: 16),
-127:             TextFormField(
-128:               controller: emailCtrl,
-129:               keyboardType: TextInputType.emailAddress,
-130:               decoration: const InputDecoration(
-131:                 labelText: 'E-mail',
-132:                 border: OutlineInputBorder(),
-133:                 prefixIcon: Icon(Icons.email_outlined),
-134:               ),
-135:             ),
-136:           ],
-137:         ),
-138:         actions: [
-139:           TextButton(
-140:             onPressed: () => Navigator.pop(ctx),
-141:             child: const Text('Cancelar'),
-142:           ),
-143:           FilledButton(
-144:             onPressed: () async {
-145:               final email = emailCtrl.text.trim();
-146:               if (email.isEmpty) return;
-147:               try {
-148:                 await _authService.sendPasswordReset(email);
-149:                 if (ctx.mounted) {
-150:                   Navigator.pop(ctx);
-151:                   ScaffoldMessenger.of(ctx).showSnackBar(
-152:                     const SnackBar(
-153:                       content: Text('E-mail de recuperação enviado!'),
-154:                       backgroundColor: Color(0xFF1A6B3C),
-155:                     ),
-156:                   );
-157:                 }
-158:               } on Exception {
-159:                 if (ctx.mounted) {
-160:                   ScaffoldMessenger.of(ctx).showSnackBar(
-161:                     const SnackBar(
-162:                       content: Text(
-163:                           'Não foi possível enviar o e-mail. Verifique o endereço.'),
-164:                       backgroundColor: Colors.red,
-165:                     ),
-166:                   );
-167:                 }
-168:               }
-169:             },
-170:             child: const Text('Enviar'),
-171:           ),
-172:         ],
-173:       ),
-174:     );
-175:     emailCtrl.dispose();
-176:   }
-177: 
-178:   @override
-179:   Widget build(BuildContext context) {
-180:     return Scaffold(
-181:       body: Stack(
-182:         children: [
-183:           SafeArea(
-184:             child: Center(
-185:               child: SingleChildScrollView(
-186:                 padding: const EdgeInsets.all(32),
-187:                 child: Form(
-188:                   key: _formKey,
-189:                   child: Column(
-190:                     mainAxisAlignment: MainAxisAlignment.center,
-191:                     children: [
-192:                       const Icon(Icons.emoji_events,
-193:                           size: 80, color: Color(0xFF1A6B3C)),
-194:                       const SizedBox(height: 16),
-195:                       const Text(
-196:                         'Bolão Copa do Mundo',
-197:                         style: TextStyle(
-198:                           fontSize: 24,
-199:                           fontWeight: FontWeight.bold,
-200:                         ),
-201:                       ),
-202:                       const SizedBox(height: 40),
-203:                       TextFormField(
-204:                         controller: _emailController,
-205:                         keyboardType: TextInputType.emailAddress,
-206:                         decoration: const InputDecoration(
-207:                           labelText: 'E-mail',
-208:                           border: OutlineInputBorder(),
-209:                           prefixIcon: Icon(Icons.email_outlined),
-210:                         ),
-211:                         validator: (v) =>
-212:                             v == null || v.isEmpty ? 'Informe o e-mail' : null,
-213:                       ),
-214:                       const SizedBox(height: 16),
-215:                       TextFormField(
-216:                         controller: _passwordController,
-217:                         obscureText: !_senhaVisivel,
-218:                         decoration: InputDecoration(
-219:                           labelText: 'Senha',
-220:                           border: const OutlineInputBorder(),
-221:                           prefixIcon: const Icon(Icons.lock_outline),
-222:                           suffixIcon: IconButton(
-223:                             icon: Icon(
-224:                               _senhaVisivel
-225:                                   ? Icons.visibility_off_outlined
-226:                                   : Icons.visibility_outlined,
-227:                             ),
-228:                             onPressed: () =>
-229:                                 setState(() => _senhaVisivel = !_senhaVisivel),
-230:                           ),
-231:                         ),
-232:                         validator: (v) =>
-233:                             v == null || v.isEmpty ? 'Informe a senha' : null,
-234:                       ),
-235:                       if (_erro != null) ...[
-236:                         const SizedBox(height: 12),
-237:                         Text(_erro!, style: const TextStyle(color: Colors.red)),
-238:                       ],
-239:                       const SizedBox(height: 24),
-240:                       SizedBox(
-241:                         width: double.infinity,
-242:                         child: FilledButton(
-243:                           onPressed: _loading ? null : _loginEmail,
-244:                           child: _loading
-245:                               ? const SizedBox(
-246:                                   height: 20,
-247:                                   width: 20,
-248:                                   child: CircularProgressIndicator(
-249:                                       strokeWidth: 2, color: Colors.white),
-250:                                 )
-251:                               : const Text('Entrar'),
-252:                         ),
-253:                       ),
-254:                       const SizedBox(height: 12),
-255:                       SizedBox(
-256:                         width: double.infinity,
-257:                         child: OutlinedButton.icon(
-258:                           onPressed: _loading ? null : _loginGoogle,
-259:                           icon: const Icon(Icons.login),
-260:                           label: const Text('Entrar com Google'),
-261:                         ),
-262:                       ),
-263:                       const SizedBox(height: 12),
-264:                       SizedBox(
-265:                         width: double.infinity,
-266:                         child: OutlinedButton.icon(
-267:                           onPressed: _loading ? null : _loginApple,
-268:                           icon: const Icon(Icons.apple),
-269:                           label: const Text('Entrar com Apple'),
-270:                         ),
-271:                       ),
-272:                       const SizedBox(height: 24),
-273:                       TextButton(
-274:                         onPressed: () =>
-275:                             Navigator.pushNamed(context, AppRoutes.register),
-276:                         child: const Text('Não tem conta? Cadastre-se'),
-277:                       ),
-278:                       TextButton(
-279:                         onPressed: _recuperarSenha,
-280:                         child: const Text('Esqueci minha senha'),
-281:                       ),
-282:                     ],
-283:                   ),
-284:                 ),
-285:               ),
-286:             ),
-287:           ),
-288:           Positioned(
-289:             top: 8,
-290:             right: 8,
-291:             child: SafeArea(
-292:               child: IconButton(
-293:                 icon: const Icon(Icons.info_outline, color: Color(0xFF1A6B3C)),
-294:                 tooltip: 'Sobre',
-295:                 onPressed: () async => mostrarSobre(context),
-296:               ),
-297:             ),
-298:           ),
-299:         ],
-300:       ),
-301:     );
-302:   }
-303: }
 </file>
 
 <file path="lib/features/auth/register_screen.dart">
@@ -7041,292 +6288,6 @@ This section contains the contents of the repository's files.
 247: }
 </file>
 
-<file path="lib/features/groups/groups_screen.dart">
-  1: import 'package:flutter/material.dart';
-  2: import 'package:firebase_auth/firebase_auth.dart';
-  3: import '../../data/models/bolao_group.dart';
-  4: import '../../data/repositories/group_repository.dart';
-  5: import '../../services/auth_service.dart';
-  6: //import '../../core/routes/app_routes.dart';
-  7: import '../../core/widgets/sobre_dialog.dart';
-  8: import '../auth/login_screen.dart';
-  9: import 'widgets/group_card_bolao.dart';
- 10: import 'create_group_screen.dart';
- 11: import 'join_group_sheet.dart';
- 12: import 'group_home_screen.dart';
- 13: 
- 14: class GroupsScreen extends StatefulWidget {
- 15:   const GroupsScreen({super.key});
- 16: 
- 17:   @override
- 18:   State<GroupsScreen> createState() => _GroupsScreenState();
- 19: }
- 20: 
- 21: class _GroupsScreenState extends State<GroupsScreen> {
- 22:   final _repo = GroupRepository();
- 23:   final _authService = AuthService();
- 24: 
- 25:   List<BolaoGroup> _groups = [];
- 26:   bool _loading = true;
- 27:   String? _erro;
- 28: 
- 29:   @override
- 30:   void initState() {
- 31:     super.initState();
- 32:     _carregar();
- 33:   }
- 34: 
- 35:   Future<void> _carregar() async {
- 36:     setState(() {
- 37:       _loading = true;
- 38:       _erro = null;
- 39:     });
- 40:     try {
- 41:       final uid = FirebaseAuth.instance.currentUser?.uid;
- 42:       if (uid == null) return;
- 43:       final groups = await _repo.fetchUserGroups(uid);
- 44:       if (mounted) setState(() => _groups = groups);
- 45:     } catch (_) {
- 46:       if (mounted) setState(() => _erro = 'Erro ao carregar grupos.');
- 47:     } finally {
- 48:       if (mounted) setState(() => _loading = false);
- 49:     }
- 50:   }
- 51: 
- 52:   Future<void> _sair() async {
- 53:     await _authService.signOut();
- 54:     if (mounted) {
- 55:       Navigator.of(context).pushAndRemoveUntil(
- 56:         MaterialPageRoute(builder: (_) => const LoginScreen()),
- 57:         (route) => false,
- 58:       );
- 59:     }
- 60:   }
- 61: 
- 62:   void _abrirCriarGrupo() async {
- 63:     final criado = await Navigator.push<BolaoGroup>(
- 64:       context,
- 65:       MaterialPageRoute(builder: (_) => const CreateGroupScreen()),
- 66:     );
- 67:     if (criado != null) {
- 68:       setState(() => _groups.insert(0, criado));
- 69:     }
- 70:   }
- 71: 
- 72:   void _abrirEntrarGrupo() async {
- 73:     final entrou = await showModalBottomSheet<BolaoGroup>(
- 74:       context: context,
- 75:       isScrollControlled: true,
- 76:       backgroundColor: Colors.white,
- 77:       shape: const RoundedRectangleBorder(
- 78:         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
- 79:       ),
- 80:       builder: (_) => const JoinGroupSheet(),
- 81:     );
- 82:     if (entrou != null) {
- 83:       setState(() => _groups.add(entrou));
- 84:     }
- 85:   }
- 86: 
- 87:   void _abrirGrupo(BolaoGroup group) {
- 88:     Navigator.push(
- 89:       context,
- 90:       MaterialPageRoute(
- 91:         builder: (_) => GroupHomeScreen(group: group),
- 92:       ),
- 93:     );
- 94:   }
- 95: 
- 96:   Future<void> _confirmarSair(BolaoGroup group) async {
- 97:     final uid = FirebaseAuth.instance.currentUser?.uid ?? '';
- 98:     final isAdmin = group.adminUid == uid;
- 99:     final msg = isAdmin
-100:         ? 'Você é o admin. Ao sair, o grupo será apagado permanentemente.'
-101:         : 'Deseja sair do grupo "${group.name}"?';
-102: 
-103:     final confirm = await showDialog<bool>(
-104:       context: context,
-105:       builder: (_) => AlertDialog(
-106:         title: Text(isAdmin ? 'Apagar grupo?' : 'Sair do grupo?'),
-107:         content: Text(msg),
-108:         actions: [
-109:           TextButton(
-110:             onPressed: () => Navigator.pop(context, false),
-111:             child: const Text('Cancelar'),
-112:           ),
-113:           FilledButton(
-114:             style: FilledButton.styleFrom(backgroundColor: Colors.red),
-115:             onPressed: () => Navigator.pop(context, true),
-116:             child: Text(isAdmin ? 'Apagar' : 'Sair'),
-117:           ),
-118:         ],
-119:       ),
-120:     );
-121: 
-122:     if (confirm != true || !mounted) return;
-123: 
-124:     try {
-125:       if (isAdmin) {
-126:         await _repo.deleteGroup(group.id);
-127:       } else {
-128:         await _repo.leaveGroup(group.id, uid);
-129:       }
-130:       setState(() => _groups.removeWhere((g) => g.id == group.id));
-131:     } catch (_) {
-132:       if (mounted) {
-133:         ScaffoldMessenger.of(context).showSnackBar(
-134:           const SnackBar(content: Text('Erro ao sair do grupo.')),
-135:         );
-136:       }
-137:     }
-138:   }
-139: 
-140:   @override
-141:   Widget build(BuildContext context) {
-142:     return Scaffold(
-143:       appBar: AppBar(
-144:         title: const Text('Bolão Copa do Mundo'),
-145:         backgroundColor: const Color(0xFF1A6B3C),
-146:         foregroundColor: Colors.white,
-147:         actions: [
-148:           IconButton(
-149:             icon: const Icon(Icons.info_outline),
-150:             tooltip: 'Sobre',
-151:             onPressed: () => mostrarSobre(context),
-152:           ),
-153:           IconButton(
-154:             icon: const Icon(Icons.logout),
-155:             tooltip: 'Sair',
-156:             onPressed: _sair,
-157:           ),
-158:         ],
-159:       ),
-160:       body: _loading
-161:           ? const Center(child: CircularProgressIndicator())
-162:           : _erro != null
-163:               ? Center(
-164:                   child: Column(
-165:                     mainAxisSize: MainAxisSize.min,
-166:                     children: [
-167:                       Text(_erro!, style: const TextStyle(color: Colors.red)),
-168:                       const SizedBox(height: 12),
-169:                       FilledButton(
-170:                         onPressed: _carregar,
-171:                         child: const Text('Tentar novamente'),
-172:                       ),
-173:                     ],
-174:                   ),
-175:                 )
-176:               : _groups.isEmpty
-177:                   ? _EmptyState(
-178:                       onCriar: _abrirCriarGrupo,
-179:                       onEntrar: _abrirEntrarGrupo,
-180:                     )
-181:                   : RefreshIndicator(
-182:                       onRefresh: _carregar,
-183:                       child: ListView(
-184:                         padding: const EdgeInsets.fromLTRB(16, 16, 16, 100),
-185:                         children: [
-186:                           const Text(
-187:                             'SEUS BOLÕES',
-188:                             style: TextStyle(
-189:                               fontSize: 12,
-190:                               fontWeight: FontWeight.bold,
-191:                               color: Colors.grey,
-192:                               letterSpacing: 1.2,
-193:                             ),
-194:                           ),
-195:                           const SizedBox(height: 12),
-196:                           ..._groups.map(
-197:                             (g) => Padding(
-198:                               padding: const EdgeInsets.only(bottom: 12),
-199:                               child: GroupCardBolao(
-200:                                 group: g,
-201:                                 onTap: () => _abrirGrupo(g),
-202:                                 onLongPress: () => _confirmarSair(g),
-203:                               ),
-204:                             ),
-205:                           ),
-206:                         ],
-207:                       ),
-208:                     ),
-209:       floatingActionButton: _groups.isEmpty
-210:           ? null
-211:           : Column(
-212:               mainAxisSize: MainAxisSize.min,
-213:               children: [
-214:                 FloatingActionButton.small(
-215:                   heroTag: 'entrar',
-216:                   backgroundColor: Colors.grey.shade200,
-217:                   foregroundColor: Colors.black87,
-218:                   tooltip: 'Entrar com código',
-219:                   onPressed: _abrirEntrarGrupo,
-220:                   child: const Icon(Icons.group_add),
-221:                 ),
-222:                 const SizedBox(height: 8),
-223:                 FloatingActionButton(
-224:                   heroTag: 'criar',
-225:                   backgroundColor: const Color(0xFF1A6B3C),
-226:                   foregroundColor: Colors.white,
-227:                   tooltip: 'Criar bolão',
-228:                   onPressed: _abrirCriarGrupo,
-229:                   child: const Icon(Icons.add),
-230:                 ),
-231:               ],
-232:             ),
-233:     );
-234:   }
-235: }
-236: 
-237: class _EmptyState extends StatelessWidget {
-238:   final VoidCallback onCriar;
-239:   final VoidCallback onEntrar;
-240: 
-241:   const _EmptyState({required this.onCriar, required this.onEntrar});
-242: 
-243:   @override
-244:   Widget build(BuildContext context) {
-245:     return Center(
-246:       child: Padding(
-247:         padding: const EdgeInsets.all(32),
-248:         child: Column(
-249:           mainAxisSize: MainAxisSize.min,
-250:           children: [
-251:             const Icon(Icons.emoji_events_outlined,
-252:                 size: 72, color: Color(0xFF1A6B3C)),
-253:             const SizedBox(height: 16),
-254:             const Text(
-255:               'Nenhum bolão ainda',
-256:               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-257:             ),
-258:             const SizedBox(height: 8),
-259:             const Text(
-260:               'Crie seu bolão ou entre com um código de convite.',
-261:               textAlign: TextAlign.center,
-262:               style: TextStyle(color: Colors.grey),
-263:             ),
-264:             const SizedBox(height: 32),
-265:             FilledButton.icon(
-266:               style: FilledButton.styleFrom(
-267:                   backgroundColor: const Color(0xFF1A6B3C)),
-268:               onPressed: onCriar,
-269:               icon: const Icon(Icons.add),
-270:               label: const Text('Criar bolão'),
-271:             ),
-272:             const SizedBox(height: 12),
-273:             OutlinedButton.icon(
-274:               onPressed: onEntrar,
-275:               icon: const Icon(Icons.group_add),
-276:               label: const Text('Entrar com código'),
-277:             ),
-278:           ],
-279:         ),
-280:       ),
-281:     );
-282:   }
-283: }
-</file>
-
 <file path="lib/features/groups/join_group_sheet.dart">
   1: import 'package:flutter/material.dart';
   2: import 'package:firebase_auth/firebase_auth.dart';
@@ -7475,298 +6436,288 @@ This section contains the contents of the repository's files.
 145: }
 </file>
 
-<file path="lib/features/home/home_screen.dart">
-  1: import 'package:flutter/material.dart';
-  2: import '../../services/auth_service.dart';
-  3: import '../../core/widgets/sobre_dialog.dart';
-  4: import '../../data/models/app_user.dart';
-  5: import '../../core/routes/app_routes.dart';
-  6: import '../auth/login_screen.dart';
-  7: 
-  8: class HomeScreen extends StatefulWidget {
-  9:   const HomeScreen({super.key});
- 10:   @override
- 11:   State<HomeScreen> createState() => _HomeScreenState();
- 12: }
- 13: 
- 14: class _HomeScreenState extends State<HomeScreen> {
- 15:   final _authService = AuthService();
- 16:   AppUser? _appUser;
- 17:   bool _loading = true;
- 18:   @override
- 19:   void initState() {
- 20:     super.initState();
- 21:     _carregarUsuario();
- 22:   }
- 23: 
- 24:   Future<void> _carregarUsuario() async {
- 25:     final user = _authService.currentUser;
- 26:     if (user == null) {
- 27:       if (mounted) {
- 28:         Navigator.of(context).pushAndRemoveUntil(
- 29:           MaterialPageRoute(builder: (_) => const LoginScreen()),
- 30:           (route) => false,
- 31:         );
- 32:       }
- 33:       return;
- 34:     }
- 35:     final appUser = await _authService.fetchAppUser(user.uid);
- 36:     if (mounted) {
- 37:       setState(() {
- 38:         _appUser = appUser;
- 39:         _loading = false;
- 40:       });
- 41:     }
- 42:   }
- 43: 
- 44:   Future<void> _sair() async {
- 45:     await _authService.signOut();
- 46:     if (mounted) {
- 47:       Navigator.of(context).pushAndRemoveUntil(
- 48:         MaterialPageRoute(builder: (_) => const LoginScreen()),
- 49:         (route) => false,
- 50:       );
- 51:     }
- 52:   }
- 53: 
- 54:   @override
- 55:   Widget build(BuildContext context) {
- 56:     if (_loading) {
- 57:       return const Scaffold(
- 58:         body: Center(child: CircularProgressIndicator()),
- 59:       );
- 60:     }
- 61:     return Scaffold(
- 62:       appBar: AppBar(
- 63:         title: const Text('Bolão Copa do Mundo'),
- 64:         backgroundColor: const Color(0xFF1A6B3C),
- 65:         foregroundColor: Colors.white,
- 66:         actions: [
- 67:           if (_appUser?.isAdmin == true)
- 68:             IconButton(
- 69:               icon: const Icon(Icons.admin_panel_settings_outlined),
- 70:               tooltip: 'Admin',
- 71:               onPressed: () =>
- 72:                   Navigator.pushNamed(context, AppRoutes.adminDashboard),
- 73:             ),
- 74:           IconButton(
- 75:             icon: const Icon(Icons.info_outline),
- 76:             tooltip: 'Sobre',
- 77:             onPressed: () async => mostrarSobre(context),
- 78:           ),
- 79:           IconButton(
- 80:             icon: const Icon(Icons.logout),
- 81:             tooltip: 'Sair',
- 82:             onPressed: _sair,
- 83:           ),
- 84:         ],
- 85:       ),
- 86:       body: Padding(
- 87:         padding: const EdgeInsets.all(24),
- 88:         child: Column(
- 89:           crossAxisAlignment: CrossAxisAlignment.start,
- 90:           children: [
- 91:             Text(
- 92:               'Olá, ${_appUser?.name ?? 'Jogador'}!',
- 93:               style: const TextStyle(
- 94:                 fontSize: 22,
- 95:                 fontWeight: FontWeight.bold,
- 96:               ),
- 97:             ),
- 98:             const SizedBox(height: 8),
- 99:             Text(
-100:               'Pontuação total: ${_appUser?.totalPoints ?? 0} pts',
-101:               style: const TextStyle(fontSize: 16, color: Colors.grey),
-102:             ),
-103:             const SizedBox(height: 32),
-104:             _MenuItem(
-105:               icon: Icons.sports_soccer,
-106:               label: 'Meus Palpites',
-107:               descricao: 'Coloque seus palpites nos resultados dos jogos',
-108:               onTap: () => Navigator.pushNamed(context, AppRoutes.matches),
-109:             ),
-110:             const SizedBox(height: 12),
-111:             _MenuItem(
-112:               icon: Icons.star_outline,
-113:               label: 'Palpites Extras',
-114:               descricao: 'Campeão, artilheiro e mais',
-115:               onTap: () => Navigator.pushNamed(context, AppRoutes.extras),
-116:             ),
-117:             const SizedBox(height: 12),
-118:             _MenuItem(
-119:               icon: Icons.leaderboard_outlined,
-120:               label: 'Ranking',
-121:               descricao: 'Veja a classificação geral',
-122:               onTap: () => Navigator.pushNamed(context, AppRoutes.ranking),
-123:             ),
-124:           ],
-125:         ),
-126:       ),
-127:     );
-128:   }
-129: }
-130: 
-131: class _MenuItem extends StatelessWidget {
-132:   final IconData icon;
-133:   final String label;
-134:   final String descricao;
-135:   final VoidCallback onTap;
-136:   const _MenuItem({
-137:     required this.icon,
-138:     required this.label,
-139:     required this.descricao,
-140:     required this.onTap,
-141:   });
-142:   @override
-143:   Widget build(BuildContext context) {
-144:     return Card(
-145:       child: ListTile(
-146:         leading: Icon(icon, color: const Color(0xFF1A6B3C), size: 32),
-147:         title: Text(label, style: const TextStyle(fontWeight: FontWeight.bold)),
-148:         subtitle: Text(descricao),
-149:         trailing: const Icon(Icons.chevron_right),
-150:         onTap: onTap,
-151:       ),
-152:     );
-153:   }
-154: }
+<file path="firebase.json">
+1: {"flutter":{"platforms":{"android":{"default":{"projectId":"bolao-copa-do-mundo-salles","appId":"1:212214398916:android:56b9db4e84c71cdab26e91","fileOutput":"android/app/google-services.json"}},"dart":{"lib/firebase_options.dart":{"projectId":"bolao-copa-do-mundo-salles","configurations":{"android":"1:212214398916:android:56b9db4e84c71cdab26e91","ios":"1:212214398916:ios:b9d3161018a1be4eb26e91","web":"1:212214398916:web:218dc04cbb2318cdb26e91"}}}}},"firestore":{"database":"(default)","location":"southamerica-east1","rules":"firestore.rules","indexes":"firestore.indexes.json"}}
 </file>
 
-<file path="lib/services/auth_service.dart">
-  1: import 'package:firebase_auth/firebase_auth.dart';
-  2: import 'package:google_sign_in/google_sign_in.dart';
-  3: import 'package:cloud_firestore/cloud_firestore.dart';
-  4: import '../data/models/app_user.dart';
-  5: import 'package:sign_in_with_apple/sign_in_with_apple.dart';
-  6: 
-  7: class AuthService {
-  8:   final FirebaseAuth _auth = FirebaseAuth.instance;
-  9:   final GoogleSignIn _googleSignIn = GoogleSignIn();
- 10:   final FirebaseFirestore _db = FirebaseFirestore.instance;
- 11:   // Usuário autenticado atual
- 12:   User? get currentUser => _auth.currentUser;
- 13:   // Stream de mudanças de autenticação
- 14:   Stream<User?> get authStateChanges => _auth.authStateChanges();
- 15:   // Login com e-mail e senha
- 16:   Future<UserCredential> signInWithEmail(String email, String password) async {
- 17:     return await _auth.signInWithEmailAndPassword(
- 18:       email: email.trim(),
- 19:       password: password,
- 20:     );
- 21:   }
- 22: 
- 23:   // Registro com e-mail e senha
- 24:   Future<UserCredential> registerWithEmail({
- 25:     required String name,
- 26:     required String email,
- 27:     required String password,
- 28:   }) async {
- 29:     final credential = await _auth.createUserWithEmailAndPassword(
- 30:       email: email.trim(),
- 31:       password: password,
- 32:     );
- 33:     await credential.user?.updateDisplayName(name);
- 34:     await _saveUserToFirestore(
- 35:       uid: credential.user!.uid,
- 36:       name: name,
- 37:       email: email.trim(),
- 38:     );
- 39:     return credential;
- 40:   }
- 41: 
- 42:   // Login com Google
- 43:   Future<UserCredential?> signInWithGoogle() async {
- 44:     final googleUser = await _googleSignIn.signIn();
- 45:     if (googleUser == null) return null;
- 46:     final googleAuth = await googleUser.authentication;
- 47:     final credential = GoogleAuthProvider.credential(
- 48:       accessToken: googleAuth.accessToken,
- 49:       idToken: googleAuth.idToken,
- 50:     );
- 51:     final userCredential = await _auth.signInWithCredential(credential);
- 52:     // Cria o perfil no Firestore apenas se for o primeiro login
- 53:     final doc =
- 54:         await _db.collection('users').doc(userCredential.user!.uid).get();
- 55:     if (!doc.exists) {
- 56:       await _saveUserToFirestore(
- 57:         uid: userCredential.user!.uid,
- 58:         name: googleUser.displayName ?? 'Usuário',
- 59:         email: googleUser.email,
- 60:       );
- 61:     }
- 62:     return userCredential;
- 63:   }
- 64: 
- 65:   Future<UserCredential> signInWithApple() async {
- 66:     final appleCredential = await SignInWithApple.getAppleIDCredential(
- 67:       scopes: [
- 68:         AppleIDAuthorizationScopes.email,
- 69:         AppleIDAuthorizationScopes.fullName,
- 70:       ],
- 71:     );
- 72: 
- 73:     final oauthCredential = OAuthProvider("apple.com").credential(
- 74:       idToken: appleCredential.identityToken,
- 75:       accessToken: appleCredential.authorizationCode,
- 76:     );
- 77: 
- 78:     return await _auth.signInWithCredential(oauthCredential);
- 79:   }
- 80: 
- 81:   Future<void> deleteAccount() async {
- 82:     final user = FirebaseAuth.instance.currentUser;
- 83: 
- 84:     if (user == null) {
- 85:       throw Exception('Usuário não autenticado');
- 86:     }
- 87: 
- 88:     final uid = user.uid;
- 89: 
- 90:     // 🔥 deletar dados do Firestore (ajuste conforme sua estrutura)
- 91:     final firestore = FirebaseFirestore.instance;
- 92: 
- 93:     await firestore.collection('users').doc(uid).delete();
- 94: 
- 95:     // ⚠️ deletar outros dados vinculados se existirem
- 96:     // ex: apostas, grupos, etc
- 97: 
- 98:     // 🔴 deletar usuário do Auth (por último)
- 99:     await user.delete();
-100:   }
-101: 
-102:   // Logout
-103:   Future<void> signOut() async {
-104:     await _googleSignIn.signOut();
-105:     await _auth.signOut();
-106:   }
-107: 
-108:   // Envia e-mail de recuperação de senha
-109:   Future<void> sendPasswordReset(String email) async {
-110:     await _auth.sendPasswordResetEmail(email: email.trim());
-111:   }
-112: 
-113:   // Busca o perfil do usuário no Firestore
-114:   Future<AppUser?> fetchAppUser(String uid) async {
-115:     final doc = await _db.collection('users').doc(uid).get();
-116:     if (!doc.exists) return null;
-117:     return AppUser.fromFirestore(uid, doc.data()!);
-118:   }
-119: 
-120:   // Salva usuário novo no Firestore
-121:   Future<void> _saveUserToFirestore({
-122:     required String uid,
-123:     required String name,
-124:     required String email,
-125:   }) async {
-126:     await _db.collection('users').doc(uid).set({
-127:       'name': name,
-128:       'email': email,
-129:       'is_admin': false,
-130:       'total_points': 0,
-131:       'created_at': FieldValue.serverTimestamp(),
-132:     });
-133:   }
-134: }
+<file path="ios/Runner/Info.plist">
+ 1: <?xml version="1.0" encoding="UTF-8"?>
+ 2: <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+ 3: <plist version="1.0">
+ 4: <dict>
+ 5: 	<key>CADisableMinimumFrameDurationOnPhone</key>
+ 6: 	<true/>
+ 7: 	<key>CFBundleDevelopmentRegion</key>
+ 8: 	<string>$(DEVELOPMENT_LANGUAGE)</string>
+ 9: 	<key>CFBundleDisplayName</key>
+10: 	<string>Bolão Entre Amigos</string>
+11: 	<key>CFBundleExecutable</key>
+12: 	<string>$(EXECUTABLE_NAME)</string>
+13: 	<key>CFBundleIdentifier</key>
+14: 	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+15: 	<key>CFBundleInfoDictionaryVersion</key>
+16: 	<string>6.0</string>
+17: 	<key>CFBundleName</key>
+18: 	<string>bolao_copa</string>
+19: 	<key>CFBundlePackageType</key>
+20: 	<string>APPL</string>
+21: 	<key>CFBundleShortVersionString</key>
+22: 	<string>$(FLUTTER_BUILD_NAME)</string>
+23: 	<key>CFBundleSignature</key>
+24: 	<string>????</string>
+25: 	<key>CFBundleVersion</key>
+26: 	<string>$(FLUTTER_BUILD_NUMBER)</string>
+27: 	<key>ITSAppUsesNonExemptEncryption</key>
+28:     <false/>
+29: 	<key>LSRequiresIPhoneOS</key>
+30: 	<true/>
+31: 	<key>UIApplicationSceneManifest</key>
+32: 	<dict>
+33: 		<key>UIApplicationSupportsMultipleScenes</key>
+34: 		<false/>
+35: 		<key>UISceneConfigurations</key>
+36: 		<dict>
+37: 			<key>UIWindowSceneSessionRoleApplication</key>
+38: 			<array>
+39: 				<dict>
+40: 					<key>UISceneClassName</key>
+41: 					<string>UIWindowScene</string>
+42: 					<key>UISceneConfigurationName</key>
+43: 					<string>flutter</string>
+44: 					<key>UISceneDelegateClassName</key>
+45: 					<string>$(PRODUCT_MODULE_NAME).SceneDelegate</string>
+46: 					<key>UISceneStoryboardFile</key>
+47: 					<string>Main</string>
+48: 				</dict>
+49: 			</array>
+50: 		</dict>
+51: 	</dict>
+52: 	<key>UIApplicationSupportsIndirectInputEvents</key>
+53: 	<true/>
+54: 	<key>UILaunchStoryboardName</key>
+55: 	<string>LaunchScreen</string>
+56: 	<key>UIMainStoryboardFile</key>
+57: 	<string>Main</string>
+58: 	<key>UISupportedInterfaceOrientations</key>
+59: 	<array>
+60: 		<string>UIInterfaceOrientationPortrait</string>
+61: 		<string>UIInterfaceOrientationLandscapeLeft</string>
+62: 		<string>UIInterfaceOrientationLandscapeRight</string>
+63: 	</array>
+64: 	<key>UISupportedInterfaceOrientations~ipad</key>
+65: 	<array>
+66: 		<string>UIInterfaceOrientationPortrait</string>
+67: 		<string>UIInterfaceOrientationPortraitUpsideDown</string>
+68: 		<string>UIInterfaceOrientationLandscapeLeft</string>
+69: 		<string>UIInterfaceOrientationLandscapeRight</string>
+70: 	</array>
+71: </dict>
+72: </plist>
+</file>
+
+<file path="lib/core/widgets/sobre_dialog.dart">
+ 1: import 'package:flutter/material.dart';
+ 2: import 'package:flutter/services.dart';
+ 3: import 'package:package_info_plus/package_info_plus.dart';
+ 4: 
+ 5: const _email = 'sallesconsultant@gmail.com';
+ 6: const _linkedin = 'https://www.linkedin.com/in/salles-apps/';
+ 7: 
+ 8: Future<void> mostrarSobre(BuildContext context) async {
+ 9:   final info = await PackageInfo.fromPlatform();
+10:   final versao = info.version;
+11: 
+12:   if (!context.mounted) return;
+13: 
+14:   showDialog(
+15:     context: context,
+16:     builder: (_) => AlertDialog(
+17:       title: const Text('Sobre o app'),
+18:       content: Column(
+19:         mainAxisSize: MainAxisSize.min,
+20:         crossAxisAlignment: CrossAxisAlignment.start,
+21:         children: [
+22:           const Center(
+23:             child: Icon(Icons.emoji_events, size: 48, color: Color(0xFF1A6B3C)),
+24:           ),
+25:           const SizedBox(height: 12),
+26:           const Center(
+27:             child: Text(
+28:               'Bolão Entre Amigos',
+29:               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+30:             ),
+31:           ),
+32:           Center(
+33:             child: Text(
+34:               'Versão $versao',
+35:               style: const TextStyle(fontSize: 12, color: Colors.grey),
+36:             ),
+37:           ),
+38:           const SizedBox(height: 20),
+39:           const Text('Desenvolvido por',
+40:               style: TextStyle(fontSize: 12, color: Colors.grey)),
+41:           const Text('Salles Apps',
+42:               style: TextStyle(fontWeight: FontWeight.bold)),
+43:           const SizedBox(height: 8),
+44:           GestureDetector(
+45:             onTap: () {
+46:               Clipboard.setData(const ClipboardData(text: _email));
+47:               ScaffoldMessenger.of(context).showSnackBar(
+48:                 const SnackBar(content: Text('E-mail copiado!')),
+49:               );
+50:             },
+51:             child: const Text(
+52:               _email,
+53:               style: TextStyle(
+54:                 color: Color(0xFF1A6B3C),
+55:                 decoration: TextDecoration.underline,
+56:               ),
+57:             ),
+58:           ),
+59:           const SizedBox(height: 4),
+60:           GestureDetector(
+61:             onTap: () {
+62:               Clipboard.setData(const ClipboardData(text: _linkedin));
+63:               ScaffoldMessenger.of(context).showSnackBar(
+64:                 const SnackBar(content: Text('Link copiado!')),
+65:               );
+66:             },
+67:             child: const Text(
+68:               _linkedin,
+69:               style: TextStyle(
+70:                 color: Color(0xFF1A6B3C),
+71:                 decoration: TextDecoration.underline,
+72:                 fontSize: 12,
+73:               ),
+74:             ),
+75:           ),
+76:         ],
+77:       ),
+78:       actions: [
+79:         FilledButton(
+80:           style:
+81:               FilledButton.styleFrom(backgroundColor: const Color(0xFF1A6B3C)),
+82:           onPressed: () => Navigator.pop(context),
+83:           child: const Text('Fechar'),
+84:         ),
+85:       ],
+86:     ),
+87:   );
+88: }
+</file>
+
+<file path="lib/firebase_options.dart">
+ 1: // File generated by FlutterFire CLI.
+ 2: // ignore_for_file: type=lint
+ 3: import 'package:firebase_core/firebase_core.dart' show FirebaseOptions;
+ 4: import 'package:flutter/foundation.dart'
+ 5:     show defaultTargetPlatform, kIsWeb, TargetPlatform;
+ 6: 
+ 7: class DefaultFirebaseOptions {
+ 8:   static FirebaseOptions get currentPlatform {
+ 9:     if (kIsWeb) {
+10:       return web;
+11:     }
+12:     switch (defaultTargetPlatform) {
+13:       case TargetPlatform.android:
+14:         return android;
+15:       case TargetPlatform.iOS:
+16:         return ios;
+17:       case TargetPlatform.macOS:
+18:         return ios;
+19:       case TargetPlatform.windows:
+20:         throw UnsupportedError(
+21:           'DefaultFirebaseOptions have not been configured for windows - '
+22:           'you can reconfigure this by running the FlutterFire CLI again.',
+23:         );
+24:       case TargetPlatform.linux:
+25:         throw UnsupportedError(
+26:           'DefaultFirebaseOptions have not been configured for linux - '
+27:           'you can reconfigure this by running the FlutterFire CLI again.',
+28:         );
+29:       default:
+30:         throw UnsupportedError(
+31:           'DefaultFirebaseOptions are not supported for this platform.',
+32:         );
+33:     }
+34:   }
+35: 
+36:   static const FirebaseOptions android = FirebaseOptions(
+37:     apiKey: 'AIzaSyDpz0YeMhxXwCO39fognthNL0hyztcPNgU',
+38:     appId: '1:212214398916:android:56b9db4e84c71cdab26e91',
+39:     messagingSenderId: '212214398916',
+40:     projectId: 'bolao-copa-do-mundo-salles',
+41:     storageBucket: 'bolao-copa-do-mundo-salles.firebasestorage.app',
+42:   );
+43: 
+44:   static const FirebaseOptions web = FirebaseOptions(
+45:     apiKey: 'AIzaSyCZ7tSS1UR7ZQWZA4HknxQP2k_krXVamEg',
+46:     appId: '1:212214398916:web:218dc04cbb2318cdb26e91',
+47:     messagingSenderId: '212214398916',
+48:     projectId: 'bolao-copa-do-mundo-salles',
+49:     authDomain: 'bolao-copa-do-mundo-salles.firebaseapp.com',
+50:     storageBucket: 'bolao-copa-do-mundo-salles.firebasestorage.app',
+51:     measurementId: 'G-SW7PRWHM56',
+52:   );
+53: 
+54:   static const FirebaseOptions ios = FirebaseOptions(
+55:     apiKey: 'AIzaSyBVIjPKmxcaiVN1x0zEQOJVZUd8CqfOMRE',
+56:     appId: '1:212214398916:ios:b9d3161018a1be4eb26e91',
+57:     messagingSenderId: '212214398916',
+58:     projectId: 'bolao-copa-do-mundo-salles',
+59:     storageBucket: 'bolao-copa-do-mundo-salles.firebasestorage.app',
+60:     iosClientId:
+61:         '212214398916-j17cmqger48mjdvf3ithep459p2aabuj.apps.googleusercontent.com',
+62:     iosBundleId: 'com.salles.bolaocopadomundo',
+63:   );
+64: }
+</file>
+
+<file path="lib/main.dart">
+ 1: import 'package:flutter/material.dart';
+ 2: import 'package:firebase_core/firebase_core.dart';
+ 3: import 'package:firebase_auth/firebase_auth.dart';
+ 4: import 'firebase_options.dart';
+ 5: import 'core/routes/app_routes.dart';
+ 6: import 'features/auth/login_screen.dart';
+ 7: import 'features/groups/groups_screen.dart';
+ 8: 
+ 9: void main() async {
+10:   WidgetsFlutterBinding.ensureInitialized();
+11:   await Firebase.initializeApp(
+12:     options: DefaultFirebaseOptions.currentPlatform,
+13:   );
+14:   runApp(const BolaoApp());
+15: }
+16: 
+17: class BolaoApp extends StatelessWidget {
+18:   const BolaoApp({super.key});
+19: 
+20:   @override
+21:   Widget build(BuildContext context) {
+22:     return MaterialApp(
+23:       title: 'Bolão Entre Amigos',
+24:       debugShowCheckedModeBanner: false,
+25:       theme: ThemeData(
+26:         colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF1A6B3C)),
+27:         useMaterial3: true,
+28:       ),
+29:       home: StreamBuilder<User?>(
+30:         stream: FirebaseAuth.instance.authStateChanges(),
+31:         builder: (context, snapshot) {
+32:           if (snapshot.connectionState == ConnectionState.waiting) {
+33:             return const Scaffold(
+34:               body: Center(child: CircularProgressIndicator()),
+35:             );
+36:           }
+37:           if (snapshot.hasData) return const GroupsScreen();
+38:           return const LoginScreen();
+39:         },
+40:       ),
+41:       routes: AppRoutes.routes,
+42:     );
+43:   }
+44: }
 </file>
 
 <file path="pubspec.lock">
@@ -7893,229 +6844,229 @@ This section contains the contents of the repository's files.
 121:       url: "https://pub.dev"
 122:     source: hosted
 123:     version: "2.0.1"
-124:   dbus:
-125:     dependency: transitive
+124:   crypto:
+125:     dependency: "direct main"
 126:     description:
-127:       name: dbus
-128:       sha256: d0c98dcd4f5169878b6cf8f6e0a52403a9dff371a3e2f019697accbf6f44a270
+127:       name: crypto
+128:       sha256: c8ea0233063ba03258fbcf2ca4d6dadfefe14f02fab57702265467a19f27fadf
 129:       url: "https://pub.dev"
 130:     source: hosted
-131:     version: "0.7.12"
-132:   fake_async:
+131:     version: "3.0.7"
+132:   dbus:
 133:     dependency: transitive
 134:     description:
-135:       name: fake_async
-136:       sha256: "5368f224a74523e8d2e7399ea1638b37aecfca824a3cc4dfdf77bf1fa905ac44"
+135:       name: dbus
+136:       sha256: d0c98dcd4f5169878b6cf8f6e0a52403a9dff371a3e2f019697accbf6f44a270
 137:       url: "https://pub.dev"
 138:     source: hosted
-139:     version: "1.3.3"
-140:   ffi:
+139:     version: "0.7.12"
+140:   fake_async:
 141:     dependency: transitive
 142:     description:
-143:       name: ffi
-144:       sha256: "6d7fd89431262d8f3125e81b50d3847a091d846eafcd4fdb88dd06f36d705a45"
+143:       name: fake_async
+144:       sha256: "5368f224a74523e8d2e7399ea1638b37aecfca824a3cc4dfdf77bf1fa905ac44"
 145:       url: "https://pub.dev"
 146:     source: hosted
-147:     version: "2.2.0"
-148:   file:
+147:     version: "1.3.3"
+148:   ffi:
 149:     dependency: transitive
 150:     description:
-151:       name: file
-152:       sha256: a3b4f84adafef897088c160faf7dfffb7696046cb13ae90b508c2cbc95d3b8d4
+151:       name: ffi
+152:       sha256: "6d7fd89431262d8f3125e81b50d3847a091d846eafcd4fdb88dd06f36d705a45"
 153:       url: "https://pub.dev"
 154:     source: hosted
-155:     version: "7.0.1"
-156:   firebase_auth:
-157:     dependency: "direct main"
+155:     version: "2.2.0"
+156:   file:
+157:     dependency: transitive
 158:     description:
-159:       name: firebase_auth
-160:       sha256: "1c290de59ba88d3b193e5933441ea4793d623e802d75bd4135e36d550c3f6b62"
+159:       name: file
+160:       sha256: a3b4f84adafef897088c160faf7dfffb7696046cb13ae90b508c2cbc95d3b8d4
 161:       url: "https://pub.dev"
 162:     source: hosted
-163:     version: "6.2.0"
-164:   firebase_auth_platform_interface:
-165:     dependency: transitive
+163:     version: "7.0.1"
+164:   firebase_auth:
+165:     dependency: "direct main"
 166:     description:
-167:       name: firebase_auth_platform_interface
-168:       sha256: c830e2a1c69c27242a920296784458ad6eb71decdfa083578f7788dbde5d3a69
+167:       name: firebase_auth
+168:       sha256: "1c290de59ba88d3b193e5933441ea4793d623e802d75bd4135e36d550c3f6b62"
 169:       url: "https://pub.dev"
 170:     source: hosted
-171:     version: "8.1.7"
-172:   firebase_auth_web:
+171:     version: "6.2.0"
+172:   firebase_auth_platform_interface:
 173:     dependency: transitive
 174:     description:
-175:       name: firebase_auth_web
-176:       sha256: "809d0807a7b6dbdd2d2dd04f217375aaa9835794750a4eec408c2990ed505e41"
+175:       name: firebase_auth_platform_interface
+176:       sha256: c830e2a1c69c27242a920296784458ad6eb71decdfa083578f7788dbde5d3a69
 177:       url: "https://pub.dev"
 178:     source: hosted
-179:     version: "6.1.3"
-180:   firebase_core:
-181:     dependency: "direct main"
+179:     version: "8.1.7"
+180:   firebase_auth_web:
+181:     dependency: transitive
 182:     description:
-183:       name: firebase_core
-184:       sha256: f0997fee80fbb6d2c658c5b88ae87ba1f9506b5b37126db64fc2e75d8e977fbb
+183:       name: firebase_auth_web
+184:       sha256: "809d0807a7b6dbdd2d2dd04f217375aaa9835794750a4eec408c2990ed505e41"
 185:       url: "https://pub.dev"
 186:     source: hosted
-187:     version: "4.5.0"
-188:   firebase_core_platform_interface:
-189:     dependency: transitive
+187:     version: "6.1.3"
+188:   firebase_core:
+189:     dependency: "direct main"
 190:     description:
-191:       name: firebase_core_platform_interface
-192:       sha256: cccb4f572325dc14904c02fcc7db6323ad62ba02536833dddb5c02cac7341c64
+191:       name: firebase_core
+192:       sha256: f0997fee80fbb6d2c658c5b88ae87ba1f9506b5b37126db64fc2e75d8e977fbb
 193:       url: "https://pub.dev"
 194:     source: hosted
-195:     version: "6.0.2"
-196:   firebase_core_web:
+195:     version: "4.5.0"
+196:   firebase_core_platform_interface:
 197:     dependency: transitive
 198:     description:
-199:       name: firebase_core_web
-200:       sha256: "856ca92bf2d75a63761286ab8e791bda3a85184c2b641764433b619647acfca6"
+199:       name: firebase_core_platform_interface
+200:       sha256: cccb4f572325dc14904c02fcc7db6323ad62ba02536833dddb5c02cac7341c64
 201:       url: "https://pub.dev"
 202:     source: hosted
-203:     version: "3.5.0"
-204:   firebase_storage:
-205:     dependency: "direct main"
+203:     version: "6.0.2"
+204:   firebase_core_web:
+205:     dependency: transitive
 206:     description:
-207:       name: firebase_storage
-208:       sha256: "68012b80a94f74c459d1f05ce222a1c7dbf3559c6fcfb0b86ab0b6a231f3af95"
+207:       name: firebase_core_web
+208:       sha256: "856ca92bf2d75a63761286ab8e791bda3a85184c2b641764433b619647acfca6"
 209:       url: "https://pub.dev"
 210:     source: hosted
-211:     version: "13.1.0"
-212:   firebase_storage_platform_interface:
-213:     dependency: transitive
+211:     version: "3.5.0"
+212:   firebase_storage:
+213:     dependency: "direct main"
 214:     description:
-215:       name: firebase_storage_platform_interface
-216:       sha256: "8b33839011b71d2b21db7328d526a0caea469f41cdb7a925804faf7161ef0f76"
+215:       name: firebase_storage
+216:       sha256: "68012b80a94f74c459d1f05ce222a1c7dbf3559c6fcfb0b86ab0b6a231f3af95"
 217:       url: "https://pub.dev"
 218:     source: hosted
-219:     version: "5.2.18"
-220:   firebase_storage_web:
+219:     version: "13.1.0"
+220:   firebase_storage_platform_interface:
 221:     dependency: transitive
 222:     description:
-223:       name: firebase_storage_web
-224:       sha256: dc62ab78e2e7c4957f08d9828dbd4c74152a6d9faadbb2fc85f3a632b24cad63
+223:       name: firebase_storage_platform_interface
+224:       sha256: "8b33839011b71d2b21db7328d526a0caea469f41cdb7a925804faf7161ef0f76"
 225:       url: "https://pub.dev"
 226:     source: hosted
-227:     version: "3.11.3"
-228:   flutter:
-229:     dependency: "direct main"
-230:     description: flutter
-231:     source: sdk
-232:     version: "0.0.0"
-233:   flutter_launcher_icons:
-234:     dependency: "direct dev"
-235:     description:
-236:       name: flutter_launcher_icons
-237:       sha256: "10f13781741a2e3972126fae08393d3c4e01fa4cd7473326b94b72cf594195e7"
-238:       url: "https://pub.dev"
-239:     source: hosted
-240:     version: "0.14.4"
-241:   flutter_lints:
+227:     version: "5.2.18"
+228:   firebase_storage_web:
+229:     dependency: transitive
+230:     description:
+231:       name: firebase_storage_web
+232:       sha256: dc62ab78e2e7c4957f08d9828dbd4c74152a6d9faadbb2fc85f3a632b24cad63
+233:       url: "https://pub.dev"
+234:     source: hosted
+235:     version: "3.11.3"
+236:   flutter:
+237:     dependency: "direct main"
+238:     description: flutter
+239:     source: sdk
+240:     version: "0.0.0"
+241:   flutter_launcher_icons:
 242:     dependency: "direct dev"
 243:     description:
-244:       name: flutter_lints
-245:       sha256: "3f41d009ba7172d5ff9be5f6e6e6abb4300e263aab8866d2a0842ed2a70f8f0c"
+244:       name: flutter_launcher_icons
+245:       sha256: "10f13781741a2e3972126fae08393d3c4e01fa4cd7473326b94b72cf594195e7"
 246:       url: "https://pub.dev"
 247:     source: hosted
-248:     version: "4.0.0"
-249:   flutter_test:
+248:     version: "0.14.4"
+249:   flutter_lints:
 250:     dependency: "direct dev"
-251:     description: flutter
-252:     source: sdk
-253:     version: "0.0.0"
-254:   flutter_web_plugins:
-255:     dependency: transitive
-256:     description: flutter
-257:     source: sdk
-258:     version: "0.0.0"
-259:   google_identity_services_web:
-260:     dependency: transitive
-261:     description:
-262:       name: google_identity_services_web
-263:       sha256: "5d187c46dc59e02646e10fe82665fc3884a9b71bc1c90c2b8b749316d33ee454"
-264:       url: "https://pub.dev"
-265:     source: hosted
-266:     version: "0.3.3+1"
-267:   google_sign_in:
-268:     dependency: "direct main"
+251:     description:
+252:       name: flutter_lints
+253:       sha256: "3f41d009ba7172d5ff9be5f6e6e6abb4300e263aab8866d2a0842ed2a70f8f0c"
+254:       url: "https://pub.dev"
+255:     source: hosted
+256:     version: "4.0.0"
+257:   flutter_test:
+258:     dependency: "direct dev"
+259:     description: flutter
+260:     source: sdk
+261:     version: "0.0.0"
+262:   flutter_web_plugins:
+263:     dependency: transitive
+264:     description: flutter
+265:     source: sdk
+266:     version: "0.0.0"
+267:   google_identity_services_web:
+268:     dependency: transitive
 269:     description:
-270:       name: google_sign_in
-271:       sha256: d0a2c3bcb06e607bb11e4daca48bd4b6120f0bbc4015ccebbe757d24ea60ed2a
+270:       name: google_identity_services_web
+271:       sha256: "5d187c46dc59e02646e10fe82665fc3884a9b71bc1c90c2b8b749316d33ee454"
 272:       url: "https://pub.dev"
 273:     source: hosted
-274:     version: "6.3.0"
-275:   google_sign_in_android:
-276:     dependency: transitive
+274:     version: "0.3.3+1"
+275:   google_sign_in:
+276:     dependency: "direct main"
 277:     description:
-278:       name: google_sign_in_android
-279:       sha256: d5e23c56a4b84b6427552f1cf3f98f716db3b1d1a647f16b96dbb5b93afa2805
+278:       name: google_sign_in
+279:       sha256: d0a2c3bcb06e607bb11e4daca48bd4b6120f0bbc4015ccebbe757d24ea60ed2a
 280:       url: "https://pub.dev"
 281:     source: hosted
-282:     version: "6.2.1"
-283:   google_sign_in_ios:
+282:     version: "6.3.0"
+283:   google_sign_in_android:
 284:     dependency: transitive
 285:     description:
-286:       name: google_sign_in_ios
-287:       sha256: "102005f498ce18442e7158f6791033bbc15ad2dcc0afa4cf4752e2722a516c96"
+286:       name: google_sign_in_android
+287:       sha256: d5e23c56a4b84b6427552f1cf3f98f716db3b1d1a647f16b96dbb5b93afa2805
 288:       url: "https://pub.dev"
 289:     source: hosted
-290:     version: "5.9.0"
-291:   google_sign_in_platform_interface:
+290:     version: "6.2.1"
+291:   google_sign_in_ios:
 292:     dependency: transitive
 293:     description:
-294:       name: google_sign_in_platform_interface
-295:       sha256: "5f6f79cf139c197261adb6ac024577518ae48fdff8e53205c5373b5f6430a8aa"
+294:       name: google_sign_in_ios
+295:       sha256: "102005f498ce18442e7158f6791033bbc15ad2dcc0afa4cf4752e2722a516c96"
 296:       url: "https://pub.dev"
 297:     source: hosted
-298:     version: "2.5.0"
-299:   google_sign_in_web:
+298:     version: "5.9.0"
+299:   google_sign_in_platform_interface:
 300:     dependency: transitive
 301:     description:
-302:       name: google_sign_in_web
-303:       sha256: "460547beb4962b7623ac0fb8122d6b8268c951cf0b646dd150d60498430e4ded"
+302:       name: google_sign_in_platform_interface
+303:       sha256: "5f6f79cf139c197261adb6ac024577518ae48fdff8e53205c5373b5f6430a8aa"
 304:       url: "https://pub.dev"
 305:     source: hosted
-306:     version: "0.12.4+4"
-307:   http:
+306:     version: "2.5.0"
+307:   google_sign_in_web:
 308:     dependency: transitive
 309:     description:
-310:       name: http
-311:       sha256: "87721a4a50b19c7f1d49001e51409bddc46303966ce89a65af4f4e6004896412"
+310:       name: google_sign_in_web
+311:       sha256: "460547beb4962b7623ac0fb8122d6b8268c951cf0b646dd150d60498430e4ded"
 312:       url: "https://pub.dev"
 313:     source: hosted
-314:     version: "1.6.0"
-315:   http_parser:
+314:     version: "0.12.4+4"
+315:   http:
 316:     dependency: transitive
 317:     description:
-318:       name: http_parser
-319:       sha256: "178d74305e7866013777bab2c3d8726205dc5a4dd935297175b19a23a2e66571"
+318:       name: http
+319:       sha256: "87721a4a50b19c7f1d49001e51409bddc46303966ce89a65af4f4e6004896412"
 320:       url: "https://pub.dev"
 321:     source: hosted
-322:     version: "4.1.2"
-323:   image:
+322:     version: "1.6.0"
+323:   http_parser:
 324:     dependency: transitive
 325:     description:
-326:       name: image
-327:       sha256: f9881ff4998044947ec38d098bc7c8316ae1186fa786eddffdb867b9bc94dfce
+326:       name: http_parser
+327:       sha256: "178d74305e7866013777bab2c3d8726205dc5a4dd935297175b19a23a2e66571"
 328:       url: "https://pub.dev"
 329:     source: hosted
-330:     version: "4.8.0"
-331:   intl:
-332:     dependency: "direct main"
+330:     version: "4.1.2"
+331:   image:
+332:     dependency: transitive
 333:     description:
-334:       name: intl
-335:       sha256: d6f56758b7d3014a48af9701c085700aac781a92a87a62b1333b46d8879661cf
+334:       name: image
+335:       sha256: f9881ff4998044947ec38d098bc7c8316ae1186fa786eddffdb867b9bc94dfce
 336:       url: "https://pub.dev"
 337:     source: hosted
-338:     version: "0.19.0"
-339:   js:
-340:     dependency: transitive
+338:     version: "4.8.0"
+339:   intl:
+340:     dependency: "direct main"
 341:     description:
-342:       name: js
-343:       sha256: f2c445dce49627136094980615a031419f7f3eb393237e4ecd97ac15dea343f3
+342:       name: intl
+343:       sha256: d6f56758b7d3014a48af9701c085700aac781a92a87a62b1333b46d8879661cf
 344:       url: "https://pub.dev"
 345:     source: hosted
-346:     version: "0.6.7"
+346:     version: "0.19.0"
 347:   json_annotation:
 348:     dependency: transitive
 349:     description:
@@ -8328,10 +7279,10 @@ This section contains the contents of the repository's files.
 556:     dependency: "direct main"
 557:     description:
 558:       name: sign_in_with_apple
-559:       sha256: "0975c23b9f8b30a80e27d5659a75993a093d4cb5f4eb7d23a9ccc586fea634e0"
+559:       sha256: e84a62e17b7e463abf0a64ce826c2cd1f0b72dff07b7b275e32d5302d76fb4c5
 560:       url: "https://pub.dev"
 561:     source: hosted
-562:     version: "5.0.0"
+562:     version: "6.1.4"
 563:   sign_in_with_apple_platform_interface:
 564:     dependency: transitive
 565:     description:
@@ -8344,10 +7295,10 @@ This section contains the contents of the repository's files.
 572:     dependency: transitive
 573:     description:
 574:       name: sign_in_with_apple_web
-575:       sha256: "44b66528f576e77847c14999d5e881e17e7223b7b0625a185417829e5306f47a"
+575:       sha256: "2f7c38368f49e3f2043bca4b46a4a61aaae568c140a79aa0675dc59ad0ca49bc"
 576:       url: "https://pub.dev"
 577:     source: hosted
-578:     version: "1.0.1"
+578:     version: "2.1.1"
 579:   sky_engine:
 580:     dependency: transitive
 581:     description: flutter
@@ -8470,77 +7421,6 @@ This section contains the contents of the repository's files.
 698:   flutter: ">=3.35.0"
 </file>
 
-<file path="firebase.json">
-1: {"flutter":{"platforms":{"android":{"default":{"projectId":"bolao-copa-do-mundo-salles","appId":"1:212214398916:android:56b9db4e84c71cdab26e91","fileOutput":"android/app/google-services.json"}},"dart":{"lib/firebase_options.dart":{"projectId":"bolao-copa-do-mundo-salles","configurations":{"android":"1:212214398916:android:56b9db4e84c71cdab26e91","ios":"1:212214398916:ios:b9d3161018a1be4eb26e91","web":"1:212214398916:web:218dc04cbb2318cdb26e91"}}}}},"firestore":{"database":"(default)","location":"southamerica-east1","rules":"firestore.rules","indexes":"firestore.indexes.json"}}
-</file>
-
-<file path="lib/firebase_options.dart">
- 1: // File generated by FlutterFire CLI.
- 2: // ignore_for_file: type=lint
- 3: import 'package:firebase_core/firebase_core.dart' show FirebaseOptions;
- 4: import 'package:flutter/foundation.dart'
- 5:     show defaultTargetPlatform, kIsWeb, TargetPlatform;
- 6: 
- 7: class DefaultFirebaseOptions {
- 8:   static FirebaseOptions get currentPlatform {
- 9:     if (kIsWeb) {
-10:       return web;
-11:     }
-12:     switch (defaultTargetPlatform) {
-13:       case TargetPlatform.android:
-14:         return android;
-15:       case TargetPlatform.iOS:
-16:         return ios;
-17:       case TargetPlatform.macOS:
-18:         return ios;
-19:       case TargetPlatform.windows:
-20:         throw UnsupportedError(
-21:           'DefaultFirebaseOptions have not been configured for windows - '
-22:           'you can reconfigure this by running the FlutterFire CLI again.',
-23:         );
-24:       case TargetPlatform.linux:
-25:         throw UnsupportedError(
-26:           'DefaultFirebaseOptions have not been configured for linux - '
-27:           'you can reconfigure this by running the FlutterFire CLI again.',
-28:         );
-29:       default:
-30:         throw UnsupportedError(
-31:           'DefaultFirebaseOptions are not supported for this platform.',
-32:         );
-33:     }
-34:   }
-35: 
-36:   static const FirebaseOptions android = FirebaseOptions(
-37:     apiKey: 'AIzaSyDpz0YeMhxXwCO39fognthNL0hyztcPNgU',
-38:     appId: '1:212214398916:android:56b9db4e84c71cdab26e91',
-39:     messagingSenderId: '212214398916',
-40:     projectId: 'bolao-copa-do-mundo-salles',
-41:     storageBucket: 'bolao-copa-do-mundo-salles.firebasestorage.app',
-42:   );
-43: 
-44:   static const FirebaseOptions web = FirebaseOptions(
-45:     apiKey: 'AIzaSyCZ7tSS1UR7ZQWZA4HknxQP2k_krXVamEg',
-46:     appId: '1:212214398916:web:218dc04cbb2318cdb26e91',
-47:     messagingSenderId: '212214398916',
-48:     projectId: 'bolao-copa-do-mundo-salles',
-49:     authDomain: 'bolao-copa-do-mundo-salles.firebaseapp.com',
-50:     storageBucket: 'bolao-copa-do-mundo-salles.firebasestorage.app',
-51:     measurementId: 'G-SW7PRWHM56',
-52:   );
-53: 
-54:   static const FirebaseOptions ios = FirebaseOptions(
-55:     apiKey: 'AIzaSyBVIjPKmxcaiVN1x0zEQOJVZUd8CqfOMRE',
-56:     appId: '1:212214398916:ios:b9d3161018a1be4eb26e91',
-57:     messagingSenderId: '212214398916',
-58:     projectId: 'bolao-copa-do-mundo-salles',
-59:     storageBucket: 'bolao-copa-do-mundo-salles.firebasestorage.app',
-60:     iosClientId:
-61:         '212214398916-j17cmqger48mjdvf3ithep459p2aabuj.apps.googleusercontent.com',
-62:     iosBundleId: 'com.salles.bolaocopadomundo',
-63:   );
-64: }
-</file>
-
 <file path="android/app/google-services.json">
  1: {
  2:   "project_info": {
@@ -8590,43 +7470,1287 @@ This section contains the contents of the repository's files.
 46: }
 </file>
 
-<file path="pubspec.yaml">
- 1: name: bolao_copa
- 2: description: Bolão da Copa do Mundo
- 3: publish_to: 'none'
- 4: version: 1.0.4+13
- 5: environment:
- 6:   sdk: '>=3.0.0 <4.0.0'
- 7: dependencies:
- 8:   flutter:
- 9:     sdk: flutter
-10:   firebase_core: ^4.4.0
-11:   cloud_firestore: ^6.1.2
-12:   firebase_auth: ^6.2.0
-13:   firebase_storage: ^13.0.6
-14:   google_sign_in: ^6.2.1
-15:   sign_in_with_apple: ^5.0.0
-16:   shared_preferences: ^2.2.3
-17:   connectivity_plus: ^6.0.3
-18:   intl: ^0.19.0
-19:   package_info_plus: ^8.0.0
-20: dev_dependencies:
-21:   flutter_test:
-22:     sdk: flutter
-23:   flutter_lints: ^4.0.0
-24:   flutter_launcher_icons: ^0.14.1
-25: flutter:
-26:   uses-material-design: true
-27:   assets:
-28:     - assets/flags/
-29:     - assets/icon_app.png
-30: flutter_launcher_icons:
-31:   android: true
-32:   ios: true
-33:   image_path: "assets/icon_app.png"
-34:   min_sdk_android: 21
-35:   web:
-36:     generate: false
+<file path="lib/core/constants/bracket_data.dart">
+  1: // Chaveamento da fase eliminatória
+  2: // Slots de 3º colocado: lista de grupos candidatos
+  3: // O app resolve qual time ocupa cada slot em função dos palpites do usuário.
+  4: 
+  5: class BracketSlot {
+  6:   /// Ex: '1A' = 1º do grupo A | '2B' = 2º do grupo B | '3ABCDF' = melhor 3º entre grupos A,B,C,D,F
+  7:   final String code;
+  8:   const BracketSlot(this.code);
+  9: 
+ 10:   bool get isThird => code.startsWith('3');
+ 11: 
+ 12:   /// Grupos candidatos para slots de 3º colocado (ex: '3ABCDF' → ['A','B','C','D','F'])
+ 13:   List<String> get thirdGroups => isThird ? code.substring(1).split('') : [];
+ 14: }
+ 15: 
+ 16: class BracketMatchDef {
+ 17:   final String id; // identificador único do confronto (ex: 'r32_01')
+ 18:   final String phase; // 'r32' | 'r16' | 'qf' | 'sf' | '3rd' | 'final'
+ 19:   final BracketSlot home;
+ 20:   final BracketSlot away;
+ 21: 
+ 22:   const BracketMatchDef({
+ 23:     required this.id,
+ 24:     required this.phase,
+ 25:     required this.home,
+ 26:     required this.away,
+ 27:   });
+ 28: }
+ 29: 
+ 30: class BracketData {
+ 31:   static const List<String> phases = ['r32', 'r16', 'qf', 'sf', 'final', '3rd'];
+ 32: 
+ 33:   static const Map<String, String> phaseLabels = {
+ 34:     'r32': 'Rodada de 32',
+ 35:     'r16': 'Oitavas de Final',
+ 36:     'qf': 'Quartas de Final',
+ 37:     'sf': 'Semifinais',
+ 38:     'final': 'Final',
+ 39:     '3rd': '3º Lugar',
+ 40:   };
+ 41: 
+ 42:   /// Round of 32 — chaveamento oficial da fase eliminatória
+ 43:   static const List<BracketMatchDef> r32 = [
+ 44:     BracketMatchDef(
+ 45:         id: 'r32_01',
+ 46:         phase: 'r32',
+ 47:         home: BracketSlot('2A'),
+ 48:         away: BracketSlot('2B')),
+ 49:     BracketMatchDef(
+ 50:         id: 'r32_02',
+ 51:         phase: 'r32',
+ 52:         home: BracketSlot('1E'),
+ 53:         away: BracketSlot('3ABCDF')),
+ 54:     BracketMatchDef(
+ 55:         id: 'r32_03',
+ 56:         phase: 'r32',
+ 57:         home: BracketSlot('1C'),
+ 58:         away: BracketSlot('2F')),
+ 59:     BracketMatchDef(
+ 60:         id: 'r32_04',
+ 61:         phase: 'r32',
+ 62:         home: BracketSlot('1F'),
+ 63:         away: BracketSlot('2C')),
+ 64:     BracketMatchDef(
+ 65:         id: 'r32_05',
+ 66:         phase: 'r32',
+ 67:         home: BracketSlot('2E'),
+ 68:         away: BracketSlot('2I')),
+ 69:     BracketMatchDef(
+ 70:         id: 'r32_06',
+ 71:         phase: 'r32',
+ 72:         home: BracketSlot('1A'),
+ 73:         away: BracketSlot('3CEFHI')),
+ 74:     BracketMatchDef(
+ 75:         id: 'r32_07',
+ 76:         phase: 'r32',
+ 77:         home: BracketSlot('1I'),
+ 78:         away: BracketSlot('3CDFGH')),
+ 79:     BracketMatchDef(
+ 80:         id: 'r32_08',
+ 81:         phase: 'r32',
+ 82:         home: BracketSlot('1L'),
+ 83:         away: BracketSlot('3EHIJK')),
+ 84:     BracketMatchDef(
+ 85:         id: 'r32_09',
+ 86:         phase: 'r32',
+ 87:         home: BracketSlot('1J'),
+ 88:         away: BracketSlot('2H')),
+ 89:     BracketMatchDef(
+ 90:         id: 'r32_10',
+ 91:         phase: 'r32',
+ 92:         home: BracketSlot('2D'),
+ 93:         away: BracketSlot('2G')),
+ 94:     BracketMatchDef(
+ 95:         id: 'r32_11',
+ 96:         phase: 'r32',
+ 97:         home: BracketSlot('1G'),
+ 98:         away: BracketSlot('3AEHIJ')),
+ 99:     BracketMatchDef(
+100:         id: 'r32_12',
+101:         phase: 'r32',
+102:         home: BracketSlot('1D'),
+103:         away: BracketSlot('3BEFIJ')),
+104:     BracketMatchDef(
+105:         id: 'r32_13',
+106:         phase: 'r32',
+107:         home: BracketSlot('1H'),
+108:         away: BracketSlot('2J')),
+109:     BracketMatchDef(
+110:         id: 'r32_14',
+111:         phase: 'r32',
+112:         home: BracketSlot('2K'),
+113:         away: BracketSlot('2L')),
+114:     BracketMatchDef(
+115:         id: 'r32_15',
+116:         phase: 'r32',
+117:         home: BracketSlot('1B'),
+118:         away: BracketSlot('3EFGIJ')),
+119:     BracketMatchDef(
+120:         id: 'r32_16',
+121:         phase: 'r32',
+122:         home: BracketSlot('1K'),
+123:         away: BracketSlot('3DEIJL')),
+124:   ];
+125: 
+126:   /// Oitavas: vencedores dos pares de jogos do R32
+127:   /// W(id) = vencedor do jogo com aquele id
+128:   static const List<BracketMatchDef> r16 = [
+129:     BracketMatchDef(
+130:         id: 'r16_01',
+131:         phase: 'r16',
+132:         home: BracketSlot('Wr32_01'),
+133:         away: BracketSlot('Wr32_02')),
+134:     BracketMatchDef(
+135:         id: 'r16_02',
+136:         phase: 'r16',
+137:         home: BracketSlot('Wr32_03'),
+138:         away: BracketSlot('Wr32_04')),
+139:     BracketMatchDef(
+140:         id: 'r16_03',
+141:         phase: 'r16',
+142:         home: BracketSlot('Wr32_05'),
+143:         away: BracketSlot('Wr32_06')),
+144:     BracketMatchDef(
+145:         id: 'r16_04',
+146:         phase: 'r16',
+147:         home: BracketSlot('Wr32_07'),
+148:         away: BracketSlot('Wr32_08')),
+149:     BracketMatchDef(
+150:         id: 'r16_05',
+151:         phase: 'r16',
+152:         home: BracketSlot('Wr32_09'),
+153:         away: BracketSlot('Wr32_10')),
+154:     BracketMatchDef(
+155:         id: 'r16_06',
+156:         phase: 'r16',
+157:         home: BracketSlot('Wr32_11'),
+158:         away: BracketSlot('Wr32_12')),
+159:     BracketMatchDef(
+160:         id: 'r16_07',
+161:         phase: 'r16',
+162:         home: BracketSlot('Wr32_13'),
+163:         away: BracketSlot('Wr32_14')),
+164:     BracketMatchDef(
+165:         id: 'r16_08',
+166:         phase: 'r16',
+167:         home: BracketSlot('Wr32_15'),
+168:         away: BracketSlot('Wr32_16')),
+169:   ];
+170: 
+171:   static const List<BracketMatchDef> qf = [
+172:     BracketMatchDef(
+173:         id: 'qf_01',
+174:         phase: 'qf',
+175:         home: BracketSlot('Wr16_01'),
+176:         away: BracketSlot('Wr16_02')),
+177:     BracketMatchDef(
+178:         id: 'qf_02',
+179:         phase: 'qf',
+180:         home: BracketSlot('Wr16_03'),
+181:         away: BracketSlot('Wr16_04')),
+182:     BracketMatchDef(
+183:         id: 'qf_03',
+184:         phase: 'qf',
+185:         home: BracketSlot('Wr16_05'),
+186:         away: BracketSlot('Wr16_06')),
+187:     BracketMatchDef(
+188:         id: 'qf_04',
+189:         phase: 'qf',
+190:         home: BracketSlot('Wr16_07'),
+191:         away: BracketSlot('Wr16_08')),
+192:   ];
+193: 
+194:   static const List<BracketMatchDef> sf = [
+195:     BracketMatchDef(
+196:         id: 'sf_01',
+197:         phase: 'sf',
+198:         home: BracketSlot('Wqf_01'),
+199:         away: BracketSlot('Wqf_02')),
+200:     BracketMatchDef(
+201:         id: 'sf_02',
+202:         phase: 'sf',
+203:         home: BracketSlot('Wqf_03'),
+204:         away: BracketSlot('Wqf_04')),
+205:   ];
+206: 
+207:   static const List<BracketMatchDef> thirdPlace = [
+208:     BracketMatchDef(
+209:         id: '3rd_01',
+210:         phase: '3rd',
+211:         home: BracketSlot('Lsf_01'),
+212:         away: BracketSlot('Lsf_02')),
+213:   ];
+214: 
+215:   static const List<BracketMatchDef> finalMatch = [
+216:     BracketMatchDef(
+217:         id: 'final_01',
+218:         phase: 'final',
+219:         home: BracketSlot('Wsf_01'),
+220:         away: BracketSlot('Wsf_02')),
+221:   ];
+222: 
+223:   static List<BracketMatchDef> get allMatches =>
+224:       [...r32, ...r16, ...qf, ...sf, ...thirdPlace, ...finalMatch];
+225: 
+226:   static List<BracketMatchDef> matchesForPhase(String phase) =>
+227:       allMatches.where((m) => m.phase == phase).toList();
+228: 
+229:   /// Grupos de A a L
+230:   static const List<String> groups = [
+231:     'A',
+232:     'B',
+233:     'C',
+234:     'D',
+235:     'E',
+236:     'F',
+237:     'G',
+238:     'H',
+239:     'I',
+240:     'J',
+241:     'K',
+242:     'L'
+243:   ];
+244: }
+</file>
+
+<file path="lib/features/groups/groups_screen.dart">
+  1: import 'package:flutter/material.dart';
+  2: import 'package:firebase_auth/firebase_auth.dart';
+  3: import '../../data/models/bolao_group.dart';
+  4: import '../../data/repositories/group_repository.dart';
+  5: import '../../services/auth_service.dart';
+  6: //import '../../core/routes/app_routes.dart';
+  7: import '../../core/widgets/sobre_dialog.dart';
+  8: import '../auth/login_screen.dart';
+  9: import 'widgets/group_card_bolao.dart';
+ 10: import 'create_group_screen.dart';
+ 11: import 'join_group_sheet.dart';
+ 12: import 'group_home_screen.dart';
+ 13: 
+ 14: class GroupsScreen extends StatefulWidget {
+ 15:   const GroupsScreen({super.key});
+ 16: 
+ 17:   @override
+ 18:   State<GroupsScreen> createState() => _GroupsScreenState();
+ 19: }
+ 20: 
+ 21: class _GroupsScreenState extends State<GroupsScreen> {
+ 22:   final _repo = GroupRepository();
+ 23:   final _authService = AuthService();
+ 24: 
+ 25:   List<BolaoGroup> _groups = [];
+ 26:   bool _loading = true;
+ 27:   String? _erro;
+ 28: 
+ 29:   @override
+ 30:   void initState() {
+ 31:     super.initState();
+ 32:     _carregar();
+ 33:   }
+ 34: 
+ 35:   Future<void> _carregar() async {
+ 36:     setState(() {
+ 37:       _loading = true;
+ 38:       _erro = null;
+ 39:     });
+ 40:     try {
+ 41:       final uid = FirebaseAuth.instance.currentUser?.uid;
+ 42:       if (uid == null) return;
+ 43:       final groups = await _repo.fetchUserGroups(uid);
+ 44:       if (mounted) setState(() => _groups = groups);
+ 45:     } catch (_) {
+ 46:       if (mounted) setState(() => _erro = 'Erro ao carregar grupos.');
+ 47:     } finally {
+ 48:       if (mounted) setState(() => _loading = false);
+ 49:     }
+ 50:   }
+ 51: 
+ 52:   Future<void> _sair() async {
+ 53:     await _authService.signOut();
+ 54:     if (mounted) {
+ 55:       Navigator.of(context).pushAndRemoveUntil(
+ 56:         MaterialPageRoute(builder: (_) => const LoginScreen()),
+ 57:         (route) => false,
+ 58:       );
+ 59:     }
+ 60:   }
+ 61: 
+ 62:   Future<void> _abrirConfigConta() async {
+ 63:     final user = FirebaseAuth.instance.currentUser;
+ 64:     final displayName = user?.displayName ?? user?.email ?? 'Usuário';
+ 65:     await showModalBottomSheet(
+ 66:       context: context,
+ 67:       builder: (ctx) => SafeArea(
+ 68:         child: Column(
+ 69:           mainAxisSize: MainAxisSize.min,
+ 70:           children: [
+ 71:             ListTile(
+ 72:               leading: const Icon(Icons.person_outline),
+ 73:               title: Text(displayName),
+ 74:               subtitle: user?.email != null && user!.email != displayName
+ 75:                   ? Text(user.email!)
+ 76:                   : null,
+ 77:             ),
+ 78:             const Divider(),
+ 79:             ListTile(
+ 80:               leading: const Icon(Icons.delete_forever, color: Colors.red),
+ 81:               title: const Text('Excluir conta',
+ 82:                   style: TextStyle(color: Colors.red)),
+ 83:               onTap: () {
+ 84:                 Navigator.pop(ctx);
+ 85:                 _confirmarExcluirConta();
+ 86:               },
+ 87:             ),
+ 88:           ],
+ 89:         ),
+ 90:       ),
+ 91:     );
+ 92:   }
+ 93: 
+ 94:   Future<void> _confirmarExcluirConta() async {
+ 95:     final confirm = await showDialog<bool>(
+ 96:       context: context,
+ 97:       builder: (_) => AlertDialog(
+ 98:         title: const Text('Excluir conta?'),
+ 99:         content: const Text(
+100:           'Todos os seus dados serão removidos permanentemente. Esta ação não pode ser desfeita.',
+101:         ),
+102:         actions: [
+103:           TextButton(
+104:             onPressed: () => Navigator.pop(context, false),
+105:             child: const Text('Cancelar'),
+106:           ),
+107:           FilledButton(
+108:             style: FilledButton.styleFrom(backgroundColor: Colors.red),
+109:             onPressed: () => Navigator.pop(context, true),
+110:             child: const Text('Excluir'),
+111:           ),
+112:         ],
+113:       ),
+114:     );
+115:     if (confirm != true || !mounted) return;
+116:     try {
+117:       await _authService.deleteAccount();
+118:       if (mounted) {
+119:         Navigator.of(context).pushAndRemoveUntil(
+120:           MaterialPageRoute(builder: (_) => const LoginScreen()),
+121:           (route) => false,
+122:         );
+123:       }
+124:     } on Exception catch (e) {
+125:       if (mounted) {
+126:         final msg = e.toString().contains('requires-recent-login')
+127:             ? 'Por segurança, saia e entre novamente antes de excluir a conta.'
+128:             : 'Erro ao excluir conta. Tente novamente.';
+129:         ScaffoldMessenger.of(context).showSnackBar(
+130:           SnackBar(content: Text(msg), backgroundColor: Colors.red),
+131:         );
+132:       }
+133:     }
+134:   }
+135: 
+136:   void _abrirCriarGrupo() async {
+137:     final criado = await Navigator.push<BolaoGroup>(
+138:       context,
+139:       MaterialPageRoute(builder: (_) => const CreateGroupScreen()),
+140:     );
+141:     if (criado != null) {
+142:       setState(() => _groups.insert(0, criado));
+143:     }
+144:   }
+145: 
+146:   void _abrirEntrarGrupo() async {
+147:     final entrou = await showModalBottomSheet<BolaoGroup>(
+148:       context: context,
+149:       isScrollControlled: true,
+150:       backgroundColor: Colors.white,
+151:       shape: const RoundedRectangleBorder(
+152:         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+153:       ),
+154:       builder: (_) => const JoinGroupSheet(),
+155:     );
+156:     if (entrou != null) {
+157:       setState(() => _groups.add(entrou));
+158:     }
+159:   }
+160: 
+161:   void _abrirGrupo(BolaoGroup group) {
+162:     Navigator.push(
+163:       context,
+164:       MaterialPageRoute(
+165:         builder: (_) => GroupHomeScreen(group: group),
+166:       ),
+167:     );
+168:   }
+169: 
+170:   Future<void> _confirmarSair(BolaoGroup group) async {
+171:     final uid = FirebaseAuth.instance.currentUser?.uid ?? '';
+172:     final isAdmin = group.adminUid == uid;
+173:     final msg = isAdmin
+174:         ? 'Você é o admin. Ao sair, o grupo será apagado permanentemente.'
+175:         : 'Deseja sair do grupo "${group.name}"?';
+176: 
+177:     final confirm = await showDialog<bool>(
+178:       context: context,
+179:       builder: (_) => AlertDialog(
+180:         title: Text(isAdmin ? 'Apagar grupo?' : 'Sair do grupo?'),
+181:         content: Text(msg),
+182:         actions: [
+183:           TextButton(
+184:             onPressed: () => Navigator.pop(context, false),
+185:             child: const Text('Cancelar'),
+186:           ),
+187:           FilledButton(
+188:             style: FilledButton.styleFrom(backgroundColor: Colors.red),
+189:             onPressed: () => Navigator.pop(context, true),
+190:             child: Text(isAdmin ? 'Apagar' : 'Sair'),
+191:           ),
+192:         ],
+193:       ),
+194:     );
+195: 
+196:     if (confirm != true || !mounted) return;
+197: 
+198:     try {
+199:       if (isAdmin) {
+200:         await _repo.deleteGroup(group.id);
+201:       } else {
+202:         await _repo.leaveGroup(group.id, uid);
+203:       }
+204:       setState(() => _groups.removeWhere((g) => g.id == group.id));
+205:     } catch (_) {
+206:       if (mounted) {
+207:         ScaffoldMessenger.of(context).showSnackBar(
+208:           const SnackBar(content: Text('Erro ao sair do grupo.')),
+209:         );
+210:       }
+211:     }
+212:   }
+213: 
+214:   @override
+215:   Widget build(BuildContext context) {
+216:     return Scaffold(
+217:       appBar: AppBar(
+218:         title: const Text('Bolão Entre Amigos'),
+219:         backgroundColor: const Color(0xFF1A6B3C),
+220:         foregroundColor: Colors.white,
+221:         actions: [
+222:           IconButton(
+223:             icon: const Icon(Icons.account_circle_outlined),
+224:             tooltip: 'Minha conta',
+225:             onPressed: _abrirConfigConta,
+226:           ),
+227:           IconButton(
+228:             icon: const Icon(Icons.info_outline),
+229:             tooltip: 'Sobre',
+230:             onPressed: () => mostrarSobre(context),
+231:           ),
+232:           IconButton(
+233:             icon: const Icon(Icons.logout),
+234:             tooltip: 'Sair',
+235:             onPressed: _sair,
+236:           ),
+237:         ],
+238:       ),
+239:       body: _loading
+240:           ? const Center(child: CircularProgressIndicator())
+241:           : _erro != null
+242:               ? Center(
+243:                   child: Column(
+244:                     mainAxisSize: MainAxisSize.min,
+245:                     children: [
+246:                       Text(_erro!, style: const TextStyle(color: Colors.red)),
+247:                       const SizedBox(height: 12),
+248:                       FilledButton(
+249:                         onPressed: _carregar,
+250:                         child: const Text('Tentar novamente'),
+251:                       ),
+252:                     ],
+253:                   ),
+254:                 )
+255:               : _groups.isEmpty
+256:                   ? _EmptyState(
+257:                       onCriar: _abrirCriarGrupo,
+258:                       onEntrar: _abrirEntrarGrupo,
+259:                     )
+260:                   : RefreshIndicator(
+261:                       onRefresh: _carregar,
+262:                       child: ListView(
+263:                         padding: const EdgeInsets.fromLTRB(16, 16, 16, 100),
+264:                         children: [
+265:                           const Text(
+266:                             'SEUS BOLÕES',
+267:                             style: TextStyle(
+268:                               fontSize: 12,
+269:                               fontWeight: FontWeight.bold,
+270:                               color: Colors.grey,
+271:                               letterSpacing: 1.2,
+272:                             ),
+273:                           ),
+274:                           const SizedBox(height: 12),
+275:                           ..._groups.map(
+276:                             (g) => Padding(
+277:                               padding: const EdgeInsets.only(bottom: 12),
+278:                               child: GroupCardBolao(
+279:                                 group: g,
+280:                                 onTap: () => _abrirGrupo(g),
+281:                                 onLongPress: () => _confirmarSair(g),
+282:                               ),
+283:                             ),
+284:                           ),
+285:                         ],
+286:                       ),
+287:                     ),
+288:       floatingActionButton: _groups.isEmpty
+289:           ? null
+290:           : Column(
+291:               mainAxisSize: MainAxisSize.min,
+292:               children: [
+293:                 FloatingActionButton.small(
+294:                   heroTag: 'entrar',
+295:                   backgroundColor: Colors.grey.shade200,
+296:                   foregroundColor: Colors.black87,
+297:                   tooltip: 'Entrar com código',
+298:                   onPressed: _abrirEntrarGrupo,
+299:                   child: const Icon(Icons.group_add),
+300:                 ),
+301:                 const SizedBox(height: 8),
+302:                 FloatingActionButton(
+303:                   heroTag: 'criar',
+304:                   backgroundColor: const Color(0xFF1A6B3C),
+305:                   foregroundColor: Colors.white,
+306:                   tooltip: 'Criar bolão',
+307:                   onPressed: _abrirCriarGrupo,
+308:                   child: const Icon(Icons.add),
+309:                 ),
+310:               ],
+311:             ),
+312:     );
+313:   }
+314: }
+315: 
+316: class _EmptyState extends StatelessWidget {
+317:   final VoidCallback onCriar;
+318:   final VoidCallback onEntrar;
+319: 
+320:   const _EmptyState({required this.onCriar, required this.onEntrar});
+321: 
+322:   @override
+323:   Widget build(BuildContext context) {
+324:     return Center(
+325:       child: Padding(
+326:         padding: const EdgeInsets.all(32),
+327:         child: Column(
+328:           mainAxisSize: MainAxisSize.min,
+329:           children: [
+330:             const Icon(Icons.emoji_events_outlined,
+331:                 size: 72, color: Color(0xFF1A6B3C)),
+332:             const SizedBox(height: 16),
+333:             const Text(
+334:               'Nenhum bolão ainda',
+335:               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+336:             ),
+337:             const SizedBox(height: 8),
+338:             const Text(
+339:               'Crie seu bolão ou entre com um código de convite.',
+340:               textAlign: TextAlign.center,
+341:               style: TextStyle(color: Colors.grey),
+342:             ),
+343:             const SizedBox(height: 32),
+344:             FilledButton.icon(
+345:               style: FilledButton.styleFrom(
+346:                   backgroundColor: const Color(0xFF1A6B3C)),
+347:               onPressed: onCriar,
+348:               icon: const Icon(Icons.add),
+349:               label: const Text('Criar bolão'),
+350:             ),
+351:             const SizedBox(height: 12),
+352:             OutlinedButton.icon(
+353:               onPressed: onEntrar,
+354:               icon: const Icon(Icons.group_add),
+355:               label: const Text('Entrar com código'),
+356:             ),
+357:           ],
+358:         ),
+359:       ),
+360:     );
+361:   }
+362: }
+</file>
+
+<file path="lib/features/home/home_screen.dart">
+  1: import 'package:flutter/material.dart';
+  2: import '../../services/auth_service.dart';
+  3: import '../../core/widgets/sobre_dialog.dart';
+  4: import '../../data/models/app_user.dart';
+  5: import '../../core/routes/app_routes.dart';
+  6: import '../auth/login_screen.dart';
+  7: 
+  8: class HomeScreen extends StatefulWidget {
+  9:   const HomeScreen({super.key});
+ 10:   @override
+ 11:   State<HomeScreen> createState() => _HomeScreenState();
+ 12: }
+ 13: 
+ 14: class _HomeScreenState extends State<HomeScreen> {
+ 15:   final _authService = AuthService();
+ 16:   AppUser? _appUser;
+ 17:   bool _loading = true;
+ 18:   @override
+ 19:   void initState() {
+ 20:     super.initState();
+ 21:     _carregarUsuario();
+ 22:   }
+ 23: 
+ 24:   Future<void> _carregarUsuario() async {
+ 25:     final user = _authService.currentUser;
+ 26:     if (user == null) {
+ 27:       if (mounted) {
+ 28:         Navigator.of(context).pushAndRemoveUntil(
+ 29:           MaterialPageRoute(builder: (_) => const LoginScreen()),
+ 30:           (route) => false,
+ 31:         );
+ 32:       }
+ 33:       return;
+ 34:     }
+ 35:     final appUser = await _authService.fetchAppUser(user.uid);
+ 36:     if (mounted) {
+ 37:       setState(() {
+ 38:         _appUser = appUser;
+ 39:         _loading = false;
+ 40:       });
+ 41:     }
+ 42:   }
+ 43: 
+ 44:   Future<void> _sair() async {
+ 45:     await _authService.signOut();
+ 46:     if (mounted) {
+ 47:       Navigator.of(context).pushAndRemoveUntil(
+ 48:         MaterialPageRoute(builder: (_) => const LoginScreen()),
+ 49:         (route) => false,
+ 50:       );
+ 51:     }
+ 52:   }
+ 53: 
+ 54:   @override
+ 55:   Widget build(BuildContext context) {
+ 56:     if (_loading) {
+ 57:       return const Scaffold(
+ 58:         body: Center(child: CircularProgressIndicator()),
+ 59:       );
+ 60:     }
+ 61:     return Scaffold(
+ 62:       appBar: AppBar(
+ 63:         title: const Text('Bolão Entre Amigos'),
+ 64:         backgroundColor: const Color(0xFF1A6B3C),
+ 65:         foregroundColor: Colors.white,
+ 66:         actions: [
+ 67:           if (_appUser?.isAdmin == true)
+ 68:             IconButton(
+ 69:               icon: const Icon(Icons.admin_panel_settings_outlined),
+ 70:               tooltip: 'Admin',
+ 71:               onPressed: () =>
+ 72:                   Navigator.pushNamed(context, AppRoutes.adminDashboard),
+ 73:             ),
+ 74:           IconButton(
+ 75:             icon: const Icon(Icons.info_outline),
+ 76:             tooltip: 'Sobre',
+ 77:             onPressed: () async => mostrarSobre(context),
+ 78:           ),
+ 79:           IconButton(
+ 80:             icon: const Icon(Icons.logout),
+ 81:             tooltip: 'Sair',
+ 82:             onPressed: _sair,
+ 83:           ),
+ 84:         ],
+ 85:       ),
+ 86:       body: Padding(
+ 87:         padding: const EdgeInsets.all(24),
+ 88:         child: Column(
+ 89:           crossAxisAlignment: CrossAxisAlignment.start,
+ 90:           children: [
+ 91:             Text(
+ 92:               'Olá, ${_appUser?.name ?? 'Jogador'}!',
+ 93:               style: const TextStyle(
+ 94:                 fontSize: 22,
+ 95:                 fontWeight: FontWeight.bold,
+ 96:               ),
+ 97:             ),
+ 98:             const SizedBox(height: 8),
+ 99:             Text(
+100:               'Pontuação total: ${_appUser?.totalPoints ?? 0} pts',
+101:               style: const TextStyle(fontSize: 16, color: Colors.grey),
+102:             ),
+103:             const SizedBox(height: 32),
+104:             _MenuItem(
+105:               icon: Icons.sports_soccer,
+106:               label: 'Meus Palpites',
+107:               descricao: 'Coloque seus palpites nos resultados dos jogos',
+108:               onTap: () => Navigator.pushNamed(context, AppRoutes.matches),
+109:             ),
+110:             const SizedBox(height: 12),
+111:             _MenuItem(
+112:               icon: Icons.star_outline,
+113:               label: 'Palpites Extras',
+114:               descricao: 'Campeão, artilheiro e mais',
+115:               onTap: () => Navigator.pushNamed(context, AppRoutes.extras),
+116:             ),
+117:             const SizedBox(height: 12),
+118:             _MenuItem(
+119:               icon: Icons.leaderboard_outlined,
+120:               label: 'Ranking',
+121:               descricao: 'Veja a classificação geral',
+122:               onTap: () => Navigator.pushNamed(context, AppRoutes.ranking),
+123:             ),
+124:           ],
+125:         ),
+126:       ),
+127:     );
+128:   }
+129: }
+130: 
+131: class _MenuItem extends StatelessWidget {
+132:   final IconData icon;
+133:   final String label;
+134:   final String descricao;
+135:   final VoidCallback onTap;
+136:   const _MenuItem({
+137:     required this.icon,
+138:     required this.label,
+139:     required this.descricao,
+140:     required this.onTap,
+141:   });
+142:   @override
+143:   Widget build(BuildContext context) {
+144:     return Card(
+145:       child: ListTile(
+146:         leading: Icon(icon, color: const Color(0xFF1A6B3C), size: 32),
+147:         title: Text(label, style: const TextStyle(fontWeight: FontWeight.bold)),
+148:         subtitle: Text(descricao),
+149:         trailing: const Icon(Icons.chevron_right),
+150:         onTap: onTap,
+151:       ),
+152:     );
+153:   }
+154: }
+</file>
+
+<file path="lib/services/auth_service.dart">
+  1: import 'dart:convert';
+  2: import 'dart:io';
+  3: import 'dart:math';
+  4: import 'package:crypto/crypto.dart';
+  5: import 'package:firebase_auth/firebase_auth.dart';
+  6: import 'package:flutter/foundation.dart';
+  7: import 'package:google_sign_in/google_sign_in.dart';
+  8: import 'package:cloud_firestore/cloud_firestore.dart';
+  9: import '../data/models/app_user.dart';
+ 10: import 'package:sign_in_with_apple/sign_in_with_apple.dart';
+ 11: 
+ 12: class AuthService {
+ 13:   final FirebaseAuth _auth = FirebaseAuth.instance;
+ 14:   final GoogleSignIn _googleSignIn = GoogleSignIn();
+ 15:   final FirebaseFirestore _db = FirebaseFirestore.instance;
+ 16:   // Usuário autenticado atual
+ 17:   User? get currentUser => _auth.currentUser;
+ 18:   // Stream de mudanças de autenticação
+ 19:   Stream<User?> get authStateChanges => _auth.authStateChanges();
+ 20:   // Login com e-mail e senha
+ 21:   Future<UserCredential> signInWithEmail(String email, String password) async {
+ 22:     return await _auth.signInWithEmailAndPassword(
+ 23:       email: email.trim(),
+ 24:       password: password,
+ 25:     );
+ 26:   }
+ 27: 
+ 28:   // Registro com e-mail e senha
+ 29:   Future<UserCredential> registerWithEmail({
+ 30:     required String name,
+ 31:     required String email,
+ 32:     required String password,
+ 33:   }) async {
+ 34:     final credential = await _auth.createUserWithEmailAndPassword(
+ 35:       email: email.trim(),
+ 36:       password: password,
+ 37:     );
+ 38:     await credential.user?.updateDisplayName(name);
+ 39:     await _saveUserToFirestore(
+ 40:       uid: credential.user!.uid,
+ 41:       name: name,
+ 42:       email: email.trim(),
+ 43:     );
+ 44:     return credential;
+ 45:   }
+ 46: 
+ 47:   // Login com Google
+ 48:   Future<UserCredential?> signInWithGoogle() async {
+ 49:     final googleUser = await _googleSignIn.signIn();
+ 50:     if (googleUser == null) return null;
+ 51:     final googleAuth = await googleUser.authentication;
+ 52:     final credential = GoogleAuthProvider.credential(
+ 53:       accessToken: googleAuth.accessToken,
+ 54:       idToken: googleAuth.idToken,
+ 55:     );
+ 56:     final userCredential = await _auth.signInWithCredential(credential);
+ 57:     // Cria o perfil no Firestore apenas se for o primeiro login
+ 58:     final doc =
+ 59:         await _db.collection('users').doc(userCredential.user!.uid).get();
+ 60:     if (!doc.exists) {
+ 61:       await _saveUserToFirestore(
+ 62:         uid: userCredential.user!.uid,
+ 63:         name: googleUser.displayName ?? 'Usuário',
+ 64:         email: googleUser.email,
+ 65:       );
+ 66:     }
+ 67:     return userCredential;
+ 68:   }
+ 69: 
+ 70:   String _generateNonce([int length = 32]) {
+ 71:     const charset =
+ 72:         '0123456789ABCDEFGHIJKLMNOPQRSTUVXYZabcdefghijklmnopqrstuvwxyz-._';
+ 73:     final random = Random.secure();
+ 74:     return List.generate(
+ 75:         length, (_) => charset[random.nextInt(charset.length)]).join();
+ 76:   }
+ 77: 
+ 78:   String _sha256ofString(String input) {
+ 79:     final bytes = utf8.encode(input);
+ 80:     final digest = sha256.convert(bytes);
+ 81:     return digest.toString();
+ 82:   }
+ 83: 
+ 84:   Future<UserCredential> signInWithApple() async {
+ 85:     final rawNonce = _generateNonce();
+ 86:     final nonce = _sha256ofString(rawNonce);
+ 87: 
+ 88:     final appleCredential = await SignInWithApple.getAppleIDCredential(
+ 89:       scopes: [
+ 90:         AppleIDAuthorizationScopes.email,
+ 91:         AppleIDAuthorizationScopes.fullName,
+ 92:       ],
+ 93:       nonce: nonce,
+ 94:       webAuthenticationOptions: !kIsWeb && Platform.isIOS
+ 95:           ? null
+ 96:           : WebAuthenticationOptions(
+ 97:               clientId: 'com.salles.bolaocopadomundo.signin',
+ 98:               redirectUri: Uri.parse(
+ 99:                 'https://bolao-copa-do-mundo-salles.firebaseapp.com/__/auth/handler',
+100:               ),
+101:             ),
+102:     );
+103: 
+104:     final idToken = appleCredential.identityToken;
+105:     if (idToken == null || idToken.isEmpty) {
+106:       throw Exception(
+107:         'Apple não retornou um token de identidade. '
+108:         'Verifique suas configurações de conta Apple ID e tente novamente.',
+109:       );
+110:     }
+111: 
+112:     final oauthCredential = OAuthProvider('apple.com').credential(
+113:       idToken: idToken,
+114:       rawNonce: rawNonce,
+115:       accessToken: appleCredential.authorizationCode,
+116:     );
+117: 
+118:     final userCredential = await _auth.signInWithCredential(oauthCredential);
+119: 
+120:     final isNew = userCredential.additionalUserInfo?.isNewUser ?? false;
+121:     if (isNew) {
+122:       final given = appleCredential.givenName ?? '';
+123:       final family = appleCredential.familyName ?? '';
+124:       final name = [given, family].where((s) => s.isNotEmpty).join(' ').trim();
+125:       await _saveUserToFirestore(
+126:         uid: userCredential.user!.uid,
+127:         name: name.isEmpty ? 'Usuário' : name,
+128:         email: appleCredential.email ?? userCredential.user!.email ?? '',
+129:       );
+130:     }
+131: 
+132:     return userCredential;
+133:   }
+134: 
+135:   Future<void> deleteAccount() async {
+136:     final user = FirebaseAuth.instance.currentUser;
+137: 
+138:     if (user == null) {
+139:       throw Exception('Usuário não autenticado');
+140:     }
+141: 
+142:     final uid = user.uid;
+143: 
+144:     // 🔥 deletar dados do Firestore (ajuste conforme sua estrutura)
+145:     final firestore = FirebaseFirestore.instance;
+146: 
+147:     await firestore.collection('users').doc(uid).delete();
+148: 
+149:     // ⚠️ deletar outros dados vinculados se existirem
+150:     // ex: apostas, grupos, etc
+151: 
+152:     // 🔴 deletar usuário do Auth (por último)
+153:     await user.delete();
+154:   }
+155: 
+156:   // Logout
+157:   Future<void> signOut() async {
+158:     await _googleSignIn.signOut();
+159:     await _auth.signOut();
+160:   }
+161: 
+162:   // Envia e-mail de recuperação de senha
+163:   Future<void> sendPasswordReset(String email) async {
+164:     await _auth.sendPasswordResetEmail(email: email.trim());
+165:   }
+166: 
+167:   // Busca o perfil do usuário no Firestore
+168:   Future<AppUser?> fetchAppUser(String uid) async {
+169:     final doc = await _db.collection('users').doc(uid).get();
+170:     if (!doc.exists) return null;
+171:     return AppUser.fromFirestore(uid, doc.data()!);
+172:   }
+173: 
+174:   // Salva usuário novo no Firestore
+175:   Future<void> _saveUserToFirestore({
+176:     required String uid,
+177:     required String name,
+178:     required String email,
+179:   }) async {
+180:     await _db.collection('users').doc(uid).set({
+181:       'name': name,
+182:       'email': email,
+183:       'is_admin': false,
+184:       'total_points': 0,
+185:       'created_at': FieldValue.serverTimestamp(),
+186:     });
+187:   }
+188: }
+</file>
+
+<file path="lib/features/auth/login_screen.dart">
+  1: import 'package:flutter/foundation.dart';
+  2: import 'package:flutter/material.dart';
+  3: import 'package:sign_in_with_apple/sign_in_with_apple.dart';
+  4: import '../../services/auth_service.dart';
+  5: import '../../core/routes/app_routes.dart';
+  6: import '../../core/widgets/sobre_dialog.dart';
+  7: 
+  8: class LoginScreen extends StatefulWidget {
+  9:   const LoginScreen({super.key});
+ 10:   @override
+ 11:   State<LoginScreen> createState() => _LoginScreenState();
+ 12: }
+ 13: 
+ 14: class _LoginScreenState extends State<LoginScreen> {
+ 15:   final _formKey = GlobalKey<FormState>();
+ 16:   final _emailController = TextEditingController();
+ 17:   final _passwordController = TextEditingController();
+ 18:   final _authService = AuthService();
+ 19:   bool _loading = false;
+ 20:   bool _senhaVisivel = false;
+ 21:   String? _erro;
+ 22: 
+ 23:   @override
+ 24:   void dispose() {
+ 25:     _emailController.dispose();
+ 26:     _passwordController.dispose();
+ 27:     super.dispose();
+ 28:   }
+ 29: 
+ 30:   Future<void> _loginEmail() async {
+ 31:     if (!_formKey.currentState!.validate()) return;
+ 32:     setState(() {
+ 33:       _loading = true;
+ 34:       _erro = null;
+ 35:     });
+ 36:     try {
+ 37:       await _authService.signInWithEmail(
+ 38:         _emailController.text,
+ 39:         _passwordController.text,
+ 40:       );
+ 41:       if (mounted) Navigator.pushReplacementNamed(context, '/groups');
+ 42:     } on Exception catch (e) {
+ 43:       setState(() {
+ 44:         _erro = _traduzirErro(e.toString());
+ 45:       });
+ 46:     } finally {
+ 47:       if (mounted) {
+ 48:         setState(() {
+ 49:           _loading = false;
+ 50:         });
+ 51:       }
+ 52:     }
+ 53:   }
+ 54: 
+ 55:   Future<void> _loginGoogle() async {
+ 56:     setState(() {
+ 57:       _loading = true;
+ 58:       _erro = null;
+ 59:     });
+ 60:     try {
+ 61:       final result = await _authService.signInWithGoogle();
+ 62:       if (result != null && mounted) {
+ 63:         Navigator.pushReplacementNamed(context, '/groups');
+ 64:       }
+ 65:     } on Exception catch (e) {
+ 66:       setState(() {
+ 67:         _erro = _traduzirErro(e.toString());
+ 68:       });
+ 69:     } finally {
+ 70:       if (mounted) {
+ 71:         setState(() {
+ 72:           _loading = false;
+ 73:         });
+ 74:       }
+ 75:     }
+ 76:   }
+ 77: 
+ 78:   Future<void> _loginApple() async {
+ 79:     setState(() {
+ 80:       _loading = true;
+ 81:       _erro = null;
+ 82:     });
+ 83:     try {
+ 84:       await _authService.signInWithApple();
+ 85:       if (mounted) {
+ 86:         Navigator.pushReplacementNamed(context, '/groups');
+ 87:       }
+ 88:     } on SignInWithAppleAuthorizationException catch (e) {
+ 89:       if (e.code == AuthorizationErrorCode.canceled) {
+ 90:         if (mounted) setState(() => _loading = false);
+ 91:         return;
+ 92:       }
+ 93:       final msg = switch (e.code) {
+ 94:         AuthorizationErrorCode.failed =>
+ 95:           'Falha na autenticação com Apple. Verifique as configurações da sua conta.',
+ 96:         AuthorizationErrorCode.invalidResponse =>
+ 97:           'Resposta inválida da Apple. Tente novamente.',
+ 98:         AuthorizationErrorCode.notHandled =>
+ 99:           'Autenticação Apple não pôde ser concluída. Tente novamente.',
+100:         AuthorizationErrorCode.unknown =>
+101:           'Erro desconhecido na autenticação Apple. Tente novamente.',
+102:         _ => 'Erro ao entrar com Apple: ${e.message}',
+103:       };
+104:       if (mounted) setState(() => _erro = msg);
+105:     } on Exception catch (e) {
+106:       if (mounted) setState(() => _erro = _traduzirErro(e.toString()));
+107:     } finally {
+108:       if (mounted) setState(() => _loading = false);
+109:     }
+110:   }
+111: 
+112:   String _traduzirErro(String erro) {
+113:     const map = {
+114:       'user-not-found': 'Usuário não encontrado.',
+115:       'wrong-password': 'Senha incorreta.',
+116:       'invalid-email': 'E-mail inválido.',
+117:       'invalid-credential': 'E-mail ou senha incorretos.',
+118:       'too-many-requests': 'Muitas tentativas. Tente mais tarde.',
+119:     };
+120:     for (final entry in map.entries) {
+121:       if (erro.contains(entry.key)) {
+122:         return entry.value;
+123:       }
+124:     }
+125:     return 'Erro ao entrar. Tente novamente.';
+126:   }
+127: 
+128:   Future<void> _recuperarSenha() async {
+129:     final emailCtrl = TextEditingController(text: _emailController.text.trim());
+130:     await showDialog(
+131:       context: context,
+132:       builder: (ctx) => AlertDialog(
+133:         title: const Text('Recuperar senha'),
+134:         content: Column(
+135:           mainAxisSize: MainAxisSize.min,
+136:           children: [
+137:             const Text(
+138:                 'Informe seu e-mail para receber o link de redefinição.'),
+139:             const SizedBox(height: 16),
+140:             TextFormField(
+141:               controller: emailCtrl,
+142:               keyboardType: TextInputType.emailAddress,
+143:               decoration: const InputDecoration(
+144:                 labelText: 'E-mail',
+145:                 border: OutlineInputBorder(),
+146:                 prefixIcon: Icon(Icons.email_outlined),
+147:               ),
+148:             ),
+149:           ],
+150:         ),
+151:         actions: [
+152:           TextButton(
+153:             onPressed: () => Navigator.pop(ctx),
+154:             child: const Text('Cancelar'),
+155:           ),
+156:           FilledButton(
+157:             onPressed: () async {
+158:               final email = emailCtrl.text.trim();
+159:               if (email.isEmpty) return;
+160:               try {
+161:                 await _authService.sendPasswordReset(email);
+162:                 if (ctx.mounted) {
+163:                   Navigator.pop(ctx);
+164:                   ScaffoldMessenger.of(ctx).showSnackBar(
+165:                     const SnackBar(
+166:                       content: Text('E-mail de recuperação enviado!'),
+167:                       backgroundColor: Color(0xFF1A6B3C),
+168:                     ),
+169:                   );
+170:                 }
+171:               } on Exception {
+172:                 if (ctx.mounted) {
+173:                   ScaffoldMessenger.of(ctx).showSnackBar(
+174:                     const SnackBar(
+175:                       content: Text(
+176:                           'Não foi possível enviar o e-mail. Verifique o endereço.'),
+177:                       backgroundColor: Colors.red,
+178:                     ),
+179:                   );
+180:                 }
+181:               }
+182:             },
+183:             child: const Text('Enviar'),
+184:           ),
+185:         ],
+186:       ),
+187:     );
+188:     emailCtrl.dispose();
+189:   }
+190: 
+191:   @override
+192:   Widget build(BuildContext context) {
+193:     return Scaffold(
+194:       body: Stack(
+195:         children: [
+196:           SafeArea(
+197:             child: Center(
+198:               child: SingleChildScrollView(
+199:                 padding: const EdgeInsets.all(32),
+200:                 child: Form(
+201:                   key: _formKey,
+202:                   child: Column(
+203:                     mainAxisAlignment: MainAxisAlignment.center,
+204:                     children: [
+205:                       const Icon(Icons.emoji_events,
+206:                           size: 80, color: Color(0xFF1A6B3C)),
+207:                       const SizedBox(height: 16),
+208:                       const Text(
+209:                         'Bolão Entre Amigos',
+210:                         style: TextStyle(
+211:                           fontSize: 24,
+212:                           fontWeight: FontWeight.bold,
+213:                         ),
+214:                       ),
+215:                       const SizedBox(height: 40),
+216:                       TextFormField(
+217:                         controller: _emailController,
+218:                         keyboardType: TextInputType.emailAddress,
+219:                         decoration: const InputDecoration(
+220:                           labelText: 'E-mail',
+221:                           border: OutlineInputBorder(),
+222:                           prefixIcon: Icon(Icons.email_outlined),
+223:                         ),
+224:                         validator: (v) =>
+225:                             v == null || v.isEmpty ? 'Informe o e-mail' : null,
+226:                       ),
+227:                       const SizedBox(height: 16),
+228:                       TextFormField(
+229:                         controller: _passwordController,
+230:                         obscureText: !_senhaVisivel,
+231:                         decoration: InputDecoration(
+232:                           labelText: 'Senha',
+233:                           border: const OutlineInputBorder(),
+234:                           prefixIcon: const Icon(Icons.lock_outline),
+235:                           suffixIcon: IconButton(
+236:                             icon: Icon(
+237:                               _senhaVisivel
+238:                                   ? Icons.visibility_off_outlined
+239:                                   : Icons.visibility_outlined,
+240:                             ),
+241:                             onPressed: () =>
+242:                                 setState(() => _senhaVisivel = !_senhaVisivel),
+243:                           ),
+244:                         ),
+245:                         validator: (v) =>
+246:                             v == null || v.isEmpty ? 'Informe a senha' : null,
+247:                       ),
+248:                       if (_erro != null) ...[
+249:                         const SizedBox(height: 12),
+250:                         Text(_erro!, style: const TextStyle(color: Colors.red)),
+251:                       ],
+252:                       const SizedBox(height: 24),
+253:                       SizedBox(
+254:                         width: double.infinity,
+255:                         child: FilledButton(
+256:                           onPressed: _loading ? null : _loginEmail,
+257:                           child: _loading
+258:                               ? const SizedBox(
+259:                                   height: 20,
+260:                                   width: 20,
+261:                                   child: CircularProgressIndicator(
+262:                                       strokeWidth: 2, color: Colors.white),
+263:                                 )
+264:                               : const Text('Entrar'),
+265:                         ),
+266:                       ),
+267:                       const SizedBox(height: 12),
+268:                       SizedBox(
+269:                         width: double.infinity,
+270:                         child: OutlinedButton.icon(
+271:                           onPressed: _loading ? null : _loginGoogle,
+272:                           icon: const Icon(Icons.login),
+273:                           label: const Text('Entrar com Google'),
+274:                         ),
+275:                       ),
+276:                       if (defaultTargetPlatform == TargetPlatform.iOS) ...[
+277:                         const SizedBox(height: 12),
+278:                         SizedBox(
+279:                           width: double.infinity,
+280:                           child: SignInWithAppleButton(
+281:                             onPressed: _loading ? () {} : _loginApple,
+282:                             style: SignInWithAppleButtonStyle.black,
+283:                             borderRadius: const BorderRadius.all(
+284:                               Radius.circular(8),
+285:                             ),
+286:                           ),
+287:                         ),
+288:                       ],
+289:                       const SizedBox(height: 24),
+290:                       TextButton(
+291:                         onPressed: () =>
+292:                             Navigator.pushNamed(context, AppRoutes.register),
+293:                         child: const Text('Não tem conta? Cadastre-se'),
+294:                       ),
+295:                       TextButton(
+296:                         onPressed: _recuperarSenha,
+297:                         child: const Text('Esqueci minha senha'),
+298:                       ),
+299:                     ],
+300:                   ),
+301:                 ),
+302:               ),
+303:             ),
+304:           ),
+305:           Positioned(
+306:             top: 8,
+307:             right: 8,
+308:             child: SafeArea(
+309:               child: IconButton(
+310:                 icon: const Icon(Icons.info_outline, color: Color(0xFF1A6B3C)),
+311:                 tooltip: 'Sobre',
+312:                 onPressed: () async => mostrarSobre(context),
+313:               ),
+314:             ),
+315:           ),
+316:         ],
+317:       ),
+318:     );
+319:   }
+320: }
 </file>
 
 <file path="ios/Podfile">
@@ -8670,6 +8794,46 @@ This section contains the contents of the repository's files.
 38:     end
 39:   end
 40: end
+</file>
+
+<file path="pubspec.yaml">
+ 1: name: bolao_copa
+ 2: description: Bolão Entre Amigos
+ 3: publish_to: 'none'
+ 4: version: 1.0.9+18
+ 5: environment:
+ 6:   sdk: '>=3.0.0 <4.0.0'
+ 7: dependencies:
+ 8:   flutter:
+ 9:     sdk: flutter
+10:   firebase_core: ^4.4.0
+11:   cloud_firestore: ^6.1.2
+12:   firebase_auth: ^6.2.0
+13:   firebase_storage: ^13.0.6
+14:   google_sign_in: ^6.2.1
+15:   sign_in_with_apple: ^6.0.0
+16:   crypto: ^3.0.3
+17:   shared_preferences: ^2.2.3
+18:   connectivity_plus: ^6.0.3
+19:   intl: ^0.19.0
+20:   package_info_plus: ^8.0.0
+21: dev_dependencies:
+22:   flutter_test:
+23:     sdk: flutter
+24:   flutter_lints: ^4.0.0
+25:   flutter_launcher_icons: ^0.14.1
+26: flutter:
+27:   uses-material-design: true
+28:   assets:
+29:     - assets/flags/
+30:     - assets/icon_app.png
+31: flutter_launcher_icons:
+32:   android: true
+33:   ios: true
+34:   image_path: "assets/icon_app.png"
+35:   min_sdk_android: 21
+36:   web:
+37:     generate: false
 </file>
 
 </files>
