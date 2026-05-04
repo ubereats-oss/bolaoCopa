@@ -36,6 +36,14 @@ class AdminDashboard extends StatelessWidget {
             descricao: 'Cadastre os jogadores de cada seleção',
             onTap: () => Navigator.pushNamed(context, AppRoutes.adminPlayers),
           ),
+          const SizedBox(height: 12),
+          _AdminMenuItem(
+            icon: Icons.upload_file_outlined,
+            label: 'Importar Resultados',
+            descricao: 'Carregue resultados a partir de planilha Excel',
+            onTap: () =>
+                Navigator.pushNamed(context, AppRoutes.adminImportResults),
+          ),
         ],
       ),
     );

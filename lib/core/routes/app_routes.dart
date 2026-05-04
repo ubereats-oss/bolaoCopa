@@ -6,6 +6,7 @@ import '../../features/admin/manage_extra_questions_screen.dart';
 import '../../features/admin/manage_players_screen.dart';
 import '../../features/groups/groups_screen.dart';
 import '../../features/rules/rules_screen.dart';
+import '../../features/admin/import_results_screen.dart';
 
 // Rotas nomeadas — apenas telas sem contexto de grupo.
 // matches, extras, ranking e manage_results são abertas via Navigator.push
@@ -17,6 +18,7 @@ class AppRoutes {
   static const String adminMatches = '/admin/matches';
   static const String adminExtraQuestions = '/admin/extra-questions';
   static const String adminPlayers = '/admin/players';
+  static const String adminImportResults = '/admin/import-results';
   static const String matches = '/matches';
   static const String extras = '/extras';
   static const String ranking = '/ranking';
@@ -28,6 +30,7 @@ class AppRoutes {
         adminMatches: (_) => const ManageMatchesScreen(),
         adminExtraQuestions: (_) => const ManageExtraQuestionsScreen(),
         adminPlayers: (_) => const ManagePlayersScreen(),
+        adminImportResults: (_) => const ImportResultsScreen(groupId: ''),
         groups: (_) => const GroupsScreen(),
         rules: (_) => const RulesScreen(),
       };

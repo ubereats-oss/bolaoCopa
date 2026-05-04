@@ -10,6 +10,7 @@ import '../extras/extra_predictions_screen.dart';
 import '../ranking/ranking_screen.dart';
 import '../rules/rules_screen.dart';
 import '../admin/manage_results_screen.dart';
+import '../admin/import_results_screen.dart';
 
 class GroupHomeScreen extends StatefulWidget {
   final BolaoGroup group;
@@ -102,6 +103,15 @@ class _GroupHomeScreenState extends State<GroupHomeScreen> {
       context,
       MaterialPageRoute(
         builder: (_) => ManageResultsScreen(groupId: widget.group.id),
+      ),
+    );
+  }
+
+  void _abrirImportar() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => ImportResultsScreen(groupId: widget.group.id),
       ),
     );
   }
@@ -230,6 +240,13 @@ class _GroupHomeScreenState extends State<GroupHomeScreen> {
               label: 'Inserir Resultados',
               descricao: 'Registre o placar oficial dos jogos',
               onTap: _abrirResultados,
+            ),
+            const SizedBox(height: 12),
+            _MenuItem(
+              icon: Icons.upload_file_outlined,
+              label: 'Importar Resultados',
+              descricao: 'Carregue resultados a partir de planilha Excel',
+              onTap: _abrirImportar,
             ),
           ],
         ],
